@@ -1,6 +1,6 @@
 {
   "name": "@smartworld-libs/uikit",
-  "version": "0.42.0",
+  "version": "0.42.1",
   "description": "Set of UI components for pancake projects",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -21,7 +21,7 @@
     "storybook:build": "build-storybook",
     "test": "jest",
     "prepublishOnly": "yarn build",
-    "predeploy": "npm run build-storybook",
+    "predeploy": "npm run storybook:build",
     "deploy-storybook": "gh-pages -d storybook-static"
   },
   "jest": {
