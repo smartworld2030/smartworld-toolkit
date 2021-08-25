@@ -1,13 +1,13 @@
-# Pancake Toolkit
+# SmartWorld Toolkit
 
 This repository is a monorepo manage with [yarn workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) and [Lerna](https://lerna.js.org/).
 
 ## Packages
 
-- [smartworld-uikit](https://github.com/smartworld2030/smartworld-toolkit/tree/main/packages/smartworld-uikit) : React components used to build the Pancake UI
+- [smartworld-uikit](https://github.com/smartworld2030/smartworld-toolkit/tree/main/packages/smartworld-uikit) : React components used to build the SmartWorld UI
 - [eslint-config-smartworld](https://github.com/smartworld2030/smartworld-toolkit/tree/main/packages/eslint-config-smartworld) : An ESLint config for smartworld, with Typescript and Prettier support
-- [smartworld-profile-sdk](https://github.com/smartworld2030/smartworld-toolkit/tree/main/packages/smartworld-profile-sdk) : Handy functions to retrieve data for Pancakeswap Profile system
-- [token-lists](https://github.com/smartworld2030/smartworld-toolkit/tree/main/packages/token-lists) : Main PancakeSwap token list and tools to validate it
+- [smartworld-profile-sdk](https://github.com/smartworld2030/smartworld-toolkit/tree/main/packages/smartworld-profile-sdk) : Handy functions to retrieve data for SmartWorld Profile system
+- [token-lists](https://github.com/smartworld2030/smartworld-toolkit/tree/main/packages/token-lists) : Main SmartWorld token list and tools to validate it
 
 ## How to use
 
