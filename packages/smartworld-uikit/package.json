@@ -5,6 +5,7 @@
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
+  "homepage": "http://smartworld2030.github.io/smartworld-toolkit",
   "files": [
     "dist"
   ],
@@ -19,7 +20,9 @@
     "storybook": "start-storybook -p 6006",
     "storybook:build": "build-storybook",
     "test": "jest",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn build",
+    "predeploy": "npm run build-storybook",
+    "deploy-storybook": "gh-pages -d storybook-static"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -27,9 +30,11 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.14.3",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.5",
     "@types/react-dom": "^17.0.5",
+    "gh-pages": "^3.2.3",
     "jest-styled-components": "^7.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

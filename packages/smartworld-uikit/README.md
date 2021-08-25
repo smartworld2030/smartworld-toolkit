@@ -37,4 +37,4 @@ This project is built with Typescript and export all the relevant types.
 
 ## How to use the UIkit
 
-If you want to use components from the UIkit, check the [Storybook documentation](https://smartworld.github.io/smartworld-uikit/)
+If you want to use components from the UIkit, check the [Storybook documentation](https://smartworld2030.github.io/smartworld-toolkit/)
