@@ -998,7 +998,7 @@ it("renders correctly", () => {
               </svg>
             </button>
             <a
-              aria-label="Pancake home page"
+              aria-label="SmartWorld home page"
               class="c6"
               href="/"
             >

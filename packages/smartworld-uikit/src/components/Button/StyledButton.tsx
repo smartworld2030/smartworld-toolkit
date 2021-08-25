@@ -57,6 +57,7 @@ const StyledButton = styled.button<BaseButtonProps>`
   border: 0;
   border-radius: ${({ shape, theme }) => (shape === "circle" ? theme.radii.circle : theme.radii.default)};
   box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;
+  z-index: ${({ zIndex }) => zIndex};
   cursor: pointer;
   display: inline-flex;
   font-family: inherit;
@@ -89,6 +90,7 @@ const StyledButton = styled.button<BaseButtonProps>`
   })}
   ${layout}
   ${space}
+  padding: ${({ variant }) => (variant === "text" ? 0 : undefined)};
 `;
 
 export default StyledButton;

@@ -3,6 +3,7 @@ import { BoxProps } from "../Box";
 
 export interface BalanceInputProps extends BoxProps {
   value: ReactText;
+  balance: ReactText;
   onUserInput: (input: string) => void;
   innerRef?: React.RefObject<HTMLInputElement>;
   currencyValue?: ReactNode;
@@ -12,6 +13,8 @@ export interface BalanceInputProps extends BoxProps {
   isWarning?: boolean;
   decimals?: number;
   unit: string;
-  maxButton?: () => void;
+  knobColor?: string;
+  progressColor?: string;
+  maxButton?: boolean;
   switchEditingUnits?: () => void;
 }
