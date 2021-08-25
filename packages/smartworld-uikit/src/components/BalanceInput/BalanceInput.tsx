@@ -10,10 +10,9 @@ import { BalanceInputProps } from "./types";
 
 const BalanceInput: React.FC<BalanceInputProps> = ({
   value,
-  balance,
+  maxValue,
   placeholder = "0.0",
   onUserInput,
-  maxButton,
   currencyValue,
   currencyUnit,
   inputProps,
@@ -36,15 +35,15 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   };
 
   const handleChangeRange = (val: any) => {
-    onUserInput(percentToValue(val, balance));
+    onUserInput(percentToValue(val, maxValue));
   };
 
-  const percentToValue = (val: ReactText, per: ReactText) => ((+val * +per) / 100).toFixed(decimals);
+  const percentToValue = (val: ReactText, per: ReactText = 0) => ((+val * +per) / 100).toFixed(decimals);
 
-  const valueToPercent = (val: ReactText, max: ReactText) => +((+val / +max) * 100);
+  const valueToPercent = (val: ReactText, max: ReactText = 0) => +((+val / +max) * 100);
 
   const maxButtonHandler = () => {
-    onUserInput(balance.toString());
+    if (maxValue) onUserInput(maxValue.toString());
   };
 
   const widthCalc = (divide: number = 1) => (width ? Number(width) : 150) / divide;
@@ -90,7 +89,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
             </Text>
           </Flex>
         </AbsoluteFlex>
-        {maxButton && (
+        {maxValue && (
           <Button
             zIndex={2}
             variant="text"
@@ -104,7 +103,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
         )}
       </FullFlex>
       <StyledCircleSlider
-        value={valueToPercent(value, balance)}
+        value={valueToPercent(value, maxValue)}
         size={widthCalc() + 29}
         progressWidth={widthCalc(20)}
         circleWidth={widthCalc(20)}

@@ -14,6 +14,7 @@ export const SwitchUnitsButton = styled(IconButton)`
 
 export const StyledCircleSlider = styled(CircleSlider)`
   position: absolute;
+  z-index: 1;
   top: -15px;
   left: -15px;
 }`;
@@ -36,6 +37,7 @@ export const StyledBalanceInput = styled(Box)<{ isWarning: BalanceInputProps["is
   min-height: ${({ width }) => calcWidth(width, 50)};
   padding: ${({ width }) => calcPadding(width)};
   user-select: none;
+  touch-action: none;
 `;
 
 export const StyledInput = styled(Input)`

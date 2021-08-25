@@ -71,7 +71,7 @@ export const Default: React.FC = () => {
     <Box width="300px">
       <BalanceInput
         value={values[editingUnit]}
-        balance={1006.086957}
+        maxValue={1006.086957}
         onUserInput={handleSTTSChange}
         unit={editingUnit}
         currencyValue={currencyValues}
@@ -79,45 +79,41 @@ export const Default: React.FC = () => {
         placeholder="1.5"
         width={200}
         mb="32px"
-        maxButton
         switchEditingUnits={switchEditingUnits}
       />
       <BalanceInput
         unit="STTS"
         onUserInput={handleDecimalChange}
         value={decimalValue}
-        balance={1006.086957}
+        maxValue={1006.086957}
         currencyValue={currencyValue(decimalValue)}
         placeholder="0.0"
-        maxButton
         width={100}
         mb="32px"
         switchEditingUnits={switchEditingUnits}
       />
       <BalanceInput
         value={values[editingUnit]}
-        balance={1006.086957}
+        maxValue={1006.086957}
         onUserInput={handleSTTSChange}
         unit={editingUnit}
         currencyValue={currencyValues}
         currencyUnit={conversionUnit}
         placeholder="1.5"
         mb="32px"
-        maxButton
         switchEditingUnits={switchEditingUnits}
       />
       <BalanceInput
         unit="STTS"
         isWarning
         value={numericValue}
-        balance={1006.086957}
+        maxValue={1006.086957}
         onUserInput={handleNumericChange}
         inputProps={{ inputMode: "numeric" }}
         currencyValue={currencyValue(numericValue)}
         placeholder="0"
         mb="32px"
         color="#f0f0f0"
-        maxButton
       />
     </Box>
   );
@@ -145,7 +141,7 @@ export const UnitDisplay: React.FC = () => {
         <BalanceInput
           onUserInput={handleCakeChange}
           value={cakeValue}
-          balance={1006.086957}
+          maxValue={1006.086957}
           currencyValue={cakeToUSD(cakeValue)}
           placeholder="0.0"
           unit="CAKE"
@@ -156,7 +152,7 @@ export const UnitDisplay: React.FC = () => {
         <BalanceInput
           onUserInput={handleCakeChange}
           value={cakeValue}
-          balance={1006.086957}
+          maxValue={1006.086957}
           currencyValue="2854.66 BADGER-HOTCROSS LP"
           placeholder="0.0"
           unit="CAKE-BNB LP"
@@ -213,7 +209,7 @@ export const SwitchUnits: React.FC = () => {
       <BalanceInput
         onUserInput={handleCakeChange}
         value={values[editingUnit]}
-        balance={1006.086957}
+        maxValue={1006.086957}
         currencyValue={`~${currencyValue} ${conversionUnit}`}
         placeholder="0.0"
         unit={editingUnit}

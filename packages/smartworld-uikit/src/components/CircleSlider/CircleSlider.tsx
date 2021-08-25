@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CircleSliderHelper } from "./helpers/circle-slider-helper";
 import { MouseHelper } from "./helpers/mouse-helper";
 import { pathGenerator } from "./helpers/path-generator";
@@ -15,276 +15,255 @@ interface IState {
   isMouseMove: boolean;
 }
 
-export default class CircleSlider extends React.Component<CircleSliderProps, IState> {
-  public static defaultProps: Partial<CircleSliderProps> = {
-    circleColor: "#e9eaee",
-    size: 180,
-    value: 0,
-    progressColor: "#007aff",
-    knobColor: "#fff",
-    circleWidth: 5,
-    progressWidth: 20,
-    knobRadius: 15,
-    stepSize: 1,
-    min: 0,
-    max: 100,
-    disabled: false,
-    shadow: true,
-    showTooltip: false,
-    showPercentage: false,
-    tooltipSize: 32,
-    tooltipColor: "#333",
-    insideColor: "none",
-    onChange: () => ({}),
-  };
-  private maxLineWidth: number;
-  private radius: number;
-  private countSteps: number;
-  private stepsArray: number[];
-  private circleSliderHelper: CircleSliderHelper;
-  private mouseHelper!: MouseHelper;
-  private svg: any;
-  constructor(props: CircleSliderProps) {
-    super(props);
-    this.state = {
-      angle: 0,
-      currentStepValue: 0,
-      isMouseMove: false,
-    };
+const CircleSlider: React.FC<CircleSliderProps> = ({
+  size,
+  value,
+  progressColor,
+  gradientColorFrom,
+  gradientColorTo,
+  knobColor,
+  circleColor,
+  disabled,
+  shadow,
+  circleWidth,
+  progressWidth,
+  knobRadius,
+  showTooltip,
+  showPercentage,
+  tooltipSize,
+  tooltipColor,
+  insideColor,
+  stepSize,
+  min,
+  max,
+  onInputChange,
+  ...rest
+}) => {
+  const radius = useRef(0);
+  const countSteps = useRef(0);
+  const mouseHelper = useRef<MouseHelper | null>(null);
+  const circleSliderHelper = useRef<CircleSliderHelper>(new CircleSliderHelper([], 0));
 
-    const { min, max, stepSize, value, circleWidth, progressWidth, knobRadius } = this.props;
+  const [state, setState] = useState<IState>({
+    angle: 0,
+    currentStepValue: 0,
+    isMouseMove: false,
+  });
 
-    this.maxLineWidth = Math.max(circleWidth!, progressWidth!);
-    this.radius = this.getCenter() - Math.max(this.maxLineWidth, knobRadius! * 2) / 2;
-    this.countSteps = 1 + (max! - min!) / stepSize!;
-    this.stepsArray = this.getStepsArray(min!, stepSize!);
+  useEffect(() => {
+    const maxLineWidth = Math.max(circleWidth!, progressWidth!);
+    radius.current = getCenter() - Math.max(maxLineWidth, knobRadius! * 2) / 2;
+    countSteps.current = 1 + (max! - min!) / stepSize!;
+    const stepsArray = getStepsArray(min!, stepSize!);
+    circleSliderHelper.current = new CircleSliderHelper(stepsArray, value);
+    setState((prev) => ({
+      ...prev,
+      angle: circleSliderHelper.current.getAngle(),
+      currentStepValue: circleSliderHelper.current.getCurrentStep(),
+    }));
+  }, []);
 
-    this.circleSliderHelper = new CircleSliderHelper(this.stepsArray, value);
-  }
-
-  public componentDidMount() {
-    this.mouseHelper = new MouseHelper(this.svg);
-    this.setState({
-      angle: this.circleSliderHelper.getAngle(),
-      currentStepValue: this.circleSliderHelper.getCurrentStep(),
-    });
-  }
-
-  public UNSAFE_componentWillUpdate(nextProps: CircleSliderProps) {
-    if (this.props.value !== nextProps.value && !this.state.isMouseMove) {
-      this.updateSliderFromProps(nextProps.value!);
+  useEffect(() => {
+    if (value && !state.isMouseMove) {
+      const newValue = Math.round(value / stepSize!) * stepSize!;
+      circleSliderHelper.current.updateStepIndexFromValue(newValue);
+      setState((prev) => ({ ...prev, angle: circleSliderHelper.current.getAngle(), currentStepValue: newValue }));
     }
-  }
+  }, [value]);
 
-  public updateAngle = (angle: number): void => {
-    this.circleSliderHelper.updateStepIndexFromAngle(angle);
-    const currentStep = this.circleSliderHelper.getCurrentStep();
-    this.setState({
-      angle,
-      currentStepValue: currentStep,
-    });
-    this.props.onInputChange(currentStep);
+  const updateAngle = (angle: number): void => {
+    circleSliderHelper.current.updateStepIndexFromAngle(angle);
+    const currentStep = circleSliderHelper.current.getCurrentStep();
+    setState((prev) => ({ ...prev, angle, currentStepValue: currentStep }));
+    onInputChange(currentStep);
   };
 
-  public updateSlider = (): void => {
-    const angle = this.mouseHelper.getNewSliderAngle();
-    if (Math.abs(angle - this.state.angle) < Math.PI) {
-      this.updateAngle(angle);
-    }
+  const updateSlider = (): void => {
+    const angle = mouseHelper.current!.getNewSliderAngle();
+    updateAngle(angle);
   };
 
-  public updateSliderFromProps = (valueFromProps: number): void => {
-    const { stepSize } = this.props;
-    const newValue = Math.round(valueFromProps / stepSize!) * stepSize!;
-    this.circleSliderHelper.updateStepIndexFromValue(newValue);
-    this.setState({
-      angle: this.circleSliderHelper.getAngle(),
-      currentStepValue: newValue,
-    });
+  const getCenter = (): number => {
+    return size! / 2;
   };
 
-  public getCenter = (): number => {
-    return this.props.size! / 2;
+  const getAngle = (): number => {
+    return state.angle + Math.PI / 2;
   };
 
-  public getAngle = (): number => {
-    return this.state.angle + Math.PI / 2;
-  };
-
-  public getPointPosition = (): IPoint => {
-    const center = this.getCenter();
-    const angle = this.getAngle();
+  const getPointPosition = (): IPoint => {
+    const center = getCenter();
+    const angle = getAngle();
     return {
-      x: center + this.radius * Math.cos(angle),
-      y: center + this.radius * Math.sin(angle),
+      x: center + radius.current * Math.cos(angle),
+      y: center + radius.current * Math.sin(angle),
     };
   };
 
-  public getStepsArray = (min: number, stepSize: number): number[] => {
+  const getStepsArray = (min: number, stepSize: number): number[] => {
     const stepArray = [];
-    for (let i = 0; i < this.countSteps; i++) {
+    for (let i = 0; i < countSteps.current; i++) {
       stepArray.push(min + i * stepSize);
     }
     return stepArray;
   };
 
-  public getPath = (): string => {
-    const center = this.getCenter();
-    const direction = this.getAngle() < 1.5 * Math.PI ? 0 : 1;
-    const { x, y } = this.getPointPosition();
-    const path = pathGenerator(center, this.radius, direction, x, y);
+  const getPath = (): string => {
+    const center = getCenter();
+    const direction = getAngle() < 1.5 * Math.PI ? 0 : 1;
+    const { x, y } = getPointPosition();
+    const path = pathGenerator(center, radius.current, direction, x, y);
     return path;
   };
 
-  public handleMouseMove = (event: Event): void => {
+  const handleMouseMove = (event: Event): void => {
     event.preventDefault();
-    this.setState({
-      isMouseMove: true,
-    });
-    this.mouseHelper.setPosition(event);
-    this.updateSlider();
+    setState((prev) => ({ ...prev, isMouseMove: true }));
+    mouseHelper.current!.setPosition(event);
+    updateSlider();
   };
 
-  public handleMouseUp = (event: Event): void => {
+  const handleMouseUp = (event: Event): void => {
     event.preventDefault();
-    this.setState({
-      isMouseMove: false,
-    });
-    window.removeEventListener("mousemove", this.handleMouseMove);
-    window.removeEventListener("mouseup", this.handleMouseUp);
+    setState((prev) => ({ ...prev, isMouseMove: false }));
+    window.removeEventListener("mousemove", handleMouseMove);
+    window.removeEventListener("mouseup", handleMouseUp);
   };
 
-  public handleMouseDown = (event: React.MouseEvent<SVGSVGElement>): void => {
-    if (!this.props.disabled) {
+  const handleMouseDown = (event: React.MouseEvent<SVGSVGElement>): void => {
+    if (!disabled) {
       event.preventDefault();
-      window.addEventListener("mousemove", this.handleMouseMove);
-      window.addEventListener("mouseup", this.handleMouseUp);
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
     }
   };
-  public handleTouchMove: any = (event: React.TouchEvent<SVGSVGElement>): void => {
+  const handleTouchMove: any = (event: React.TouchEvent<SVGSVGElement>): void => {
     const targetTouches = event.targetTouches;
     const countTouches = targetTouches.length;
     const currentTouch: React.Touch = targetTouches.item(countTouches - 1)!;
-    this.mouseHelper.setPosition(currentTouch);
-    this.updateSlider();
+    mouseHelper.current!.setPosition(currentTouch);
+    updateSlider();
   };
 
-  public handleTouchUp = (): void => {
-    window.removeEventListener("touchmove", this.handleTouchMove);
-    window.removeEventListener("touchend", this.handleTouchUp);
+  const handleTouchUp = (): void => {
+    window.removeEventListener("touchmove", handleTouchMove);
+    window.removeEventListener("touchend", handleTouchUp);
   };
 
-  public handleTouchStart = (): void => {
-    if (!this.props.disabled) {
-      window.addEventListener("touchmove", this.handleTouchMove);
-      window.addEventListener("touchend", this.handleTouchUp);
+  const handleTouchStart = (): void => {
+    if (!disabled) {
+      window.addEventListener("touchmove", handleTouchMove);
+      window.addEventListener("touchend", handleTouchUp);
     }
   };
 
-  public render() {
-    const {
-      size,
-      progressColor,
-      gradientColorFrom,
-      gradientColorTo,
-      knobColor,
-      circleColor,
-      disabled,
-      shadow,
-      circleWidth,
-      progressWidth,
-      knobRadius,
-      showTooltip,
-      showPercentage,
-      tooltipSize,
-      tooltipColor,
-      insideColor,
-      stepSize,
-      onInputChange,
-      ...rest
-    } = this.props;
-    const { currentStepValue } = this.state;
-    const { x, y } = this.getPointPosition();
-    const center = this.getCenter();
-    const isAllGradientColorsAvailable = gradientColorFrom && gradientColorTo;
-    return (
-      <svg
-        ref={(svg) => (this.svg = svg)}
-        width={`${size}px`}
-        height={`${size}px`}
-        viewBox={`0 0 ${size} ${size}`}
-        onMouseDown={this.handleMouseDown}
-        onTouchStart={this.handleTouchStart}
-        style={{
-          boxSizing: "border-box",
-        }}
-        {...rest}
-      >
-        <g style={{ transform: "translate(100%, 100%) rotateZ(180deg)" }}>
-          <circle
-            style={{
-              strokeWidth: circleWidth!,
-              stroke: circleColor,
-              fill: insideColor,
-            }}
-            r={this.radius}
-            cx={center}
-            cy={center}
-          />
-          {isAllGradientColorsAvailable && (
-            <defs>
-              <linearGradient id="gradient" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stopColor={gradientColorFrom} />
-                <stop offset="100%" stopColor={gradientColorTo} />
-              </linearGradient>
-            </defs>
-          )}
-          <path
-            style={{
-              strokeLinecap: "round",
-              strokeWidth: progressWidth!,
-              stroke: isAllGradientColorsAvailable ? "url(#gradient)" : progressColor,
-              fill: "none",
-            }}
-            d={this.getPath()}
-          />
-          {shadow && (
-            <filter id="dropShadow" filterUnits="userSpaceOnUse">
-              <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
-              <feOffset dx="2" dy="2" />
-              <feComponentTransfer>
-                <feFuncA type="linear" slope="0.3" />
-              </feComponentTransfer>
-              <feMerge>
-                <feMergeNode />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          )}
-          <circle
-            style={{
-              fill: knobColor,
-              cursor: disabled ? "not-allowed" : "pointer",
-            }}
-            filter={shadow ? "url(#dropShadow)" : "none"}
-            r={knobRadius!}
-            cx={x}
-            cy={y}
-          />
-          {showTooltip && (
-            <text
-              x={size! / 2}
-              y={size! / 2 + tooltipSize! / 3}
-              textAnchor={"middle"}
-              fontSize={tooltipSize!}
-              fontFamily="Arial"
-              fill={tooltipColor}
-            >
-              {showPercentage ? `${currentStepValue}%` : currentStepValue}
-            </text>
-          )}
-        </g>
-      </svg>
-    );
-  }
-}
+  const { currentStepValue } = state;
+  const { x, y } = getPointPosition();
+  const center = getCenter();
+  const isAllGradientColorsAvailable = gradientColorFrom && gradientColorTo;
+  return (
+    <svg
+      ref={(svg) => (mouseHelper.current = new MouseHelper(svg))}
+      width={`${size}px`}
+      height={`${size}px`}
+      viewBox={`0 0 ${size} ${size}`}
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchStart}
+      style={{
+        boxSizing: "border-box",
+        touchAction: "none",
+      }}
+      {...rest}
+    >
+      <g style={{ transform: "translate(100%, 100%) rotateZ(180deg)" }}>
+        <circle
+          style={{
+            strokeWidth: circleWidth!,
+            stroke: circleColor,
+            fill: insideColor,
+          }}
+          r={radius.current}
+          cx={center}
+          cy={center}
+        />
+        {isAllGradientColorsAvailable && (
+          <defs>
+            <linearGradient id="gradient" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor={gradientColorFrom} />
+              <stop offset="100%" stopColor={gradientColorTo} />
+            </linearGradient>
+          </defs>
+        )}
+        <path
+          style={{
+            strokeLinecap: "round",
+            strokeWidth: progressWidth!,
+            stroke: isAllGradientColorsAvailable ? "url(#gradient)" : progressColor,
+            fill: "none",
+          }}
+          d={getPath()}
+        />
+        {shadow && (
+          <filter id="dropShadow" filterUnits="userSpaceOnUse">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+            <feOffset dx="2" dy="2" />
+            <feComponentTransfer>
+              <feFuncA type="linear" slope="0.3" />
+            </feComponentTransfer>
+            <feMerge>
+              <feMergeNode />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        )}
+        <circle
+          style={{
+            fill: knobColor,
+            cursor: disabled ? "not-allowed" : "pointer",
+          }}
+          filter={shadow ? "url(#dropShadow)" : "none"}
+          r={knobRadius!}
+          cx={x}
+          cy={y}
+        />
+        {showTooltip && (
+          <text
+            x={size! / 2}
+            y={size! / 2 + tooltipSize! / 3}
+            textAnchor={"middle"}
+            fontSize={tooltipSize!}
+            fontFamily="Arial"
+            fill={tooltipColor}
+            style={{ transform: "translate(100%, 100%) rotateZ(180deg)" }}
+          >
+            {showPercentage ? `${currentStepValue}%` : currentStepValue}
+          </text>
+        )}
+      </g>
+    </svg>
+  );
+};
+
+CircleSlider.defaultProps = {
+  circleColor: "#e9eaee",
+  size: 180,
+  value: 0,
+  progressColor: "#007aff",
+  knobColor: "#fff",
+  circleWidth: 5,
+  progressWidth: 20,
+  knobRadius: 15,
+  stepSize: 1,
+  min: 0,
+  max: 100,
+  disabled: false,
+  shadow: true,
+  showTooltip: false,
+  showPercentage: false,
+  tooltipSize: 32,
+  tooltipColor: "#333",
+  insideColor: "none",
+  onChange: () => ({}),
+};
+
+export default CircleSlider;
