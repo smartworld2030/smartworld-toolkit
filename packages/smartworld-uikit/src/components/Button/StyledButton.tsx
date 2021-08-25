@@ -1,6 +1,5 @@
 import styled, { DefaultTheme } from "styled-components";
 import { space, layout, variant } from "styled-system";
-import { TextProps } from "../Text";
 import { scaleVariants, styleVariants } from "./theme";
 import { BaseButtonProps } from "./types";
 
@@ -44,7 +43,7 @@ const getOpacity = ({ $isLoading = false }: TransientButtonProps) => {
   return $isLoading ? ".5" : "1";
 };
 
-const getFontSize = ({ fontSize }: TextProps) => {
+const getFontSize = ({ fontSize }: { fontSize?: string | number }) => {
   return fontSize ? fontSize : 16;
 };
 
