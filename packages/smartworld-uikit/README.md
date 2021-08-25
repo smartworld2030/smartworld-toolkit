@@ -1,4 +1,4 @@
-# 🥞 SmartWorld UIkit
+# 🌍 SmartWorld UIkit
 
 [![Version](https://img.shields.io/npm/v/@smartworld-libs/uikit)](https://www.npmjs.com/package/@smartworld-libs/uikit) [![Size](https://img.shields.io/bundlephobia/min/@smartworld-libs/uikit)](https://www.npmjs.com/package/@smartworld-libs/uikit)
 
@@ -37,4 +37,4 @@ This project is built with Typescript and export all the relevant types.
 
 ## How to use the UIkit
 
-If you want to use components from the UIkit, check the [Storybook documentation](https://smartworld.github.io/pancake-uikit/)
+If you want to use components from the UIkit, check the [Storybook documentation](https://smartworld.github.io/smartworld-uikit/)
