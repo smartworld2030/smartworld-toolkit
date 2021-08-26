@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import { SvgProps } from "../Svg";
 
 export interface CircleSliderProps extends SvgProps {

@@ -7,13 +7,11 @@ import { BalanceInputProps } from "./types";
 import CircleSlider from "../CircleSlider/CircleSlider";
 
 export const SwitchUnitsButton = styled(IconButton)`
-  width: ${({ height }) => height}px;
+  width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
-  border-radius: 0 ${({ theme }) => theme.radii.default} ${({ theme }) => theme.radii.default} 0;
 `;
 
 export const StyledCircleSlider = styled(CircleSlider)`
-  position: absolute;
   user-select: none;
   touch-action: none;
   z-index: 1;
@@ -45,7 +43,7 @@ export const StyledInput = styled(Input)`
   padding-right: 0;
   height: ${({ height }) => height}px;
   text-align: center;
-  font-size: ${({ height }) => (height ? +height / 2 : undefined)}px;
+  font-size: ${({ height }) => (height ? +height / 2.5 : undefined)}px;
   border: 1px solid ${({ theme, isWarning }) => theme.colors[isWarning ? "warning" : "textDisabled"]};
   border-radius: ${({ theme }) => theme.radii.default};
 

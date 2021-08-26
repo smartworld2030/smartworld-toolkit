@@ -49,7 +49,6 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
     currentStepValue: 0,
     isMouseMove: false,
   });
-  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     const maxLineWidth = Math.max(circleWidth!, progressWidth!);
@@ -132,7 +131,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   };
 
   const handleMouseDown = (event: React.MouseEvent<SVGSVGElement>): void => {
-    if (!disabled && !clicked) {
+    if (!disabled) {
       event.preventDefault();
       window.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mouseup", handleMouseUp);
@@ -152,7 +151,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   };
 
   const handleTouchStart = (): void => {
-    if (!disabled && !clicked) {
+    if (!disabled) {
       window.addEventListener("touchmove", handleTouchMove);
       window.addEventListener("touchend", handleTouchUp);
     }
@@ -223,8 +222,8 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
           </filter>
         )}
         <circle
+          fill={knobColor}
           style={{
-            fill: knobColor,
             cursor: disabled ? "not-allowed" : "pointer",
           }}
           filter={shadow ? "url(#dropShadow)" : "none"}

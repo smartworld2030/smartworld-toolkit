@@ -14,6 +14,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   placeholder = "0.0",
   onUserInput,
   onUnitClick,
+  onLogoClick,
   currencyValue,
   currencyUnit,
   inputProps,
@@ -22,14 +23,18 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   decimals = 8,
   unit,
   switchEditingUnits,
-  width = 150,
+  size = 150,
   progressSize,
   borderSize,
   knobSize,
   color,
+  logo,
   knobColor,
   borderColor,
   progressColor,
+  position,
+  disabled = false,
+  disabledKnob = false,
   ...props
 }) => {
   const { colors } = useTheme();
@@ -52,85 +57,110 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
     if (maxValue) onUserInput(maxValue.toString());
   };
 
-  const widthCalc = (divide: number = 1, minus: number = 0) => (width ? Number(width) : 150) / divide - minus;
+  const sizeCalc = (divide: number = 1, minus: number = 0) => (size ? Number(size) : 150) / divide - minus;
 
   return (
-    <RelativeFlex width={width} height={width} {...props}>
-      <RelativeFlex
-        flexDirection="column"
-        justifyContent="space-between"
-        alignItems="center"
-        width={widthCalc(3)}
-        margin="auto"
-        height={widthCalc(1.7)}
-      >
-        <AbsoluteFlex top={-widthCalc(15) + "px"}>
-          <UnitContainer onClick={onUnitClick} zIndex={2} fontWeight="bold" fontSize={widthCalc(12)}>
-            {unit}
-          </UnitContainer>
-        </AbsoluteFlex>
-        <AbsoluteFlex top={widthCalc(5) + "px"} width={widthCalc(1.4)}>
-          <Flex zIndex={2} flexDirection="column" justifyContent="center">
-            <InputGroup
-              scale="none"
-              endIcon={
-                switchEditingUnits && (
-                  <Flex alignItems="center">
-                    <SwitchUnitsButton variant="text" height={widthCalc(6.5)} onClick={switchEditingUnits}>
-                      <SwapVertIcon color="primary" width={widthCalc(7)} />
-                    </SwitchUnitsButton>
-                  </Flex>
-                )
-              }
-            >
-              <StyledInput
-                pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
-                inputMode="decimal"
-                min="0"
-                height={widthCalc(6.5)}
-                value={value ? value : ""}
-                onChange={handleOnChange}
-                placeholder={placeholder}
-                ref={innerRef}
-                {...inputProps}
-              />
-            </InputGroup>
-            <Flex zIndex={2} justifyContent="flex-end">
-              <Text color="secondary" fontSize={widthCalc(15)}>
-                {currencyValue ?? currencyValue}
-              </Text>
-              <Text color="secondary" fontWeight="bold" ml="3px" fontSize={widthCalc(15)}>
-                {currencyUnit ?? currencyUnit}
-              </Text>
-            </Flex>
-          </Flex>
-        </AbsoluteFlex>
-        {maxValue && (
-          <AbsoluteFlex bottom={-widthCalc(15) + "px"}>
-            <Button
-              zIndex={2}
-              variant="text"
-              fontWeight="bold"
-              onClick={maxButtonHandler}
-              height={widthCalc(8)}
-              fontSize={widthCalc(11)}
-            >
-              MAX
-            </Button>
+    <RelativeFlex width={sizeCalc()} height={sizeCalc()} {...props}>
+      <AbsoluteFlex top={0} left={0} width={sizeCalc()} height={sizeCalc()}>
+        <RelativeFlex
+          flexDirection="column"
+          justifyContent="space-between"
+          alignItems="center"
+          width={sizeCalc(3)}
+          margin="auto"
+          height={sizeCalc(1.7)}
+        >
+          <AbsoluteFlex top={-sizeCalc(30) + "px"}>
+            <UnitContainer onClick={onUnitClick} zIndex={2} fontWeight="bold" fontSize={sizeCalc(15) + "px"}>
+              {unit}
+            </UnitContainer>
           </AbsoluteFlex>
-        )}
-      </RelativeFlex>
+          <AbsoluteFlex top={sizeCalc(5) + "px"} width={sizeCalc(1.4)}>
+            <Flex zIndex={2} flexDirection="column" justifyContent="center">
+              <InputGroup
+                scale="none"
+                startIcon={
+                  logo && (
+                    <Flex alignItems="center">
+                      <SwitchUnitsButton
+                        variant="text"
+                        width={sizeCalc(9)}
+                        height={sizeCalc(6.5)}
+                        onClick={onLogoClick}
+                      >
+                        {logo}
+                      </SwitchUnitsButton>
+                    </Flex>
+                  )
+                }
+                maxWidth={sizeCalc(1.4)}
+                endIcon={
+                  switchEditingUnits && (
+                    <Flex alignItems="center">
+                      <SwitchUnitsButton
+                        variant="text"
+                        width={sizeCalc(9)}
+                        height={sizeCalc(6.5)}
+                        onClick={switchEditingUnits}
+                      >
+                        <SwapVertIcon color="primary" width={sizeCalc(10)} />
+                      </SwitchUnitsButton>
+                    </Flex>
+                  )
+                }
+              >
+                <StyledInput
+                  pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
+                  inputMode="decimal"
+                  min="0"
+                  height={sizeCalc(6.5)}
+                  value={value ? value : ""}
+                  onChange={handleOnChange}
+                  placeholder={placeholder}
+                  ref={innerRef}
+                  disabled={disabled}
+                  {...inputProps}
+                />
+              </InputGroup>
+              <Flex zIndex={2} justifyContent="flex-end">
+                <Text color="secondary" fontSize={sizeCalc(15) + "px"}>
+                  {currencyValue ?? currencyValue}
+                </Text>
+                <Text color="secondary" fontWeight="bold" ml="3px" fontSize={sizeCalc(15) + "px"}>
+                  {currencyUnit ?? currencyUnit}
+                </Text>
+              </Flex>
+            </Flex>
+          </AbsoluteFlex>
+          {maxValue && (
+            <AbsoluteFlex bottom={-sizeCalc(15) + "px"}>
+              <Button
+                zIndex={2}
+                disabled={disabled}
+                variant="text"
+                fontWeight="bold"
+                onClick={maxButtonHandler}
+                height={sizeCalc(8)}
+                fontSize={sizeCalc(15)}
+              >
+                MAX
+              </Button>
+            </AbsoluteFlex>
+          )}
+        </RelativeFlex>
+      </AbsoluteFlex>
       <StyledCircleSlider
         value={valueToPercent()}
-        size={widthCalc()}
-        progressWidth={progressSize ? progressSize : widthCalc(30)}
-        circleWidth={borderSize ? borderSize : widthCalc(30)}
-        knobRadius={knobSize ? knobSize : widthCalc(15)}
+        size={sizeCalc()}
+        progressWidth={progressSize ? progressSize : sizeCalc(30)}
+        circleWidth={borderSize ? borderSize : sizeCalc(30)}
+        knobRadius={disabledKnob || disabled ? 0 : knobSize ? knobSize : sizeCalc(15)}
         onInputChange={handleChangeRange}
         knobColor={knobColor ? knobColor : "white"}
-        progressColor={progressColor ? progressColor : colors.secondary}
+        progressColor={isWarning ? colors.failure : progressColor ? progressColor : colors.secondary}
         insideColor={color ? color : colors.input}
-        circleColor={borderColor}
+        circleColor={isWarning ? colors.failure : borderColor}
+        disabled={disabledKnob || disabled}
       />
     </RelativeFlex>
   );

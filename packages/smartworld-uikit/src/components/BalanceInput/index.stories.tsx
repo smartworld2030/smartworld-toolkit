@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Box from "../Box/Box";
+import { LogoIcon } from "../Svg";
 import BalanceInput from "./BalanceInput";
 
 export default {
@@ -33,12 +34,9 @@ export const Default: React.FC = () => {
         maximumFractionDigits: 2,
       })
     : "0.00";
+
   const handleDecimalChange = (input) => {
     setDecimalValue(input);
-  };
-
-  const handleNumericChange = (input) => {
-    setNumericValue(input);
   };
 
   const handleSTTSChange = (input: string) => {
@@ -69,18 +67,17 @@ export const Default: React.FC = () => {
   };
 
   return (
-    <Box width="300px">
+    <Box size="300px">
       <BalanceInput
         value={values[editingUnit]}
         maxValue={1006.086957}
         onUserInput={handleSTTSChange}
         unit={<div>{editingUnit}</div>}
-        onUnitClick={() => console.log("object")}
+        onUnitClick={() => console.log("Unit Clicked!")}
         currencyValue={currencyValues}
         currencyUnit={conversionUnit}
         placeholder={"1006.086957"}
-        width={200}
-        knobSize={10}
+        size={200}
         borderSize={5}
         progressSize={5}
         mb="32px"
@@ -90,35 +87,26 @@ export const Default: React.FC = () => {
         unit="STTS"
         onUserInput={handleDecimalChange}
         value={decimalValue}
-        maxValue={1006.086957}
+        maxValue={0}
         currencyValue={currencyValue(decimalValue)}
         placeholder="0.0"
-        width={100}
+        size={100}
+        isWarning
         mb="32px"
         switchEditingUnits={switchEditingUnits}
       />
       <BalanceInput
+        isWarning
         value={values[editingUnit]}
         maxValue={1006.086957}
         onUserInput={handleSTTSChange}
         unit={editingUnit}
+        logo={<LogoIcon width={10} />}
         currencyValue={currencyValues}
         currencyUnit={conversionUnit}
         placeholder="1.5"
+        disabled
         mb="32px"
-        switchEditingUnits={switchEditingUnits}
-      />
-      <BalanceInput
-        unit="STTS"
-        isWarning
-        value={numericValue}
-        maxValue={1006.086957}
-        onUserInput={handleNumericChange}
-        inputProps={{ inputMode: "numeric" }}
-        currencyValue={currencyValue(numericValue)}
-        placeholder="0"
-        mb="32px"
-        color="#f0f0f0"
       />
     </Box>
   );
@@ -142,7 +130,7 @@ export const UnitDisplay: React.FC = () => {
 
   return (
     <>
-      <Box width="300px" mb="24px">
+      <Box size="300px" mb="24px">
         <BalanceInput
           onUserInput={handleCakeChange}
           value={cakeValue}
@@ -153,7 +141,7 @@ export const UnitDisplay: React.FC = () => {
         />
       </Box>
       {/* Long token names with spaces */}
-      <Box width="300px">
+      <Box size="300px">
         <BalanceInput
           onUserInput={handleCakeChange}
           value={cakeValue}
@@ -210,7 +198,7 @@ export const SwitchUnits: React.FC = () => {
     }
   };
   return (
-    <Box width="300px">
+    <Box size="300px">
       <BalanceInput
         onUserInput={handleCakeChange}
         value={values[editingUnit]}
@@ -220,6 +208,55 @@ export const SwitchUnits: React.FC = () => {
         unit={editingUnit}
         isWarning={!values[editingUnit] || parseFloat(values[editingUnit]) <= 0}
         switchEditingUnits={switchEditingUnits}
+      />
+    </Box>
+  );
+};
+
+export const BigSwitchUnits: React.FC = () => {
+  const CAKE_PRICE = 69;
+  const [editingUnit, setEditingUnit] = useState<"CAKE" | "USD">("CAKE");
+  const conversionUnit = editingUnit === "CAKE" ? "USD" : "CAKE";
+  const [values, setValues] = useState({
+    CAKE: "1006.086957",
+    USD: `${1006.086957 * CAKE_PRICE}`,
+  });
+
+  const switchEditingUnits = () => {
+    const editingUnitAfterChange = editingUnit === "CAKE" ? "USD" : "CAKE";
+    // This is needed to persist same value as shown for currencyValue after switching
+    // otherwise user will see lots of decimals
+    const valuesAfterChange = { ...values };
+    valuesAfterChange[editingUnitAfterChange] = !Number.isNaN(parseFloat(values[conversionUnit]))
+      ? parseFloat(values[conversionUnit]).toFixed(2)
+      : "0.00";
+    setValues(valuesAfterChange);
+    setEditingUnit(editingUnitAfterChange);
+  };
+
+  const currencyValues = !Number.isNaN(parseFloat(values[conversionUnit]))
+    ? "~" +
+      parseFloat(values[conversionUnit]).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    : "0.00";
+
+  return (
+    <Box size="300px">
+      <BalanceInput
+        unit="STTS"
+        value={values[editingUnit]}
+        currencyValue={currencyValues}
+        size={600}
+        maxValue={1006.086957}
+        inputProps={{ inputMode: "numeric" }}
+        onUserInput={(val) => setValues((prev) => ({ ...prev, CAKE: val }))}
+        placeholder="0"
+        mb="32px"
+        switchEditingUnits={switchEditingUnits}
+        logo={<LogoIcon />}
+        onLogoClick={() => console.log("Logo Clicked!")}
       />
     </Box>
   );
