@@ -11,4 +11,11 @@ const Box = styled.div<BoxProps>`
   color:${({ color, theme }) => (color ? color : theme.colors.text)}
 `;
 
+export const ClearBox = styled.div<BoxProps>`
+  ${border}
+  ${layout}
+  ${position}
+  ${space}
+`;
+
 export default Box;

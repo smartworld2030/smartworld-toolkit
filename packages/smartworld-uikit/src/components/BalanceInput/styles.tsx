@@ -14,14 +14,13 @@ export const SwitchUnitsButton = styled(IconButton)`
 
 export const StyledCircleSlider = styled(CircleSlider)`
   position: absolute;
+  user-select: none;
+  touch-action: none;
   z-index: 1;
-  top: -15px;
-  left: -15px;
 }`;
 
 export const UnitContainer = styled(Text)`
-  margin-left: 4px;
-  text-align: right;
+  text-align: center;
   color: ${({ theme }) => theme.colors.text};
   z-index: ${({ zIndex }) => zIndex};
   white-space: nowrap;
@@ -36,8 +35,6 @@ export const StyledBalanceInput = styled(Box)<{ isWarning: BalanceInputProps["is
   min-width: ${({ width }) => calcWidth(width, 50)};
   min-height: ${({ width }) => calcWidth(width, 50)};
   padding: ${({ width }) => calcPadding(width)};
-  user-select: none;
-  touch-action: none;
 `;
 
 export const StyledInput = styled(Input)`

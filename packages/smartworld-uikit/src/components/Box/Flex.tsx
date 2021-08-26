@@ -8,10 +8,19 @@ const Flex = styled(Box)<FlexProps>`
   ${flexbox}
 `;
 
-export const FullFlex = styled(Box)<FlexProps>`
-  display: flex;
+export const RelativeFlex = styled(Box)<FlexProps>`
   position: relative;
+  display: flex;
+  text-align: center;
+  user-select: none;
+  ${flexbox}
+`;
+
+export const FullFlex = styled(Box)<FlexProps>`
+  position: relative;
+  display: flex;
   height: 100%;
+  width: 100%;
   ${flexbox}
 `;
 

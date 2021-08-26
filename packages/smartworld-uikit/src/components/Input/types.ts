@@ -24,5 +24,4 @@ export interface InputGroupProps extends SpaceProps {
   children: JSX.Element;
   isSuccess?: boolean;
   isWarning?: boolean;
-  zIndex: number;
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Flex, FullFlex } from "../Box";
 import { CircleSliderHelper } from "./helpers/circle-slider-helper";
 import { MouseHelper } from "./helpers/mouse-helper";
 import { pathGenerator } from "./helpers/path-generator";
@@ -28,7 +29,6 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   circleWidth,
   progressWidth,
   knobRadius,
-  showTooltip,
   showPercentage,
   tooltipSize,
   tooltipColor,
@@ -49,6 +49,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
     currentStepValue: 0,
     isMouseMove: false,
   });
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     const maxLineWidth = Math.max(circleWidth!, progressWidth!);
@@ -64,8 +65,8 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   }, []);
 
   useEffect(() => {
-    if (value && !state.isMouseMove) {
-      const newValue = Math.round(value / stepSize!) * stepSize!;
+    if (!state.isMouseMove) {
+      const newValue = Math.round(value! / stepSize!) * stepSize!;
       circleSliderHelper.current.updateStepIndexFromValue(newValue);
       setState((prev) => ({ ...prev, angle: circleSliderHelper.current.getAngle(), currentStepValue: newValue }));
     }
@@ -131,7 +132,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   };
 
   const handleMouseDown = (event: React.MouseEvent<SVGSVGElement>): void => {
-    if (!disabled) {
+    if (!disabled && !clicked) {
       event.preventDefault();
       window.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mouseup", handleMouseUp);
@@ -151,13 +152,18 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   };
 
   const handleTouchStart = (): void => {
-    if (!disabled) {
+    if (!disabled && !clicked) {
       window.addEventListener("touchmove", handleTouchMove);
       window.addEventListener("touchend", handleTouchUp);
     }
   };
 
-  const { currentStepValue } = state;
+  const sizeCalc = (divide: number = 1) => (size ? Number(size) : 150) / divide;
+
+  const clickHandler = () => {
+    console.log("clicked");
+  };
+
   const { x, y } = getPointPosition();
   const center = getCenter();
   const isAllGradientColorsAvailable = gradientColorFrom && gradientColorTo;
@@ -167,12 +173,12 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
       width={`${size}px`}
       height={`${size}px`}
       viewBox={`0 0 ${size} ${size}`}
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleTouchStart}
       style={{
         boxSizing: "border-box",
         touchAction: "none",
       }}
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchStart}
       {...rest}
     >
       <g style={{ transform: "translate(100%, 100%) rotateZ(180deg)" }}>
@@ -226,19 +232,6 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
           cx={x}
           cy={y}
         />
-        {showTooltip && (
-          <text
-            x={size! / 2}
-            y={size! / 2 + tooltipSize! / 3}
-            textAnchor={"middle"}
-            fontSize={tooltipSize!}
-            fontFamily="Arial"
-            fill={tooltipColor}
-            style={{ transform: "translate(100%, 100%) rotateZ(180deg)" }}
-          >
-            {showPercentage ? `${currentStepValue}%` : currentStepValue}
-          </text>
-        )}
       </g>
     </svg>
   );
@@ -258,7 +251,6 @@ CircleSlider.defaultProps = {
   max: 100,
   disabled: false,
   shadow: true,
-  showTooltip: false,
   showPercentage: false,
   tooltipSize: 32,
   tooltipColor: "#333",

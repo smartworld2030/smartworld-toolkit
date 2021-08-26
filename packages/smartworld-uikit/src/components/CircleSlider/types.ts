@@ -17,7 +17,6 @@ export interface CircleSliderProps extends SvgProps {
   onInputChange: (value?: number) => void;
   disabled?: boolean;
   shadow?: boolean;
-  showTooltip?: boolean;
   showPercentage?: boolean;
   tooltipSize?: number;
   tooltipColor?: string;

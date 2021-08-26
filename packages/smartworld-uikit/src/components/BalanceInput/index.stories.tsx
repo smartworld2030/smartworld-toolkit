@@ -14,8 +14,8 @@ export const Default: React.FC = () => {
   const [numericValue, setNumericValue] = useState(5);
   const [editingUnit, setEditingUnit] = useState<"STTS" | "USD">("STTS");
   const [values, setValues] = useState({
-    STTS: "1006.086957",
-    USD: `${1006.086957 * STTS_PRICE}`,
+    STTS: "",
+    USD: "",
   });
   const conversionUnit = editingUnit === "STTS" ? "USD" : "STTS";
 
@@ -67,17 +67,22 @@ export const Default: React.FC = () => {
     setValues(valuesAfterChange);
     setEditingUnit(editingUnitAfterChange);
   };
+
   return (
     <Box width="300px">
       <BalanceInput
         value={values[editingUnit]}
         maxValue={1006.086957}
         onUserInput={handleSTTSChange}
-        unit={editingUnit}
+        unit={<div>{editingUnit}</div>}
+        onUnitClick={() => console.log("object")}
         currencyValue={currencyValues}
         currencyUnit={conversionUnit}
-        placeholder="1.5"
+        placeholder={"1006.086957"}
         width={200}
+        knobSize={10}
+        borderSize={5}
+        progressSize={5}
         mb="32px"
         switchEditingUnits={switchEditingUnits}
       />
