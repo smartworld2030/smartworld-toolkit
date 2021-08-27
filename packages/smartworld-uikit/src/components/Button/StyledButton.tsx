@@ -1,6 +1,6 @@
 import styled, { DefaultTheme } from "styled-components";
 import { space, layout, variant } from "styled-system";
-import { scaleVariants, styleVariants } from "./theme";
+import { scaleVariants, styleShape, styleVariants } from "./theme";
 import { BaseButtonProps } from "./types";
 
 interface ThemedButtonProps extends BaseButtonProps {
@@ -11,7 +11,7 @@ interface TransientButtonProps extends ThemedButtonProps {
   $isLoading?: boolean;
 }
 
-const getDisabledStyles = ({ $isLoading, theme }: TransientButtonProps) => {
+const getDisabledStyles = ({ variant, $isLoading, theme }: TransientButtonProps) => {
   if ($isLoading === true) {
     return `
       &:disabled,
@@ -24,7 +24,7 @@ const getDisabledStyles = ({ $isLoading, theme }: TransientButtonProps) => {
   return `
     &:disabled,
     &.pancake-button--disabled {
-      background-color: ${theme.colors.backgroundDisabled};
+      background-color: ${variant === "text" ? "transparent" : theme.colors.backgroundDisabled};
       border-color: ${theme.colors.backgroundDisabled};
       box-shadow: none;
       color: ${theme.colors.textDisabled};
@@ -55,6 +55,8 @@ const StyledButton = styled.button<BaseButtonProps>`
   align-items: center;
   border: 0;
   border-radius: ${({ shape, theme }) => (shape === "circle" ? theme.radii.circle : theme.radii.default)};
+  width: ${({ shape, width }) => (shape === "circle" ? width : width)};
+  height: ${({ shape, height, width }) => (shape === "circle" ? width : height)};
   box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;
   z-index: ${({ zIndex }) => zIndex};
   cursor: pointer;
@@ -87,8 +89,14 @@ const StyledButton = styled.button<BaseButtonProps>`
   ${variant({
     variants: styleVariants,
   })}
+  ${variant({
+    prop: "shape",
+    variants: styleShape,
+  })}
+
   ${layout}
   ${space}
+
   padding: ${({ variant }) => (variant === "text" ? 0 : undefined)};
 `;
 

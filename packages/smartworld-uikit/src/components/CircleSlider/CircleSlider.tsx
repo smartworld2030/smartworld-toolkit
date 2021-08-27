@@ -19,6 +19,7 @@ interface IState {
 const CircleSlider: React.FC<CircleSliderProps> = ({
   size,
   value,
+  children,
   progressColor,
   gradientColorFrom,
   gradientColorTo,
@@ -55,7 +56,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
     radius.current = getCenter() - Math.max(maxLineWidth, knobRadius! * 2) / 2;
     countSteps.current = 1 + (max! - min!) / stepSize!;
     const stepsArray = getStepsArray(min!, stepSize!);
-    circleSliderHelper.current = new CircleSliderHelper(stepsArray, value);
+    circleSliderHelper.current = new CircleSliderHelper(stepsArray, value!);
     setState((prev) => ({
       ...prev,
       angle: circleSliderHelper.current.getAngle(),
@@ -75,7 +76,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
     circleSliderHelper.current.updateStepIndexFromAngle(angle);
     const currentStep = circleSliderHelper.current.getCurrentStep();
     setState((prev) => ({ ...prev, angle, currentStepValue: currentStep }));
-    onInputChange(currentStep);
+    onInputChange!(currentStep);
   };
 
   const updateSlider = (): void => {
@@ -159,10 +160,6 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
 
   const sizeCalc = (divide: number = 1) => (size ? Number(size) : 150) / divide;
 
-  const clickHandler = () => {
-    console.log("clicked");
-  };
-
   const { x, y } = getPointPosition();
   const center = getCenter();
   const isAllGradientColorsAvailable = gradientColorFrom && gradientColorTo;
@@ -232,6 +229,9 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
           cy={y}
         />
       </g>
+      <foreignObject x="0" y="0" width={sizeCalc(1)} height={sizeCalc(1)}>
+        {children}
+      </foreignObject>
     </svg>
   );
 };
@@ -255,6 +255,7 @@ CircleSlider.defaultProps = {
   tooltipColor: "#333",
   insideColor: "none",
   onChange: () => ({}),
+  onInputChange: () => ({}),
 };
 
 export default CircleSlider;

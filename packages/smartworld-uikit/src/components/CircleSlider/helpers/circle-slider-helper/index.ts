@@ -8,7 +8,7 @@ export class CircleSliderHelper {
   private stepIndex: number;
   private countSteps: number;
 
-  constructor(stepsArray: number[], initialValue: any) {
+  constructor(stepsArray: number[], initialValue: number) {
     this.stepsArray = stepsArray;
     this.countSteps = this.stepsArray.length - 1;
     this.stepIndex = 0;

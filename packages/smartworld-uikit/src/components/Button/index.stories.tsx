@@ -205,7 +205,7 @@ export const CircleVariants: React.FC = () => {
           <Button shape="circle" endIcon={<LogoIcon />}>
             End Icon
           </Button>
-          <Button shape="circle" startIcon={<LogoIcon />} endIcon={<LogoIcon />}>
+          <Button shape="circle" startIcon={<LogoIcon />} endIcon={<LogoIcon />} variant="transparent">
             Start & End Icon
           </Button>
         </Row>

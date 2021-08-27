@@ -21,6 +21,7 @@ export const variants = {
   DANGER: "danger",
   SUBTLE: "subtle",
   SUCCESS: "success",
+  TRANSPARENT: "transparent",
 } as const;
 
 export type Shape = typeof shape[keyof typeof shape];

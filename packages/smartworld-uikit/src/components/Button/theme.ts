@@ -1,4 +1,4 @@
-import { scales, variants } from "./types";
+import { scales, shape, variants } from "./types";
 
 export const scaleVariants = {
   [scales.MD]: {
@@ -16,12 +16,34 @@ export const scaleVariants = {
   },
 };
 
+export const styleShape = {
+  [shape.DEFAULT]: {
+    backgroundColor: "primary",
+    color: "text",
+    boxShadow: "none",
+  },
+  [shape.CIRCLE]: {
+    color: "text",
+    boxShadow: "none",
+  },
+};
+
 export const styleVariants = {
   [variants.PRIMARY]: {
     backgroundColor: "primary",
     color: "white",
   },
   [variants.SECONDARY]: {
+    backgroundColor: "tertiary",
+    border: "2px solid",
+    borderColor: "primary",
+    boxShadow: "none",
+    color: "primary",
+    ":disabled": {
+      backgroundColor: "transparent",
+    },
+  },
+  [variants.TRANSPARENT]: {
     backgroundColor: "transparent",
     border: "2px solid",
     borderColor: "primary",

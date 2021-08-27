@@ -1,4 +1,3 @@
-import { ReactElement } from "react";
 import { SvgProps } from "../Svg";
 
 export interface CircleSliderProps extends SvgProps {
@@ -15,7 +14,7 @@ export interface CircleSliderProps extends SvgProps {
   gradientColorFrom?: string;
   gradientColorTo?: string;
   knobColor?: string;
-  onInputChange: (value?: number) => void;
+  onInputChange?: (value?: number) => void;
   disabled?: boolean;
   shadow?: boolean;
   showPercentage?: boolean;
