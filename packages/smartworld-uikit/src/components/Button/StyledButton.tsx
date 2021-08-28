@@ -54,9 +54,6 @@ const getFontWeight = ({ fontWeight }: { fontWeight?: string | number }) => {
 const StyledButton = styled.button<BaseButtonProps>`
   align-items: center;
   border: 0;
-  border-radius: ${({ shape, theme }) => (shape === "circle" ? theme.radii.circle : theme.radii.default)};
-  width: ${({ shape, width }) => (shape === "circle" ? width : width)};
-  height: ${({ shape, height, width }) => (shape === "circle" ? width : height)};
   box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;
   z-index: ${({ zIndex }) => zIndex};
   cursor: pointer;

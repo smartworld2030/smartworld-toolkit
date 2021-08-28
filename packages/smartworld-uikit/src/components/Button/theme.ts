@@ -3,18 +3,15 @@ import { scales, shape, variants } from "./types";
 export const scaleVariants = {
   [scales.XL]: {
     height: "128px",
-    fontSize: "32px",
-    padding: "0 64px",
+    fontSize: "16px",
   },
   [scales.ML]: {
     height: "88px",
-    fontSize: "28px",
-    padding: "0 64px",
+    fontSize: "12px",
   },
   [scales.LG]: {
     height: "64px",
-    fontSize: "16px",
-    padding: "0 32px",
+    fontSize: "8px",
   },
   [scales.MD]: {
     height: "48px",
@@ -26,20 +23,21 @@ export const scaleVariants = {
   },
   [scales.XS]: {
     height: "20px",
-    fontSize: "12px",
     padding: "0 8px",
   },
 };
 
 export const styleShape = {
-  [shape.DEFAULT]: {
+  [shape.NOPAD]: {
     backgroundColor: "primary",
     color: "text",
     boxShadow: "none",
     padding: 0,
   },
   [shape.CIRCLE]: {
-    color: "text",
+    display: "flex",
+    flexDirection: "column",
+    borderRadius: "50%",
     boxShadow: "none",
     padding: 0,
   },

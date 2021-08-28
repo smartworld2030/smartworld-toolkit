@@ -13,18 +13,18 @@ export const scales = {
 
 export const shape = {
   CIRCLE: "circle",
-  DEFAULT: "default",
+  NOPAD: "nopad",
 } as const;
 
 export const variants = {
-  PRIMARY: "primary",
+  TRANSPARENT: "transparent",
   SECONDARY: "secondary",
   TERTIARY: "tertiary",
-  TEXT: "text",
+  SUCCESS: "success",
+  PRIMARY: "primary",
   DANGER: "danger",
   SUBTLE: "subtle",
-  SUCCESS: "success",
-  TRANSPARENT: "transparent",
+  TEXT: "text",
 } as const;
 
 export type Shape = typeof shape[keyof typeof shape];

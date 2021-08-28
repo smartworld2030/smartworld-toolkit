@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
-import { Flex } from "../Box";
 import { Text } from "../Text";
 import { StyledFlex } from "../WidthrawCircle/styles";
 import { ButtonProps } from "./types";
@@ -13,16 +12,16 @@ const StyledFlexText = styled(StyledFlex)`
 `;
 
 interface DetailedButtonProps extends ButtonProps {
-  top?: ReactNode;
-  bottom?: ReactNode;
+  topIcon?: ReactNode;
+  bottomIcon?: ReactNode;
   topFontSize?: string;
   bottomFontSize?: string;
 }
 
 export const DetailedButton: React.FC<DetailedButtonProps> = ({
   fontSize,
-  top,
-  bottom,
+  topIcon,
+  bottomIcon,
   children,
   width,
   scale = "md",
@@ -38,27 +37,18 @@ export const DetailedButton: React.FC<DetailedButtonProps> = ({
     return +width / divide + "px";
   };
   return (
-    <Button width={sizeCalc()} height={sizeCalc()} {...rest}>
-      <Flex
-        flexDirection="column"
-        justifyContent="space-between"
-        alignItems="center"
-        margin="auto"
-        height={sizeCalc(1.2)}
-        width={sizeCalc()}
-      >
-        <StyledFlexText width={sizeCalc(1.3)} fontSize={topFontSize ? topFontSize : sizeCalc(6)}>
-          {top && top}
-        </StyledFlexText>
-        <StyledFlexText width={sizeCalc(1.3)}>
-          <Text fontSize={fontSize ? fontSize : sizeCalc(4.5)} fontWeight="bold" lineHeight="1">
-            {children}
-          </Text>
-        </StyledFlexText>
-        <StyledFlexText width={sizeCalc(1.3)} fontSize={bottomFontSize ? bottomFontSize : sizeCalc(6)}>
-          {bottom && bottom}
-        </StyledFlexText>
-      </Flex>
+    <Button scale={scale} width={sizeCalc()} height={sizeCalc()} {...rest}>
+      <StyledFlexText width={sizeCalc(1.3)} fontSize={topFontSize && topFontSize}>
+        {topIcon && topIcon}
+      </StyledFlexText>
+      <StyledFlexText width={sizeCalc(1.3)}>
+        <Text fontSize={fontSize && fontSize} fontWeight="bold" lineHeight="1">
+          {children}
+        </Text>
+      </StyledFlexText>
+      <StyledFlexText width={sizeCalc(1.3)} fontSize={bottomFontSize && bottomFontSize}>
+        {bottomIcon && bottomIcon}
+      </StyledFlexText>
     </Button>
   );
 };

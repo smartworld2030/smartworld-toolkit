@@ -1,13 +1,15 @@
 import React, { cloneElement, ElementType, isValidElement } from "react";
 import getExternalLinkProps from "../../util/getExternalLinkProps";
 import StyledButton from "./StyledButton";
+import { scaleVariants } from "./theme";
 import { ButtonProps, scales, variants } from "./types";
 
 const Button = <E extends ElementType = "button">(props: ButtonProps<E>): JSX.Element => {
-  const { startIcon, endIcon, external, className, isLoading, disabled, children, ...rest } = props;
+  const { startIcon, endIcon, shape, external, className, isLoading, disabled, children, ...rest } = props;
   const internalProps = external ? getExternalLinkProps() : {};
   const isDisabled = isLoading || disabled;
   const classNames = className ? [className] : [];
+  let shapeProps: any = {};
 
   if (isLoading) {
     classNames.push("pancake-button--loading");
@@ -16,24 +18,34 @@ const Button = <E extends ElementType = "button">(props: ButtonProps<E>): JSX.El
   if (isDisabled && !isLoading) {
     classNames.push("pancake-button--disabled");
   }
+  if (shape === "circle") {
+    const scale = scaleVariants[rest.scale];
+    shapeProps.height = scale.height;
+    shapeProps.width = scale.height;
+    const scales = scale.height.split("px");
+    shapeProps.fontSize = +scales[0] / 10;
+    console.log(shapeProps);
+  }
 
   return (
     <StyledButton
       $isLoading={isLoading}
       className={classNames.join(" ")}
       disabled={isDisabled}
+      shape={shape}
+      {...shapeProps}
       {...internalProps}
       {...rest}
     >
       <>
         {isValidElement(startIcon) &&
           cloneElement(startIcon, {
-            mr: "0.5rem",
+            mr: shape === "circle" ? undefined : "0.5rem",
           })}
         {children}
         {isValidElement(endIcon) &&
           cloneElement(endIcon, {
-            ml: "0.5rem",
+            ml: shape === "circle" ? undefined : "0.5rem",
           })}
       </>
     </StyledButton>

@@ -81,10 +81,10 @@ export const Circle: React.FC = () => {
         })}
       </Box>
       <Box>
-        <Button mr="8px" disabled>
+        <Button shape="circle" scale="ml" mr="8px" disabled>
           Disabled
         </Button>
-        <Button variant="secondary" disabled>
+        <Button shape="circle" scale="ml" variant="secondary" disabled>
           Disabled
         </Button>
       </Box>
@@ -188,11 +188,6 @@ export const CircleVariants: React.FC = () => {
           </Button>
         </Row>
         <Row>
-          <Button shape="circle" width="100%">
-            Full size
-          </Button>
-        </Row>
-        <Row>
           <Button shape="circle" isLoading endIcon={<AutoRenewIcon spin color="currentColor" />}>
             Approving
           </Button>
@@ -228,10 +223,10 @@ export const CircleVariants: React.FC = () => {
           </IconButton>
         </Row>
         <Row>
-          <DetailedButton top="token" shape="circle" bottom="STTS">
+          <DetailedButton topIcon="token" shape="circle" bottomIcon="STTS">
             <LogoIcon width="15" />
           </DetailedButton>
-          <DetailedButton top="token" scale="lg" shape="circle" bottom="STTS" variant="secondary">
+          <DetailedButton topIcon="token" scale="lg" shape="circle" bottomIcon="STTS" variant="secondary">
             STTS
           </DetailedButton>
         </Row>
@@ -242,7 +237,10 @@ export const CircleVariants: React.FC = () => {
           <DetailedButton shape="circle" scale="ml" variant="danger">
             <LogoIcon />
           </DetailedButton>
-          <DetailedButton shape="circle" scale="xl" top={<Text>Token</Text>} bottom={<Text>100</Text>}>
+          <DetailedButton shape="circle" scale="xl" topIcon={<Text>Token</Text>} bottomIcon={<Text>100</Text>}>
+            <AddIcon color="currentColor" width="40" />
+          </DetailedButton>
+          <DetailedButton shape="circle" width="300" topIcon={<Text>Token</Text>} bottomIcon={<Text>100</Text>}>
             <AddIcon color="currentColor" width="40" />
           </DetailedButton>
         </Row>
