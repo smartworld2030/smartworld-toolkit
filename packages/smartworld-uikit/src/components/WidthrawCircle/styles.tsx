@@ -5,10 +5,13 @@ import Button from "../Button/Button";
 import Text from "../Text/Text";
 import { WithdrawCircleProps } from "./types";
 
-export const StyledFlex = styled(Flex)`
+export const StyledFlex = styled(Flex)<{ fontSize?: string }>`
   flex: 4;
   flex-direction: column;
   justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  font-size: ${({ fontSize }) => fontSize};
 `;
 export const WithdrawUnitContainer = styled(Text)`
   text-align: center;

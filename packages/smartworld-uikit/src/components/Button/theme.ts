@@ -1,6 +1,21 @@
 import { scales, shape, variants } from "./types";
 
 export const scaleVariants = {
+  [scales.XL]: {
+    height: "128px",
+    fontSize: "32px",
+    padding: "0 64px",
+  },
+  [scales.ML]: {
+    height: "88px",
+    fontSize: "28px",
+    padding: "0 64px",
+  },
+  [scales.LG]: {
+    height: "64px",
+    fontSize: "16px",
+    padding: "0 32px",
+  },
   [scales.MD]: {
     height: "48px",
     padding: "0 24px",
@@ -21,10 +36,12 @@ export const styleShape = {
     backgroundColor: "primary",
     color: "text",
     boxShadow: "none",
+    padding: 0,
   },
   [shape.CIRCLE]: {
     color: "text",
     boxShadow: "none",
+    padding: 0,
   },
 };
 

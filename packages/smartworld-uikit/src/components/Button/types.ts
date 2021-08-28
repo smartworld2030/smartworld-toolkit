@@ -1,8 +1,11 @@
 import { ComponentProps, ElementType, ReactElement, ReactNode } from "react";
-import { Link } from "react-router-dom";
 import { LayoutProps, SpaceProps } from "styled-system";
+import { Link } from "react-router-dom";
 
 export const scales = {
+  XL: "xl",
+  ML: "ml",
+  LG: "lg",
   MD: "md",
   SM: "sm",
   XS: "xs",

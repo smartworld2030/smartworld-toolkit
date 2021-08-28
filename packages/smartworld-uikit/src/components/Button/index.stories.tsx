@@ -3,8 +3,10 @@ import React, { useState } from "react";
 import { BrowserRouter, Link } from "react-router-dom";
 import styled from "styled-components";
 import Box from "../Box/Box";
+import Text from "../Text/Text";
 import Flex from "../Box/Flex";
 import { AddIcon, AutoRenewIcon, LogoIcon } from "../Svg";
+import DetailedButton from "./DetailedButton";
 import IconButton from "./IconButton";
 import Button from "./Button";
 import { ExpandableButton, ExpandableLabel } from "./ExpandableButton";
@@ -224,6 +226,25 @@ export const CircleVariants: React.FC = () => {
           <IconButton shape="circle" scale="sm" variant="success">
             <AddIcon color="currentColor" />
           </IconButton>
+        </Row>
+        <Row>
+          <DetailedButton top="token" shape="circle" bottom="STTS">
+            <LogoIcon width="15" />
+          </DetailedButton>
+          <DetailedButton top="token" scale="lg" shape="circle" bottom="STTS" variant="secondary">
+            STTS
+          </DetailedButton>
+        </Row>
+        <Row>
+          <DetailedButton shape="circle" scale="lg" variant="secondary">
+            <LogoIcon />
+          </DetailedButton>
+          <DetailedButton shape="circle" scale="ml" variant="danger">
+            <LogoIcon />
+          </DetailedButton>
+          <DetailedButton shape="circle" scale="xl" top={<Text>Token</Text>} bottom={<Text>100</Text>}>
+            <AddIcon color="currentColor" width="40" />
+          </DetailedButton>
         </Row>
       </BrowserRouter>
     </Box>

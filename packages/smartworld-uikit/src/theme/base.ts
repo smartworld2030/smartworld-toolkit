@@ -30,6 +30,15 @@ export const shadows = {
   inset: "inset 0px 2px 2px -1px rgba(74, 74, 104, 0.1)",
 };
 
+export const textShadows = {
+  level1: "0px 2px 12px rgba(25, 19, 38, 0.1), 0px 1px rgba(25, 19, 38, 0.05)",
+  active: "0px 0px 0px #0098A1, 0px 0px 4px rgba(31, 199, 212, 0.4)",
+  success: "0px 0px 0px #19E285, 0px 0px 0px rgba(49, 208, 170, 0.2)",
+  warning: "0px 0px 0px #FE3B33, 0px 0px 0px rgba(237, 75, 158, 0.2)",
+  focus: "0px 0px 0px #00B356, 0px 0px 0px rgba(22, 141, 94, 0.6)",
+  inset: "0px 2px 2px rgba(74, 74, 104, 0.2)",
+};
+
 const spacing: Spacing = [0, 4, 8, 16, 24, 32, 48, 64];
 
 const radii = {
@@ -48,6 +57,7 @@ export default {
   siteWidth: 1200,
   breakpoints,
   mediaQueries,
+  textShadows,
   spacing,
   shadows,
   radii,

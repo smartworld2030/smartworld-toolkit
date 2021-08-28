@@ -28,6 +28,15 @@ export type Shadows = {
   inset: string;
 };
 
+export type TextShadows = {
+  level1: string;
+  active: string;
+  success: string;
+  warning: string;
+  focus: string;
+  inset: string;
+};
+
 export type Gradients = {
   bubblegum: string;
   inverseBubblegum: string;
