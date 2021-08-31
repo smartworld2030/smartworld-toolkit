@@ -1,14 +1,17 @@
 import styled from "styled-components";
+import { variant } from "styled-system";
+import { Colors } from "../../theme";
 import { Flex } from "../Box";
 import Box from "../Box/Box";
 import Button from "../Button/Button";
+import { styleVariants } from "../Button/theme";
+import { Variant } from "../Button/types";
 import Text from "../Text/Text";
 import { WithdrawCircleProps } from "./types";
 
 export const StyledFlex = styled(Flex)<{ fontSize?: string }>`
   flex: 4;
   flex-direction: column;
-  justify-content: center;
   text-align: center;
   overflow: hidden;
   font-size: ${({ fontSize }) => fontSize};
@@ -32,20 +35,17 @@ export const StyledWithdrawCircle = styled(Box)<{ isWarning: WithdrawCircleProps
 `;
 
 export const StyledButton = styled(Button)`
-  background: transparent;
   box-shadow: none;
   padding-left: 0;
   padding-right: 0;
   height: ${({ height }) => height}px;
   text-align: center;
   font-size: ${({ height }) => (height ? +height / 2.5 : undefined)}px;
-  border: 1px solid ${({ theme, isWarning }) => theme.colors[isWarning ? "warning" : "textDisabled"]};
-  border-radius: ${({ theme }) => theme.radii.default};
-  color: ${({ theme }) => theme.colors.text};
 
-  ::placeholder {
-    color: ${({ theme }) => theme.colors.textDisabled};
-  }
+  ${variant({
+    variants: styleVariants,
+  })}
+  color: ${({ color, theme }) => (color ? color : theme.colors.text)};
 
   &:focus:not(:disabled) {
     box-shadow: 0px 0px 0px 1px ${({ theme }) => theme.colors.primary};

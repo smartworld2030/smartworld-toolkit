@@ -81,31 +81,23 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
                 scale="none"
                 startIcon={
                   logo && (
-                    <Flex alignItems="center">
-                      <SwitchUnitsButton
-                        variant="text"
-                        width={sizeCalc(9)}
-                        height={sizeCalc(6.5)}
-                        onClick={onLogoClick}
-                      >
-                        {logo}
-                      </SwitchUnitsButton>
-                    </Flex>
+                    <SwitchUnitsButton variant="text" width={sizeCalc(9)} height={sizeCalc(6.5)} onClick={onLogoClick}>
+                      {logo}
+                    </SwitchUnitsButton>
                   )
                 }
                 maxWidth={sizeCalc(1.4)}
                 endIcon={
                   switchEditingUnits && (
-                    <Flex alignItems="center">
-                      <SwitchUnitsButton
-                        variant="text"
-                        width={sizeCalc(9)}
-                        height={sizeCalc(6.5)}
-                        onClick={switchEditingUnits}
-                      >
-                        <SwapVertIcon color="primary" width={sizeCalc(10)} />
-                      </SwitchUnitsButton>
-                    </Flex>
+                    <SwitchUnitsButton
+                      variant="text"
+                      width={sizeCalc(9)}
+                      height={sizeCalc(6.5)}
+                      onClick={switchEditingUnits}
+                      endIcon
+                    >
+                      <SwapVertIcon color="primary" width={sizeCalc(10)} />
+                    </SwitchUnitsButton>
                   )
                 }
               >
@@ -157,8 +149,8 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
         knobRadius={disabledKnob || disabled ? 0 : knobSize ? knobSize : sizeCalc(15)}
         onInputChange={handleChangeRange}
         knobColor={knobColor ? knobColor : "white"}
-        progressColor={isWarning ? colors.failure : progressColor ? progressColor : colors.secondary}
-        insideColor={color ? color : colors.input}
+        progressColor={isWarning ? colors.failure : progressColor ? progressColor : colors.primary}
+        insideColor={color ? color : colors.tertiary}
         circleColor={isWarning ? colors.failure : borderColor}
         disabled={disabledKnob || disabled}
       />

@@ -237,7 +237,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
 };
 
 CircleSlider.defaultProps = {
-  circleColor: "#e9eaee",
+  circleColor: "transparent",
   size: 180,
   value: 0,
   progressColor: "#007aff",

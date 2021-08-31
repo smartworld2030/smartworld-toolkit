@@ -1,4 +1,6 @@
 import { ButtonHTMLAttributes, ReactNode, ReactText } from "react";
+import { ButtonProps } from "../Button";
+import { Variant } from "../Button/types";
 
 export interface WithdrawCircleProps {
   name?: ReactText;
@@ -10,7 +12,7 @@ export interface WithdrawCircleProps {
   bottomElement?: ReactNode;
   totalValue?: ReactNode;
   totalValueUnit?: ReactNode;
-  buttonProps?: Omit<ButtonHTMLAttributes<HTMLInputElement>, "color" | "variant" | "onClick">;
+  buttonProps?: Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick"> & { variant: Variant };
   isWarning?: boolean;
   size?: ReactText;
   color?: string;

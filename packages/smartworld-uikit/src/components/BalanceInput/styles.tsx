@@ -9,6 +9,10 @@ import CircleSlider from "../CircleSlider/CircleSlider";
 export const SwitchUnitsButton = styled(IconButton)`
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
+  border-radius: ${({ theme, endIcon }) =>
+    endIcon
+      ? `0 ${theme.radii.default} ${theme.radii.default} 0`
+      : `${theme.radii.default} 0 0 ${theme.radii.default}`};
 `;
 
 export const StyledCircleSlider = styled(CircleSlider)`
@@ -36,7 +40,6 @@ export const StyledBalanceInput = styled(Box)<{ isWarning: BalanceInputProps["is
 `;
 
 export const StyledInput = styled(Input)`
-  background: transparent;
   border-radius: 0;
   box-shadow: none;
   padding-left: 0;

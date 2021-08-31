@@ -255,7 +255,7 @@ export const BigSwitchUnits: React.FC = () => {
         placeholder="0"
         mb="32px"
         switchEditingUnits={switchEditingUnits}
-        logo={<LogoIcon />}
+        logo={<LogoIcon width="30" />}
         onLogoClick={() => console.log("Logo Clicked!")}
       />
     </Box>

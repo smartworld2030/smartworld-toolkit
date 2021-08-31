@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Box from "../Box/Box";
-import { LogoIcon } from "../Svg";
 import { Text, TooltipText } from "../Text";
 import WithdrawCircle from "./WithdrawCircle";
 
@@ -250,7 +249,7 @@ export const BigSwitchUnits: React.FC = () => {
       <WithdrawCircle
         topElement={
           <div>
-            <TooltipText size="md">Reward</TooltipText>
+            <TooltipText size="md">HOURLY</TooltipText>
             <Text fontWeight="bold" fontSize="50px">
               190290909
             </Text>
@@ -258,17 +257,17 @@ export const BigSwitchUnits: React.FC = () => {
         }
         bottomElement={
           <div>
-            <TooltipText size="md">Refferals</TooltipText>
             <Text fontWeight="bold" fontSize="50px">
               190290909
             </Text>
+            <TooltipText size="md">REFERRAL</TooltipText>
           </div>
         }
         totalValue={currencyValues}
         size={600}
         percent={1006.086957}
         totalValueUnit="$"
-        buttonProps={{ inputMode: "numeric" }}
+        buttonProps={{ variant: "secondary" }}
         onClick={() => console.log("Whithdraw")}
         onLogoClick={() => console.log("Logo Clicked!")}
       />

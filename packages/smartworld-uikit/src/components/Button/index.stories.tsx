@@ -223,10 +223,13 @@ export const CircleVariants: React.FC = () => {
           </IconButton>
         </Row>
         <Row>
-          <DetailedButton topIcon="token" shape="circle" bottomIcon="STTS">
+          <DetailedButton topIcon="token" variant="primary" shape="circle" bottomIcon="STTS">
             <LogoIcon width="15" />
           </DetailedButton>
-          <DetailedButton topIcon="token" scale="lg" shape="circle" bottomIcon="STTS" variant="secondary">
+          <DetailedButton topIcon="token" scale="lg" shape="circle" bottomIcon="100" variant="secondary">
+            STTS
+          </DetailedButton>
+          <DetailedButton topIcon="token" scale="lg" shape="circle" bottomIcon="STTS" variant="subtle">
             STTS
           </DetailedButton>
         </Row>
@@ -237,7 +240,7 @@ export const CircleVariants: React.FC = () => {
           <DetailedButton shape="circle" scale="ml" variant="danger">
             <LogoIcon />
           </DetailedButton>
-          <DetailedButton shape="circle" scale="xl" topIcon={<Text>Token</Text>} bottomIcon={<Text>100</Text>}>
+          <DetailedButton variant="subtle" shape="circle" scale="xl" topIcon={"Token"} bottomIcon={100}>
             <AddIcon color="currentColor" width="40" />
           </DetailedButton>
           <DetailedButton shape="circle" width="300" topIcon={<Text>Token</Text>} bottomIcon={<Text>100</Text>}>

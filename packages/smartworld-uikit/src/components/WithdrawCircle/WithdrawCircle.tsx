@@ -3,7 +3,7 @@ import { useTheme } from "styled-components";
 import { Flex, RelativeFlex } from "../Box";
 import { CircleSlider } from "../CircleSlider";
 import Text from "../Text/Text";
-import { StyledButton, StyledFlex } from "./styles";
+import { StyledFlex, StyledButton } from "./styles";
 import { WithdrawCircleProps } from "./types";
 
 const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
@@ -49,30 +49,35 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
         alignItems="center"
         margin="auto"
       >
-        <StyledFlex width={sizeCalc(1.3)}>{topElement && topElement}</StyledFlex>
-        <StyledFlex width={sizeCalc(1.3)} overflow="hidden">
+        <StyledFlex width={sizeCalc(1.3)} justifyContent="center">
+          {topElement && topElement}
+        </StyledFlex>
+        <StyledFlex width={sizeCalc(1.3)} justifyContent="end">
           <Flex justifyContent="center">
             <StyledButton
-              margin="1px"
+              margin="2px"
               height={sizeCalc(6)}
               width={sizeCalc(1.3)}
               onClick={onClick}
               disabled={disabled}
+              variant="primary"
               {...buttonProps}
             >
               {name ? name : "WITHRAW"}
             </StyledButton>
           </Flex>
-          <Flex justifyContent="flex-end" overflow="hidden" height={sizeCalc(15)}>
-            <Text color="secondary" fontSize={sizeCalc(15) + "px"} lineHeight="1">
+          <Flex zIndex={2} overflow="hidden" justifyContent="flex-end" mt="-2px">
+            <Text color="secondary" fontSize={sizeCalc(16) + "px"}>
               {totalValue ?? totalValue}
             </Text>
-            <Text color="secondary" fontWeight="bold" ml="3px" fontSize={sizeCalc(15) + "px"} lineHeight="1">
+            <Text color="secondary" fontWeight="bold" ml="3px" fontSize={sizeCalc(16) + "px"}>
               {totalValueUnit ?? totalValueUnit}
             </Text>
           </Flex>
         </StyledFlex>
-        <StyledFlex width={sizeCalc(1.3)}>{bottomElement && bottomElement}</StyledFlex>
+        <StyledFlex width={sizeCalc(1.3)} justifyContent="center">
+          {bottomElement && bottomElement}
+        </StyledFlex>
       </RelativeFlex>
     </CircleSlider>
   );

@@ -45,10 +45,12 @@ export const styleShape = {
 
 export const styleVariants = {
   [variants.PRIMARY]: {
+    borderRadius: "default",
     backgroundColor: "primary",
-    color: "white",
+    color: "invertedContrast",
   },
   [variants.SECONDARY]: {
+    borderRadius: "default",
     backgroundColor: "tertiary",
     border: "2px solid",
     borderColor: "primary",
@@ -59,6 +61,7 @@ export const styleVariants = {
     },
   },
   [variants.TRANSPARENT]: {
+    borderRadius: "default",
     backgroundColor: "transparent",
     border: "2px solid",
     borderColor: "primary",
@@ -69,23 +72,28 @@ export const styleVariants = {
     },
   },
   [variants.TERTIARY]: {
+    borderRadius: "default",
     backgroundColor: "tertiary",
     boxShadow: "none",
     color: "primary",
   },
   [variants.SUBTLE]: {
+    borderRadius: "default",
     backgroundColor: "textSubtle",
-    color: "backgroundAlt",
+    color: "white",
   },
   [variants.DANGER]: {
+    borderRadius: "default",
     backgroundColor: "failure",
-    color: "white",
+    color: "black",
   },
   [variants.SUCCESS]: {
+    borderRadius: "default",
     backgroundColor: "success",
-    color: "white",
+    color: "black",
   },
   [variants.TEXT]: {
+    borderRadius: "default",
     backgroundColor: "transparent",
     color: "primary",
     boxShadow: "none",

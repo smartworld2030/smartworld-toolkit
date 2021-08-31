@@ -1,17 +1,19 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { Text } from "../Text";
-import { StyledFlex } from "../WidthrawCircle/styles";
-import { ButtonProps } from "./types";
+import { StyledFlex } from "../WithdrawCircle/styles";
+import { ButtonProps, Variant } from "./types";
 import Button from "./Button";
 import { scaleVariants } from "./theme";
 
-const StyledFlexText = styled(StyledFlex)`
+const StyledFlexText = styled(StyledFlex)<{ color?: Variant | string }>`
   line-height: 1;
+  color: ${({ color }) => color};
   text-shadow: ${({ theme }) => theme.textShadows.inset};
 `;
 
 interface DetailedButtonProps extends ButtonProps {
+  backgroundColor?: string;
   topIcon?: ReactNode;
   bottomIcon?: ReactNode;
   topFontSize?: string;
@@ -27,6 +29,7 @@ export const DetailedButton: React.FC<DetailedButtonProps> = ({
   scale = "md",
   topFontSize,
   bottomFontSize,
+  variant,
   ...rest
 }) => {
   const sizeCalc = (divide: number = 1) => {
@@ -37,16 +40,16 @@ export const DetailedButton: React.FC<DetailedButtonProps> = ({
     return +width / divide + "px";
   };
   return (
-    <Button scale={scale} width={sizeCalc()} height={sizeCalc()} {...rest}>
-      <StyledFlexText width={sizeCalc(1.3)} fontSize={topFontSize && topFontSize}>
+    <Button scale={scale} variant={variant} width={sizeCalc()} height={sizeCalc()} {...rest}>
+      <StyledFlexText color={variant} width={sizeCalc(1.3)} fontSize={topFontSize && topFontSize}>
         {topIcon && topIcon}
       </StyledFlexText>
-      <StyledFlexText width={sizeCalc(1.3)}>
-        <Text fontSize={fontSize && fontSize} fontWeight="bold" lineHeight="1">
+      <StyledFlexText color={variant} width={sizeCalc(1.3)}>
+        <Text color={variant} fontSize={fontSize && fontSize} fontWeight="bold" lineHeight="1">
           {children}
         </Text>
       </StyledFlexText>
-      <StyledFlexText width={sizeCalc(1.3)} fontSize={bottomFontSize && bottomFontSize}>
+      <StyledFlexText color={variant} width={sizeCalc(1.3)} fontSize={bottomFontSize && bottomFontSize}>
         {bottomIcon && bottomIcon}
       </StyledFlexText>
     </Button>

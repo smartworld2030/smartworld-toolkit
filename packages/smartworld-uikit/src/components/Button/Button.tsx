@@ -1,8 +1,8 @@
 import React, { cloneElement, ElementType, isValidElement } from "react";
 import getExternalLinkProps from "../../util/getExternalLinkProps";
+import { ButtonProps, scales, variants } from "./types";
 import StyledButton from "./StyledButton";
 import { scaleVariants } from "./theme";
-import { ButtonProps, scales, variants } from "./types";
 
 const Button = <E extends ElementType = "button">(props: ButtonProps<E>): JSX.Element => {
   const { startIcon, endIcon, shape, external, className, isLoading, disabled, children, ...rest } = props;
@@ -24,7 +24,6 @@ const Button = <E extends ElementType = "button">(props: ButtonProps<E>): JSX.El
     shapeProps.width = scale.height;
     const scales = scale.height.split("px");
     shapeProps.fontSize = +scales[0] / 10;
-    console.log(shapeProps);
   }
 
   return (
