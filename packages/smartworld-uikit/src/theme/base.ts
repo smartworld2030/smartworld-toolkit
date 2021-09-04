@@ -26,7 +26,7 @@ export const shadows = {
   active: "0px 0px 0px 1px #0098A1, 0px 0px 4px 8px rgba(31, 199, 212, 0.4)",
   success: "0px 0px 0px 1px #19E285, 0px 0px 0px 4px rgba(49, 208, 170, 0.2)",
   warning: "0px 0px 0px 1px #FE3B33, 0px 0px 0px 4px rgba(237, 75, 158, 0.2)",
-  focus: "0px 0px 0px 1px #00B356, 0px 0px 0px 4px rgba(22, 141, 94, 0.6)",
+  focus: "0px 0px 0px 1px #8A6FFE, 0px 0px 0px 4px rgba(138, 111, 254,  0.6)",
   inset: "inset 0px 2px 2px -1px rgba(74, 74, 104, 0.1)",
 };
 

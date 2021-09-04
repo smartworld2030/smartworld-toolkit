@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import noop from "lodash/noop";
-import { BrowserRouter, Link, MemoryRouter } from "react-router-dom";
+import { BrowserRouter, MemoryRouter } from "react-router-dom";
 import Flex from "../../components/Box/Flex";
 import Box from "../../components/Box/Box";
 import Heading from "../../components/Heading/Heading";
-import Text from "../../components/Text/Text";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import { Language } from "./types";
@@ -14,9 +13,12 @@ import UserMenu from "./components/UserMenu";
 import { UserMenuDivider, UserMenuItem } from "./components/UserMenu/styles";
 import { variants, Variant } from "./components/UserMenu/types";
 import Menu from "./Menu";
-import { CogIcon, LanguageCurrencyIcon, LogoutIcon } from "../../components/Svg";
+import { CogIcon, LogoutIcon } from "../../components/Svg";
 import IconButton from "../../components/Button/IconButton";
 import { Modal, ModalProps, useModal } from "../Modal";
+import { LogoIcon } from "../../components/Svg";
+import useWalletModal from "../WalletModal/useWalletModal";
+import ThemeSwitcher from "../Menu/components/ThemeSwitcher";
 
 export default {
   title: "Widgets/Menu",
@@ -47,9 +49,6 @@ const UserMenuComponent: React.FC<{ variant?: Variant; text?: string; account?: 
     <UserMenuItem type="button" disabled>
       Portfolio
     </UserMenuItem>
-    <UserMenuItem as={Link} to="/profile">
-      React Router Link
-    </UserMenuItem>
     <UserMenuItem as="a" href="https://smartworld.app" target="_blank">
       Link
     </UserMenuItem>
@@ -63,26 +62,26 @@ const UserMenuComponent: React.FC<{ variant?: Variant; text?: string; account?: 
   </UserMenu>
 );
 
-const GlobalMenuModal: React.FC<ModalProps> = ({ title, onDismiss, ...props }) => (
-  <Modal title={title} onDismiss={onDismiss} {...props}>
-    <Heading>{title}</Heading>
-    <Button>This button Does nothing</Button>
-  </Modal>
-);
+const GlobalMenuModal: React.FC<ModalProps> = ({ title, onDismiss, ...props }) => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const toggle = () => setIsChecked(!isChecked);
+  return (
+    <Modal title={title} onDismiss={onDismiss} {...props}>
+      <Heading>{title}</Heading>
+      <ThemeSwitcher toggleTheme={toggle} isDark={isChecked} />
+      <Button>This button Does nothing</Button>
+    </Modal>
+  );
+};
 
 const GlobalMenuComponent: React.FC = () => {
-  const [onPresent1] = useModal(<GlobalMenuModal title="Display Settings Modal" />);
-  const [onPresent2] = useModal(<GlobalMenuModal title="Global Settings Modal" />);
+  const [onPresent1] = useModal(<GlobalMenuModal title="Global Settings Modal" />);
 
   return (
-    <Flex>
-      <IconButton onClick={onPresent1} variant="text" scale="sm" mr="4px">
-        <LanguageCurrencyIcon height={22} width={22} color="textSubtle" />
-      </IconButton>
-      <IconButton onClick={onPresent2} variant="text" scale="sm" mr="8px">
-        <CogIcon height={22} width={22} color="textSubtle" />
-      </IconButton>
-    </Flex>
+    <IconButton onClick={onPresent1} variant="tertiary" scale="sm">
+      <CogIcon color="textSubtle" />
+    </IconButton>
   );
 };
 
@@ -133,62 +132,60 @@ const useProps = () => {
 export const Connected: React.FC = () => {
   const props = useProps();
   return (
-    <BrowserRouter>
-      <Menu {...props}>
-        <div>
-          <Heading as="h1" mb="8px">
-            Page body
-          </Heading>
-          <Text as="p">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-            laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-            esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-            qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut
-          </Text>
-        </div>
-      </Menu>
-    </BrowserRouter>
+    <>
+      <Menu {...props} logo={<LogoIcon />} title="INVESTMENT" />
+      <Flex flexDirection="column">
+        <h1>Page body</h1>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+        laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+        laborum.
+      </Flex>
+    </>
   );
 };
 
 export const NotConnected: React.FC = () => {
+  const { onPresentConnectModal } = useWalletModal(
+    () => null,
+    () => null,
+    ""
+  );
   return (
-    <BrowserRouter>
-      <Menu isDark={false} toggleTheme={noop} langs={langs} setLang={noop} currentLang="EN" links={links}>
-        <div>
-          <h1>Page body</h1>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-          eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-          mollit anim id est laborum.
-        </div>
-      </Menu>
-    </BrowserRouter>
+    <Menu
+      title="INVESTMENT"
+      logo={<LogoIcon />}
+      isDark={false}
+      toggleTheme={noop}
+      langs={langs}
+      setLang={noop}
+      currentLang="EN"
+      links={links}
+      userMenu={
+        <Button onClick={onPresentConnectModal} variant="tertiary" scale="sm">
+          Connect Wallet
+        </Button>
+      }
+      globalMenu={<GlobalMenuComponent />}
+    />
   );
 };
 
 export const WithoutConnectButton: React.FC = () => {
+  const { userMenu, ...props } = useProps();
   return (
-    <BrowserRouter>
-      <Menu isDark={false} toggleTheme={noop} langs={langs} setLang={noop} currentLang="EN" links={links}>
-        <div>
-          <h1>No connect button on top</h1>
-          This variant is needed for info site
-        </div>
-      </Menu>
-    </BrowserRouter>
+    <>
+      <Menu {...props} logo={<LogoIcon />} title="INVESTMENT" />
+      <Flex flexDirection="column">
+        <h1>No connect button on top</h1>
+        This variant is needed for info site
+      </Flex>
+    </>
   );
 };
 
@@ -206,6 +203,7 @@ export const WithSubmenuSelected: React.FC = () => {
   return (
     <MemoryRouter initialEntries={["/teams"]}>
       <Menu
+        title="INVESTMENT"
         isDark={false}
         toggleTheme={noop}
         langs={langs}

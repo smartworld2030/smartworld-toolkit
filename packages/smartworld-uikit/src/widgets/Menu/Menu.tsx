@@ -1,29 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import throttle from "lodash/throttle";
-import Overlay from "../../components/Overlay/Overlay";
 import Flex from "../../components/Box/Flex";
-import { useMatchBreakpoints } from "../../hooks";
 import Logo from "./components/Logo";
-import Panel from "./components/Panel";
 import { NavProps } from "./types";
-import { MENU_HEIGHT, SIDEBAR_WIDTH_REDUCED, SIDEBAR_WIDTH_FULL } from "./config";
+import { MENU_HEIGHT } from "./config";
 
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
 `;
 
-const StyledNav = styled.nav<{ showMenu: boolean }>`
-  position: fixed;
-  top: ${({ showMenu }) => (showMenu ? 0 : `-${MENU_HEIGHT}px`)};
-  left: 0;
+const StyledNav = styled.nav`
   transition: top 0.2s;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 8px;
-  padding-right: 16px;
+
   width: 100%;
   height: ${MENU_HEIGHT}px;
   background-color: ${({ theme }) => theme.nav.background};
@@ -32,49 +25,8 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   transform: translate3d(0, 0, 0);
 `;
 
-const BodyWrapper = styled.div`
-  position: relative;
-  display: flex;
-`;
-
-const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
-  flex-grow: 1;
-  margin-top: ${({ showMenu }) => (showMenu ? `${MENU_HEIGHT}px` : 0)};
-  transition: margin-top 0.2s, margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  transform: translate3d(0, 0, 0);
-  max-width: 100%;
-
-  ${({ theme }) => theme.mediaQueries.nav} {
-    margin-left: ${({ isPushed }) => `${isPushed ? SIDEBAR_WIDTH_FULL : SIDEBAR_WIDTH_REDUCED}px`};
-    max-width: ${({ isPushed }) => `calc(100% - ${isPushed ? SIDEBAR_WIDTH_FULL : SIDEBAR_WIDTH_REDUCED}px)`};
-  }
-`;
-
-const MobileOnlyOverlay = styled(Overlay)`
-  position: fixed;
-  height: 100%;
-
-  ${({ theme }) => theme.mediaQueries.nav} {
-    display: none;
-  }
-`;
-
-const Menu: React.FC<NavProps> = ({
-  userMenu,
-  globalMenu,
-  isDark,
-  toggleTheme,
-  langs,
-  setLang,
-  currentLang,
-  cakePriceUsd,
-  links,
-  children,
-}) => {
-  const { isMobile, isTablet } = useMatchBreakpoints();
-  const isSmallerScreen = isMobile || isTablet;
-  const [isPushed, setIsPushed] = useState(!isSmallerScreen);
-  const [showMenu, setShowMenu] = useState(true);
+const Menu: React.FC<NavProps> = ({ userMenu, logo, title, globalMenu }) => {
+  const [, setShowMenu] = useState(true);
   const refPrevOffset = useRef(window.pageYOffset);
 
   useEffect(() => {
@@ -106,41 +58,19 @@ const Menu: React.FC<NavProps> = ({
     };
   }, []);
 
-  // Find the home link if provided
-  const homeLink = links.find((link) => link.label === "Home");
-
   return (
     <Wrapper>
-      <StyledNav showMenu={showMenu}>
-        <Logo
-          isPushed={isPushed}
-          togglePush={() => setIsPushed((prevState: boolean) => !prevState)}
-          isDark={isDark}
-          href={homeLink?.href ?? "/"}
-        />
-        <Flex>
-          {globalMenu} {userMenu}
+      <StyledNav>
+        <Flex flex="4" justifyContent="start">
+          {globalMenu}
+        </Flex>
+        <Flex flex="4" justifyContent="center">
+          <Logo innerLogo={logo} title={title} />
+        </Flex>
+        <Flex flex="4" justifyContent="end">
+          {userMenu}
         </Flex>
       </StyledNav>
-      <BodyWrapper>
-        <Panel
-          isPushed={isPushed}
-          isMobile={isSmallerScreen}
-          showMenu={showMenu}
-          isDark={isDark}
-          toggleTheme={toggleTheme}
-          langs={langs}
-          setLang={setLang}
-          currentLang={currentLang}
-          cakePriceUsd={cakePriceUsd}
-          pushNav={setIsPushed}
-          links={links}
-        />
-        <Inner isPushed={isPushed} showMenu={showMenu}>
-          {children}
-        </Inner>
-        <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" />
-      </BodyWrapper>
     </Wrapper>
   );
 };

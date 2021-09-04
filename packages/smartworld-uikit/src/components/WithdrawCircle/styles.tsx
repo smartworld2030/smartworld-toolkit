@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import { variant } from "styled-system";
-import { Colors } from "../../theme";
 import { Flex } from "../Box";
 import Box from "../Box/Box";
 import Button from "../Button/Button";
 import { styleVariants } from "../Button/theme";
-import { Variant } from "../Button/types";
 import Text from "../Text/Text";
 import { WithdrawCircleProps } from "./types";
 
