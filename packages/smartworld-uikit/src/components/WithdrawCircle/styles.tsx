@@ -23,7 +23,7 @@ export const WithdrawUnitContainer = styled(Text)`
 
 export const StyledWithdrawCircle = styled(Box)<{ isWarning: WithdrawCircleProps["isWarning"] }>`
   position: relative;
-  background-color: ${({ theme, color }) => (color ? color : theme.colors.input)};
+  background-color: ${({ theme, color }) => (color ? color : theme.colors.tertiary)};
   border-radius: 50%;
   width: ${({ width }) => calcWidth(width)};
   height: ${({ width }) => calcWidth(width)};
@@ -43,7 +43,9 @@ export const StyledButton = styled(Button)`
   ${variant({
     variants: styleVariants,
   })}
-  color: ${({ color, theme }) => (color ? color : theme.colors.text)};
+
+  ${({ height }) => (+height! < 50 ? "border:1px solid" : undefined)};
+  color: ${({ color }) => color ?? color};
 
   &:focus:not(:disabled) {
     box-shadow: 0px 0px 0px 1px ${({ theme }) => theme.colors.primary};

@@ -51,13 +51,13 @@ export const styleVariants = {
   },
   [variants.SECONDARY]: {
     borderRadius: "default",
-    backgroundColor: "tertiary",
+    backgroundColor: "input",
     border: "2px solid",
     borderColor: "primary",
     boxShadow: "none",
     color: "primary",
     ":disabled": {
-      backgroundColor: "transparent",
+      backgroundColor: "input",
     },
   },
   [variants.TRANSPARENT]: {

@@ -1,5 +1,4 @@
 import { ButtonHTMLAttributes, ReactNode, ReactText } from "react";
-import { ButtonProps } from "../Button";
 import { Variant } from "../Button/types";
 
 export interface WithdrawCircleProps {

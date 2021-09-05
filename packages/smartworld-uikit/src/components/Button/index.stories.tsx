@@ -229,7 +229,7 @@ export const CircleVariants: React.FC = () => {
           <DetailedButton topIcon="token" scale="lg" shape="circle" bottomIcon="100" variant="secondary">
             STTS
           </DetailedButton>
-          <DetailedButton topIcon="token" scale="lg" shape="circle" bottomIcon="STTS" variant="subtle">
+          <DetailedButton topIcon="token" scale="lg" shape="circle" bottomIcon="100">
             STTS
           </DetailedButton>
         </Row>

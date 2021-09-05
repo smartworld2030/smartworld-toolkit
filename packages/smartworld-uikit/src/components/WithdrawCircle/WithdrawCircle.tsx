@@ -36,7 +36,7 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
       circleWidth={borderSize ? borderSize : sizeCalc(30)}
       knobRadius={0}
       progressColor={isWarning ? colors.failure : progressColor ? progressColor : colors.primary}
-      insideColor={color ? color : colors.input}
+      insideColor={color ? color : colors.tertiary}
       circleColor={isWarning ? colors.failure : borderColor}
       disabled={true}
     >
@@ -60,7 +60,7 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
               width={sizeCalc(1.3)}
               onClick={onClick}
               disabled={disabled}
-              variant="primary"
+              variant="secondary"
               {...buttonProps}
             >
               {name ? name : "WITHRAW"}

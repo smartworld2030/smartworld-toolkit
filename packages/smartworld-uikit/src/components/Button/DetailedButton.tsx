@@ -10,6 +10,7 @@ const StyledFlexText = styled(StyledFlex)<{ color?: Variant | string }>`
   line-height: 1;
   color: ${({ color }) => color};
   text-shadow: ${({ theme }) => theme.textShadows.inset};
+  justify-content: center;
 `;
 
 interface DetailedButtonProps extends ButtonProps {

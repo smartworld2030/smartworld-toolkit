@@ -36,32 +36,14 @@ const UserMenuComponent: React.FC<{ variant?: Variant; text?: string; account?: 
   variant = variants.DEFAULT,
   text,
   account = "0x8b017905DC96B38f817473dc885F84D4C76bC113",
-}) => (
-  <UserMenu variant={variant} text={text} account={account}>
-    <UserMenuItem type="button" onClick={noop}>
-      Wallet
-    </UserMenuItem>
-    <UserMenuItem type="button">Transactions</UserMenuItem>
-    <UserMenuDivider />
-    <UserMenuItem type="button" disabled>
-      Dashboard
-    </UserMenuItem>
-    <UserMenuItem type="button" disabled>
-      Portfolio
-    </UserMenuItem>
-    <UserMenuItem as="a" href="https://smartworld.app" target="_blank">
-      Link
-    </UserMenuItem>
-    <UserMenuDivider />
-    <UserMenuItem as="button" onClick={noop}>
-      <Flex alignItems="center" justifyContent="space-between" width="100%">
-        Disconnect
-        <LogoutIcon />
-      </Flex>
-    </UserMenuItem>
-  </UserMenu>
-);
-
+}) => {
+  const { onPresentAccountModal } = useWalletModal(
+    () => null,
+    () => null,
+    "0xbdda50183d817c3289f895a4472eb475967dc980"
+  );
+  return <UserMenu variant={variant} text={text} account={account} onClick={onPresentAccountModal} />;
+};
 const GlobalMenuModal: React.FC<ModalProps> = ({ title, onDismiss, ...props }) => {
   const [isChecked, setIsChecked] = useState(false);
 
