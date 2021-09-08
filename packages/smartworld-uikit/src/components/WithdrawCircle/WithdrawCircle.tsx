@@ -1,10 +1,10 @@
-import React from "react";
-import { useTheme } from "styled-components";
-import { Flex, RelativeFlex } from "../Box";
-import { CircleSlider } from "../CircleSlider";
-import Text from "../Text/Text";
-import { StyledFlex, StyledButton } from "./styles";
-import { WithdrawCircleProps } from "./types";
+import React from 'react'
+import { useTheme } from 'styled-components'
+import { Flex, RelativeFlex } from '../Box'
+import { CircleSlider } from '../CircleSlider'
+import Text from '../Text/Text'
+import { StyledFlex, StyledButton } from './styles'
+import { WithdrawCircleProps } from './types'
 
 const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
   name,
@@ -24,9 +24,9 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
   progressColor,
   disabled = false,
 }) => {
-  const { colors } = useTheme();
+  const { colors } = useTheme()
 
-  const sizeCalc = (divide: number = 1) => (size ? Number(size) : 150) / divide;
+  const sizeCalc = (divide: number = 1) => (size ? Number(size) : 150) / divide
 
   return (
     <CircleSlider
@@ -63,14 +63,14 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
               variant="secondary"
               {...buttonProps}
             >
-              {name ? name : "WITHRAW"}
+              {name ? name : 'WITHRAW'}
             </StyledButton>
           </Flex>
           <Flex zIndex={2} overflow="hidden" justifyContent="flex-end" mt="-2px">
-            <Text color="secondary" fontSize={sizeCalc(16) + "px"}>
+            <Text color="secondary" fontSize={sizeCalc(16) + 'px'}>
               {totalValue ?? totalValue}
             </Text>
-            <Text color="secondary" fontWeight="bold" ml="3px" fontSize={sizeCalc(16) + "px"}>
+            <Text color="secondary" fontWeight="bold" ml="3px" fontSize={sizeCalc(16) + 'px'}>
               {totalValueUnit ?? totalValueUnit}
             </Text>
           </Flex>
@@ -80,7 +80,7 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
         </StyledFlex>
       </RelativeFlex>
     </CircleSlider>
-  );
-};
+  )
+}
 
-export default WithdrawCircle;
+export default WithdrawCircle

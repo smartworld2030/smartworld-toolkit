@@ -1,12 +1,12 @@
 import { darkColors, lightColors } from "../../theme/colors";
-import { PancakeToggleTheme } from "./types";
+import { SmartWorldToggleTheme } from "./types";
 
-export const light: PancakeToggleTheme = {
+export const light: SmartWorldToggleTheme = {
   handleBackground: lightColors.backgroundAlt,
   handleShadow: lightColors.textDisabled,
 };
 
-export const dark: PancakeToggleTheme = {
+export const dark: SmartWorldToggleTheme = {
   handleBackground: darkColors.backgroundAlt,
   handleShadow: darkColors.textDisabled,
 };

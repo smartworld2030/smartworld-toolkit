@@ -1,6 +1,6 @@
 import { InputHTMLAttributes } from "react";
 
-export type PancakeToggleTheme = {
+export type SmartWorldToggleTheme = {
   handleBackground: string;
   handleShadow: string;
 };

@@ -42,15 +42,15 @@ export const DetailedButton: React.FC<DetailedButtonProps> = ({
   };
   return (
     <Button scale={scale} variant={variant} width={sizeCalc()} height={sizeCalc()} {...rest}>
-      <StyledFlexText color={variant} width={sizeCalc(1.3)} fontSize={topFontSize && topFontSize}>
+      <StyledFlexText width={sizeCalc(1.3)} fontSize={topFontSize && topFontSize}>
         {topIcon && topIcon}
       </StyledFlexText>
-      <StyledFlexText color={variant} width={sizeCalc(1.3)}>
-        <Text color={variant} fontSize={fontSize && fontSize} fontWeight="bold" lineHeight="1">
+      <StyledFlexText width={sizeCalc(1.3)}>
+        <Text fontSize={fontSize && fontSize} fontWeight="bold" lineHeight="1">
           {children}
         </Text>
       </StyledFlexText>
-      <StyledFlexText color={variant} width={sizeCalc(1.3)} fontSize={bottomFontSize && bottomFontSize}>
+      <StyledFlexText width={sizeCalc(1.3)} fontSize={bottomFontSize && bottomFontSize}>
         {bottomIcon && bottomIcon}
       </StyledFlexText>
     </Button>

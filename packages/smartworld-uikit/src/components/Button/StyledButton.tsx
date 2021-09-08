@@ -1,14 +1,14 @@
-import styled, { DefaultTheme } from "styled-components";
-import { space, layout, variant } from "styled-system";
-import { scaleVariants, styleShape, styleVariants } from "./theme";
-import { BaseButtonProps } from "./types";
+import styled, { DefaultTheme } from 'styled-components'
+import { space, layout, variant } from 'styled-system'
+import { scaleVariants, styleShape, styleVariants } from './theme'
+import { BaseButtonProps } from './types'
 
 interface ThemedButtonProps extends BaseButtonProps {
-  theme: DefaultTheme;
+  theme: DefaultTheme
 }
 
 interface TransientButtonProps extends ThemedButtonProps {
-  $isLoading?: boolean;
+  $isLoading?: boolean
 }
 
 const getDisabledStyles = ({ variant, $isLoading, theme }: TransientButtonProps) => {
@@ -18,20 +18,20 @@ const getDisabledStyles = ({ variant, $isLoading, theme }: TransientButtonProps)
       &.pancake-button--disabled {
         cursor: not-allowed;
       }
-    `;
+    `
   }
 
   return `
     &:disabled,
     &.pancake-button--disabled {
-      background-color: ${variant === "text" ? "transparent" : theme.colors.backgroundDisabled};
+      background-color: ${variant === 'text' ? 'transparent' : theme.colors.backgroundDisabled};
       border-color: ${theme.colors.backgroundDisabled};
       box-shadow: none;
       color: ${theme.colors.textDisabled};
       cursor: not-allowed;
     }
-  `;
-};
+  `
+}
 
 /**
  * This is to get around an issue where if you use a Link component
@@ -40,16 +40,16 @@ const getDisabledStyles = ({ variant, $isLoading, theme }: TransientButtonProps)
  */
 
 const getOpacity = ({ $isLoading = false }: TransientButtonProps) => {
-  return $isLoading ? ".5" : "1";
-};
+  return $isLoading ? '.5' : '1'
+}
 
 const getFontSize = ({ fontSize }: { fontSize?: string | number }) => {
-  return fontSize ? fontSize : 16;
-};
+  return fontSize ? fontSize : 16
+}
 
 const getFontWeight = ({ fontWeight }: { fontWeight?: string | number }) => {
-  return fontWeight ? fontWeight : 600;
-};
+  return fontWeight ? fontWeight : 600
+}
 
 const StyledButton = styled.button<BaseButtonProps>`
   align-items: center;
@@ -73,28 +73,27 @@ const StyledButton = styled.button<BaseButtonProps>`
   }
 
   &:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
-    opacity: 0.85;
     transform: translateY(1px);
     box-shadow: none;
   }
 
   ${getDisabledStyles}
   ${variant({
-    prop: "scale",
+    prop: 'scale',
     variants: scaleVariants,
   })}
   ${variant({
     variants: styleVariants,
   })}
   ${variant({
-    prop: "shape",
+    prop: 'shape',
     variants: styleShape,
   })}
 
   ${layout}
   ${space}
 
-  padding: ${({ variant }) => (variant === "text" ? 0 : undefined)};
-`;
+  padding: ${({ variant }) => (variant === 'text' ? 0 : undefined)};
+`
 
-export default StyledButton;
+export default StyledButton

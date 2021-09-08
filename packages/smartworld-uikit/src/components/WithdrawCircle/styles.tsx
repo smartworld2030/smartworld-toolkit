@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { variant } from "styled-system";
-import { Flex } from "../Box";
-import Box from "../Box/Box";
-import Button from "../Button/Button";
-import { styleVariants } from "../Button/theme";
-import Text from "../Text/Text";
-import { WithdrawCircleProps } from "./types";
+import styled from 'styled-components'
+import { colorStyle, variant } from 'styled-system'
+import { Flex } from '../Box'
+import Box from '../Box/Box'
+import Text from '../Text/Text'
+import Button from '../Button/Button'
+import { WithdrawCircleProps } from './types'
+import { styleVariants } from '../Button/theme'
 
 export const StyledFlex = styled(Flex)<{ fontSize?: string }>`
   flex: 4;
@@ -13,15 +13,16 @@ export const StyledFlex = styled(Flex)<{ fontSize?: string }>`
   text-align: center;
   overflow: hidden;
   font-size: ${({ fontSize }) => fontSize};
-`;
+`
+
 export const WithdrawUnitContainer = styled(Text)`
   text-align: center;
   color: ${({ theme }) => theme.colors.text};
   z-index: ${({ zIndex }) => zIndex};
   white-space: nowrap;
-`;
+`
 
-export const StyledWithdrawCircle = styled(Box)<{ isWarning: WithdrawCircleProps["isWarning"] }>`
+export const StyledWithdrawCircle = styled(Box)<{ isWarning: WithdrawCircleProps['isWarning'] }>`
   position: relative;
   background-color: ${({ theme, color }) => (color ? color : theme.colors.tertiary)};
   border-radius: 50%;
@@ -30,7 +31,7 @@ export const StyledWithdrawCircle = styled(Box)<{ isWarning: WithdrawCircleProps
   min-width: ${({ width }) => calcWidth(width, 50)};
   min-height: ${({ width }) => calcWidth(width, 50)};
   padding: ${({ width }) => calcPadding(width)};
-`;
+`
 
 export const StyledButton = styled(Button)`
   box-shadow: none;
@@ -44,20 +45,21 @@ export const StyledButton = styled(Button)`
     variants: styleVariants,
   })}
 
-  ${({ height }) => (+height! < 50 ? "border:1px solid" : undefined)};
+  ${({ height }) => (+height! < 50 ? 'border-width: 1px' : undefined)};
   color: ${({ color }) => color ?? color};
+  background-color: ${({ backgroundColor, theme }) => (backgroundColor ? backgroundColor : theme.colors.input)};
 
   &:focus:not(:disabled) {
     box-shadow: 0px 0px 0px 1px ${({ theme }) => theme.colors.primary};
   }
-`;
+`
 
 const calcPadding = (width?: any) => {
-  const p = width ? +width / 10 : 16;
-  return `${p / 2}px ${p}px`;
-};
+  const p = width ? +width / 10 : 16
+  return `${p / 2}px ${p}px`
+}
 
 const calcWidth = (width?: any, allowedMin: number = 0) => {
-  const w = width ? +width - allowedMin : 150;
-  return `${w > 100 ? w : 100}px`;
-};
+  const w = width ? +width - allowedMin : 150
+  return `${w > 100 ? w : 100}px`
+}
