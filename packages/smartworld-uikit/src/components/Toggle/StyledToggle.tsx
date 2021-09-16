@@ -31,14 +31,12 @@ const scaleKeyValues = {
   },
 }
 
-const getScale =
-  (property: ScaleKeys) =>
-  ({ scale = scales.LG }: ToggleProps) => {
-    return scaleKeyValues[scale][property]
-  }
+const getScale = (property: ScaleKeys) => ({ scale = scales.LG }: ToggleProps) => {
+  return scaleKeyValues[scale][property]
+}
 
 export const Handle = styled.div<HandleProps>`
-  background-color: ${({ theme }) => theme.toggle.handleBackground};
+  background-color: ${({ theme }) => theme.colors.secondary};
   border-radius: ${({ theme }) => theme.radii.circle};
   cursor: pointer;
   height: ${getScale('handleHeight')};
@@ -73,7 +71,7 @@ export const Input = styled.input<InputProps>`
 
 const StyledToggle = styled.div<ToggleProps>`
   align-items: center;
-  background-color: ${({ theme, checked }) => theme.colors[checked ? 'inputSecondary' : 'tertiary']};
+  background-color: ${({ theme, checked }) => theme.colors[checked ? 'primary' : 'tertiary']};
   border-radius: 24px;
   box-shadow: ${({ theme }) => theme.shadows.inset};
   cursor: pointer;
