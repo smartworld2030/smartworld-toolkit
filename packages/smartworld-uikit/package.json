@@ -1,6 +1,6 @@
 {
   "name": "@smartworld-libs/uikit",
-  "version": "0.47.2",
+  "version": "0.48.0",
   "description": "Set of UI components for pancake projects",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -37,7 +37,6 @@
     "jest-styled-components": "^7.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-grid-system": "^7.3.1",
     "react-router-dom": "^5.2.0",
     "styled-components": "^5.2.0"
   },
