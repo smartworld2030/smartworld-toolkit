@@ -1,6 +1,6 @@
 {
   "name": "@smartworld-libs/uikit",
-  "version": "0.48.9",
+  "version": "0.48.10",
   "description": "Set of UI components for pancake projects",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
