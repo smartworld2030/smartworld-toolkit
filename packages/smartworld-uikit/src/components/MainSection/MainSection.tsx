@@ -1,0 +1,184 @@
+import React, { Children, ReactElement, useMemo, useRef, useState } from 'react'
+import { Menu, Spinner, useWindowSize } from '../..'
+import { AnimatedFlex, RelativeFlex, Flex } from '../Box'
+import { AbsoluteBody, Container, FlexWithTip } from './Component'
+import { useTransition, animated } from 'react-spring'
+import { MainContainerProps } from './types'
+import { useHistory, useLocation } from 'react-router'
+import recursiveMap from '../../util/recursiveMap'
+
+const defaultToggle = {
+  showTip: false,
+  showRight: false,
+  showLeft: false,
+}
+
+const MainSection: React.FC<MainContainerProps> = ({
+  initialValue,
+  config,
+  loading = false,
+  links,
+  right,
+  rightIcon,
+  left,
+  leftIcon,
+  children,
+  ...rest
+}) => {
+  const counter = useRef(0)
+  const [animLoading, setAnimLoading] = useState(true)
+  const { height, width, isMobile, isTablet, screen, flexSize } = useWindowSize(initialValue, setAnimLoading)
+  const [toggle, setToggle] = useState(defaultToggle)
+  const history = useHistory()
+  const location = useLocation()
+  const pathname = location.pathname
+
+  const toggleHandler = (item: keyof typeof defaultToggle) => {
+    setToggle((prev) => ({ ...defaultToggle, [item]: !prev[item] }))
+  }
+
+  const { showLeft, showRight, showTip } = toggle
+  const sideToggle = showLeft || showRight
+
+  function responsiveSize(w: number, toggle = true) {
+    return isMobile
+      ? { height: toggle ? flexSize * w : 0, width: isTablet ? '50%' : '100%' }
+      : { width: toggle ? flexSize * w : 0, height: isTablet ? '50%' : '100%' }
+  }
+
+  const transitions = useTransition(location, {
+    key: pathname,
+    config,
+    from: { opacity: 0, transform: 'translate3d(100%,0,0)' },
+    enter: { opacity: 1, transform: 'translate3d(0%,0,0)' },
+    leave: { opacity: 0, transform: 'translate3d(-50%,0,0)' },
+    onStart: () => setAnimLoading(true),
+    onRest: () => setAnimLoading(false),
+  })
+
+  const changePage = (value: string) => {
+    setAnimLoading(true)
+    setToggle(defaultToggle)
+    history.push(value)
+  }
+
+  const findPath = () => (links.some((link) => link.href === pathname) ? pathname : links[0].href)
+
+  return (
+    <Flex justifyContent="start" flexDirection="column" {...rest}>
+      <Menu
+        onChange={changePage}
+        links={links}
+        selected={findPath()}
+        userMenu={
+          rightIcon &&
+          rightIcon({
+            checked: showLeft,
+            onChange: () => toggleHandler('showRight'),
+          })
+        }
+        settingMenu={leftIcon && leftIcon({ checked: showRight, onChange: () => toggleHandler('showLeft') })}
+      />
+      <RelativeFlex width={width} justifyContent={animLoading ? 'center' : 'start'}>
+        {transitions((style, _1, _2, key) => (
+          <AbsoluteBody width="100%">
+            <animated.div key={key} style={{ ...style }}>
+              <Container flexDirection={isMobile ? 'column' : 'row'} height={isMobile ? '100%' : height}>
+                {Children.map(recursiveMap(children), (child: ReactElement) => {
+                  const { type: Comp, props } = child
+                  const { children, compOrder, ...rest } = props
+                  counter.current = 0
+                  return (
+                    <Comp {...rest}>
+                      {isMobile && right && right({ flexSize, toggle, isMobile, responsiveSize })}
+                      {!isTablet &&
+                        left &&
+                        left({
+                          flexSize,
+                          toggle,
+                          isMobile,
+                          responsiveSize,
+                          showTip,
+                          tipChanger: () => toggleHandler('showTip'),
+                        })}
+                      {compOrder === 'First'
+                        ? Children.map(children, ({ props }: ReactElement) => {
+                            const { flex = 12, children, compOrder, ...rest } = props
+                            const w = rest[screen] ? rest[screen]! : sideToggle ? flex - 1 : flex
+                            const itemFlex = (flexSize * w) / 12
+                            return (
+                              compOrder !== 'Last' && (
+                                <AnimatedFlex
+                                  key={counter.current++}
+                                  {...responsiveSize(w)}
+                                  flexDirection={isMobile ? 'column' : 'row'}
+                                  {...rest}
+                                >
+                                  {isTablet &&
+                                    counter.current === 0 &&
+                                    left &&
+                                    left({
+                                      flexSize,
+                                      toggle,
+                                      isMobile,
+                                      responsiveSize,
+                                      showTip,
+                                      tipChanger: () => toggleHandler('showTip'),
+                                    })}
+                                  {compOrder === 'Second'
+                                    ? Children.map(children, ({ props }: ReactElement, i) => {
+                                        const { tip, demo, tipSize, children, flex = 12, ...ss } = props
+                                        const w = ss[screen] ? ss[screen]! : flex
+                                        return animLoading || loading ? (
+                                          <AnimatedFlex
+                                            key={i}
+                                            {...(isMobile
+                                              ? { width: '100%', height: w * itemFlex }
+                                              : { width: w * itemFlex, height: '100%' })}
+                                            {...ss}
+                                          >
+                                            {demo ? demo : <Spinner />}
+                                          </AnimatedFlex>
+                                        ) : (
+                                          <FlexWithTip
+                                            key={i}
+                                            showTip={showTip}
+                                            isMobile={isMobile}
+                                            flex={w * itemFlex}
+                                            tip={tip}
+                                            tipSize={tipSize}
+                                            {...ss}
+                                          >
+                                            {children}
+                                          </FlexWithTip>
+                                        )
+                                      })
+                                    : child}
+                                  {isTablet &&
+                                    counter.current === 0 &&
+                                    right &&
+                                    right({
+                                      flexSize,
+                                      toggle,
+                                      isMobile,
+                                      responsiveSize,
+                                    })}
+                                </AnimatedFlex>
+                              )
+                            )
+                          })
+                        : children}
+                      {!isMobile && !isTablet && right && right({ flexSize, toggle, isMobile, responsiveSize })}
+                    </Comp>
+                  )
+                })}
+              </Container>
+            </animated.div>
+          </AbsoluteBody>
+        ))}
+      </RelativeFlex>
+    </Flex>
+  )
+}
+
+export default MainSection

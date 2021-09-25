@@ -1,9 +1,19 @@
 import styled from 'styled-components'
 import { flexbox } from 'styled-system'
 import Box from './Box'
-import { FlexProps } from './types'
+import { FlexProps, MainFlexProps } from './types'
 
 const Flex = styled(Box)<FlexProps>`
+  display: flex;
+  ${flexbox}
+`
+
+export const MainFlex = styled(Box)<FlexProps>`
+  display: flex;
+  ${flexbox}
+`
+
+export const MainComp = styled(Box)<MainFlexProps>`
   display: flex;
   ${flexbox}
 `
@@ -11,9 +21,8 @@ const Flex = styled(Box)<FlexProps>`
 export const AnimatedFlex = styled(Box)<FlexProps>`
   display: flex;
   transition: 0.5s all;
+  overflow: hidden;
   background: ${({ theme }) => theme.colors.background};
-  justify-content: space-around;
-  align-items: center;
   ${flexbox};
 `
 
@@ -27,6 +36,7 @@ export const AnimatedTipFlex = styled(Box)<FlexProps>`
 `
 
 export const RelativeFlex = styled(Box)<FlexProps>`
+  box-sizing: border-box;
   position: relative;
   display: flex;
   text-align: center;

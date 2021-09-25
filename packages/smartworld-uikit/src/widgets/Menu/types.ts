@@ -1,56 +1,43 @@
-import { ReactElement } from "react";
-import { Colors } from "../../theme/types";
+import { ReactNode } from 'react'
+import { Colors } from '../../theme/types'
 
 export interface Language {
-  code: string;
-  language: string;
-  locale: string;
+  code: string
+  language: string
+  locale: string
 }
 
 export interface PushedProps {
-  isPushed: boolean;
-  pushNav: (isPushed: boolean) => void;
+  isPushed: boolean
+  pushNav: (isPushed: boolean) => void
 }
 
 export interface NavTheme {
-  background: string;
+  background: string
 }
 
 export interface LinkStatus {
-  text: string;
-  color: keyof Colors;
+  text: string
+  color: keyof Colors
 }
 
 export interface MenuSubEntry {
-  label: string;
-  href: string;
-  calloutClass?: string;
-  status?: LinkStatus;
+  label: string
+  href: string
+  calloutClass?: string
+  status?: LinkStatus
 }
 
 export interface MenuEntry {
-  label: string;
-  icon: string;
-  items?: MenuSubEntry[];
-  href?: string;
-  calloutClass?: string;
-  initialOpenState?: boolean;
-  status?: LinkStatus;
+  label: string
+  href: string
+  icon: ReactNode
 }
 
-export interface PanelProps {
-  isDark: boolean;
-  toggleTheme: (isDark: boolean) => void;
-  cakePriceUsd?: number;
-  currentLang: string;
-  langs: Language[];
-  setLang: (lang: Language) => void;
-  links: Array<MenuEntry>;
-}
-
-export interface NavProps extends PanelProps {
-  title: string;
-  logo?: ReactElement;
-  userMenu?: ReactElement;
-  globalMenu?: ReactElement;
+export interface NavProps {
+  selected?: string
+  links: MenuEntry[]
+  userMenu?: ReactNode
+  settingMenu?: ReactNode
+  onChange: (value: string) => void
 }

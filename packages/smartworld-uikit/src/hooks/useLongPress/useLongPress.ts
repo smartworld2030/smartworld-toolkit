@@ -6,17 +6,17 @@ const useLongPress = (startFunc = () => {}, endFunc = () => {}, doneFunc = () =>
 
   useEffect(() => {
     let timerId: NodeJS.Timeout
+    let countdown: NodeJS.Timeout
     const endingFunction = () => {
       endFunc()
       clearTimeout(timerId)
+      if (!countdown) clearTimeout(countdown)
     }
     if (startLongPress) {
       startFunc()
       setDone(false)
       timerId = setTimeout(() => {
-        setTimeout(() => {
-          setDone(false)
-        }, ms)
+        countdown = setTimeout(() => setDone(false), ms)
         setDone(true)
         doneFunc()
       }, ms)

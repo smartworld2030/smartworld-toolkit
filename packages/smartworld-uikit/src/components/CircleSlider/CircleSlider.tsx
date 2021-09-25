@@ -62,7 +62,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
       angle: circleSliderHelper.current.getAngle(),
       currentStepValue: circleSliderHelper.current.getCurrentStep(),
     }))
-  }, [])
+  }, [size])
 
   useEffect(() => {
     if (!state.isMouseMove) {
@@ -163,6 +163,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   const { x, y } = getPointPosition()
   const center = getCenter()
   const isAllGradientColorsAvailable = gradientColorFrom && gradientColorTo
+
   return (
     <svg
       ref={(svg) => (mouseHelper.current = new MouseHelper(svg))}

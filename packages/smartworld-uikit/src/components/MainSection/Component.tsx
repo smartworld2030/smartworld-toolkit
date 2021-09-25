@@ -1,23 +1,35 @@
-import React, { ReactNode } from 'react'
+import React, { Children, cloneElement, isValidElement, ReactNode } from 'react'
 import styled from 'styled-components'
-import { AnimatedFlex, Flex, Box, AnimatedTipFlex } from '../Box'
+import { AnimatedFlex, Box, AnimatedTipFlex } from '../Box'
 
 export const Container = styled(Box)<{ flexDirection?: string; minheight?: string }>`
+  position: relative;
   display: flex;
   width: ${({ width }) => (width ? width : '100%')};
   height: ${({ height }) => (height ? height : '100%')};
-  min-height: ${({ minHeight }) => minHeight ?? minHeight}px;
+  min-height: ${({ minHeight }) => (minHeight ? minHeight : 0)}px;
   flex-flow: wrap;
   margin-left: auto;
-  position: relative;
   margin-right: auto;
   box-sizing: border-box;
   flex-direction: ${({ flexDirection }) => flexDirection};
   background-color: ${({ theme }) => theme.colors.background};
 `
 
+export const AbsoluteBody = styled(Box)`
+  text-align: center;
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  right: 0;
+`
+
+export const MainRoute = ({ children }: any) => {
+  return children
+}
+
 interface FlexWithTip {
-  size: number
+  flex: number
   tip?: ReactNode
   tipSize?: number
   showTip?: boolean
@@ -26,23 +38,25 @@ interface FlexWithTip {
 
 export const FlexWithTip: React.FC<FlexWithTip> = ({
   tip,
-  size,
+  flex,
   isMobile,
   tipSize = tip ? 6 : 0,
   showTip,
   children,
+  ...rest
 }) => {
-  const t = tipSize * (size / 12)
+  const t = tipSize * (flex / 12)
   const x = showTip ? t : 0
-
   return (
-    <Flex
-      {...(isMobile ? { width: '100%', height: size } : { width: size, height: '100%' })}
+    <AnimatedFlex
+      {...(isMobile ? { width: '100%', height: flex } : { width: flex, height: '100%' })}
       overflow="hidden"
       flexDirection={isMobile ? 'column' : 'row'}
     >
       {tip && <AnimatedTipFlex {...(isMobile ? { height: x } : { width: x })}>{tip}</AnimatedTipFlex>}
-      <AnimatedFlex {...(isMobile ? { height: size - x } : { width: size - x })}>{children}</AnimatedFlex>
-    </Flex>
+      <AnimatedFlex {...rest} {...(isMobile ? { height: flex - x } : { width: flex - x })}>
+        {children}
+      </AnimatedFlex>
+    </AnimatedFlex>
   )
 }

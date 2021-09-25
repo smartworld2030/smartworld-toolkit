@@ -1,7 +1,6 @@
-import { capitalize } from 'lodash'
 import React from 'react'
-import styled from 'styled-components'
 import Box from '../Box/Box'
+import { LogoIcon } from '../Svg'
 import { LongPressButton } from './'
 
 export default {
@@ -15,7 +14,7 @@ export const Default: React.FC = () => {
   return (
     <>
       <Box mb="32px">
-        <LongPressButton transition={3000} size={100} onClick={onClick} mr="8px">
+        <LongPressButton successIcon={<LogoIcon />} transition={6000} size={100} onClick={onClick} mr="8px">
           LongPressButton
         </LongPressButton>
       </Box>

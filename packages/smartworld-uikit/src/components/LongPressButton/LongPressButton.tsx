@@ -15,7 +15,7 @@ const LongPressButton: React.FC<Props> = ({
   onClick,
   variant,
   successIcon,
-  transition = 1000,
+  transition = 3000,
   size = 100,
   fontSize,
   children,
@@ -32,14 +32,13 @@ const LongPressButton: React.FC<Props> = ({
     onClick()
   }
   let { done, props } = useLongPress(startFunc, endFunc, doneFunc, transition)
-  console.log(s)
   return (
     <Container width={size * 2} height={size * 2}>
       <AnimatedButton
         done={done}
         size={size}
         transition={transition}
-        start={s}
+        animate={s}
         variant={done ? 'success' : variant}
         fontSize={fontSize ? fontSize : size / 10}
         {...props}
@@ -51,7 +50,7 @@ const LongPressButton: React.FC<Props> = ({
   )
 }
 LongPressButton.defaultProps = {
-  variant: 'secondary',
+  variant: 'primary',
   shape: 'circle',
 }
 

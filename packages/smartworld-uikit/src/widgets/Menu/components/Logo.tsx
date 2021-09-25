@@ -1,10 +1,10 @@
-import React, { ReactNode } from "react";
-import Flex from "../../../components/Box/Flex";
-import { Text } from "../../../components/Text";
+import React, { ReactNode } from 'react'
+import Flex from '../../../components/Box/Flex'
+import { Text } from '../../../components/Text'
 
 interface Props {
-  innerLogo: ReactNode;
-  title: string;
+  innerLogo: ReactNode
+  title?: string
 }
 
 const Logo: React.FC<Props> = ({ innerLogo, title }) => {
@@ -17,7 +17,7 @@ const Logo: React.FC<Props> = ({ innerLogo, title }) => {
         </Text>
       </Flex>
     </Flex>
-  );
-};
+  )
+}
 
-export default Logo;
+export default Logo

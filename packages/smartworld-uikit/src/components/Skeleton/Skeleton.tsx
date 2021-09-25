@@ -1,7 +1,9 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
-import { space, layout } from "styled-system";
-import { SkeletonProps, animation as ANIMATION, variant as VARIANT } from "./types";
+import React from 'react'
+import styled, { keyframes } from 'styled-components'
+import { space, layout } from 'styled-system'
+import { scaleVariants } from '../Button/theme'
+import { scales } from '../Button/types'
+import { SkeletonProps, animation as ANIMATION, variant as VARIANT } from './types'
 
 const waves = keyframes`
    from {
@@ -10,7 +12,7 @@ const waves = keyframes`
     to   {
         left: 100%;
     }
-`;
+`
 
 const pulse = keyframes`
   0% {
@@ -22,29 +24,30 @@ const pulse = keyframes`
   100% {
     opacity: 1;
   }
-`;
+`
 
 const Root = styled.div<SkeletonProps>`
-  min-height: 20px;
+  min-height: 50px;
+  min-width: 50px;
   display: block;
   background-color: ${({ theme }) => theme.colors.backgroundDisabled};
   border-radius: ${({ variant, theme }) => (variant === VARIANT.CIRCLE ? theme.radii.circle : theme.radii.small)};
 
   ${layout}
   ${space}
-`;
+`
 
 const Pulse = styled(Root)`
   animation: ${pulse} 2s infinite ease-out;
   transform: translate3d(0, 0, 0);
-`;
+`
 
 const Waves = styled(Root)`
   position: relative;
   overflow: hidden;
   transform: translate3d(0, 0, 0);
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     background-image: linear-gradient(90deg, transparent, rgba(243, 243, 243, 0.5), transparent);
     top: 0;
@@ -53,14 +56,27 @@ const Waves = styled(Root)`
     width: 150px;
     animation: ${waves} 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
-`;
+`
 
-const Skeleton: React.FC<SkeletonProps> = ({ variant = VARIANT.RECT, animation = ANIMATION.PULSE, ...props }) => {
+const Skeleton: React.FC<SkeletonProps> = ({
+  shape,
+  scale = scales.MD,
+  variant = VARIANT.CIRCLE,
+  animation = ANIMATION.PULSE,
+  ...props
+}) => {
   if (animation === ANIMATION.WAVES) {
-    return <Waves variant={variant} {...props} />;
+    return <Waves variant={variant} {...props} />
+  }
+  const shapeProps: any = {}
+  if (shape === 'circle') {
+    const s = scaleVariants[scale]
+    shapeProps.height = s.height
+    shapeProps.width = s.height
+    variant = 'circle'
   }
 
-  return <Pulse variant={variant} {...props} />;
-};
+  return <Pulse variant={variant} {...props} {...shapeProps} />
+}
 
-export default Skeleton;
+export default Skeleton
