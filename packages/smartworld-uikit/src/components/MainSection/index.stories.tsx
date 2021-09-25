@@ -85,16 +85,20 @@ export const MainSectionExample: React.FC = () => {
             <MainInvestment />
           </Route>
           <Route exact strict path={['/swap', '/freeze']}>
-            <Updater comp="swap" />
-            <MainFlex>
-              <div>swap</div>
-            </MainFlex>
+            <MainRoute>
+              <Updater comp="swap" />
+              <MainFlex>
+                <div>swap</div>
+              </MainFlex>
+            </MainRoute>
           </Route>
           <Route exact strict path="/pool">
-            <Updater comp="pool" />
-            <MainFlex>
-              <div>pool</div>
-            </MainFlex>
+            <MainRoute>
+              <Updater comp="pool" />
+              <MainFlex>
+                <div>pool</div>
+              </MainFlex>
+            </MainRoute>
           </Route>
           <Route exact path="/">
             <Redirect to="/invest" />

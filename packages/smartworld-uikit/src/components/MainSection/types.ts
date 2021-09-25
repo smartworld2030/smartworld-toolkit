@@ -28,7 +28,7 @@ export interface DefaltToggle {
   showRight: boolean
 }
 
-export interface MainContainerProps {
+export interface MainSectionProps {
   initialValue?: WindowSizes
   config?: SpringConfig
   links: MenuEntry[]

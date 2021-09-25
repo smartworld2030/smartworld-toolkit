@@ -1,9 +1,9 @@
-import React, { Children, ReactElement, useMemo, useRef, useState } from 'react'
+import React, { Children, ReactElement, useRef, useState } from 'react'
 import { Menu, Spinner, useWindowSize } from '../..'
 import { AnimatedFlex, RelativeFlex, Flex } from '../Box'
 import { AbsoluteBody, Container, FlexWithTip } from './Component'
 import { useTransition, animated } from 'react-spring'
-import { MainContainerProps } from './types'
+import { MainSectionProps } from './types'
 import { useHistory, useLocation } from 'react-router'
 import recursiveMap from '../../util/recursiveMap'
 
@@ -13,7 +13,11 @@ const defaultToggle = {
   showLeft: false,
 }
 
-const MainSection: React.FC<MainContainerProps> = ({
+const MainSection: React.FC<MainSectionProps> = ({ children, ...rest }) => (
+  <MainContiner {...rest}>{recursiveMap(children)}</MainContiner>
+)
+
+const MainContiner: React.FC<MainSectionProps> = ({
   initialValue,
   config,
   loading = false,
@@ -84,7 +88,7 @@ const MainSection: React.FC<MainContainerProps> = ({
           <AbsoluteBody width="100%">
             <animated.div key={key} style={{ ...style }}>
               <Container flexDirection={isMobile ? 'column' : 'row'} height={isMobile ? '100%' : height}>
-                {Children.map(recursiveMap(children), (child: ReactElement) => {
+                {Children.map(children, (child: ReactElement) => {
                   const { type: Comp, props } = child
                   const { children, compOrder, ...rest } = props
                   counter.current = 0

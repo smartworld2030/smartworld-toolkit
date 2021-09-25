@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Route, Switch } from 'react-router'
-import { BrowserRouter as Router } from 'react-router-dom'
-import { useWindowSize } from '../..'
+import { Route } from 'react-router'
 import { BalanceInput } from '../BalanceInput'
 import { MainComp, MainFlex } from '../Box'
 import { Button } from '../Button'
 import { LongPressButton } from '../LongPressButton'
-import { MainRoute } from '../MainContainer/Component'
 import { Skeleton } from '../Skeleton'
 import { TooltipText, Text } from '../Text'
 import { WithdrawCircle } from '../WithdrawCircle'
 import RecursiveMap from '../../util/recursiveMap'
+import { MainRoute } from '../MainSection/Component'
 
 export default {
   title: 'Components/RecursiveMap',
