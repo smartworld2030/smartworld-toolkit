@@ -1,4 +1,5 @@
-import React, { ReactNode, ReactElement } from 'react'
+import React, { ReactNode } from 'react'
+import { Route, RouteProps } from 'react-router'
 import styled from 'styled-components'
 import { AnimatedFlex, Box, AnimatedTipFlex } from '../Box'
 
@@ -24,8 +25,8 @@ export const AbsoluteBody = styled(Box)`
   right: 0;
 `
 
-export const MainRoute = ({ children }: any) => {
-  return children
+export const MainRoute: React.FC<RouteProps> = (props) => {
+  return <Route {...props} />
 }
 
 interface FlexWithTip {

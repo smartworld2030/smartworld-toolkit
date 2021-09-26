@@ -10,11 +10,12 @@ import { useWindowSize } from '../..'
 import { MainComp, MainFlex } from '../Box'
 import { MainRoute } from '.'
 import { Updater } from './TestComp'
+import { RouteProps } from 'react-router'
 
-export const MainPool = () => {
+export const MainPool: React.FC<RouteProps> = (props) => {
   const { isMobile, flexSize, isTablet } = useWindowSize()
   return (
-    <MainRoute>
+    <MainRoute {...props}>
       <Updater comp="pool" />
       <MainDeposit {...{ isMobile, isTablet, flexSize }} />
       <MainWithdraw {...{ isMobile, isTablet, flexSize }} />

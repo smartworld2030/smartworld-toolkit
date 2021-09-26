@@ -8,9 +8,11 @@ import { Toggle } from '../Toggle'
 import { MainRoute } from './Component'
 import { Updater } from './TestComp'
 import { Spinner } from '../Spinner'
+import MainPool from './TestComp2'
+import MainInvestment from './TestComp'
 
-const MainPool = lazy(() => import('./TestComp2'))
-const MainInvestment = lazy(() => import('./TestComp'))
+// const MainPool = lazy(() => import('./TestComp2'))
+// const MainInvestment = lazy(() => import('./TestComp'))
 
 export default {
   title: 'Components/MainSection',
@@ -33,7 +35,7 @@ export const MainSectionExample: React.FC = () => {
         fallback={
           <>
             {console.log('loading')}
-            loading...
+            <Spinner />
           </>
         }
       >
@@ -79,19 +81,18 @@ export const MainSectionExample: React.FC = () => {
               </AnimatedTipFlex>
             )}
           >
-            <Route exact strict path="/pool" component={MainPool} />
-            <Route exact strict path={['/invest', '/investment']} component={MainInvestment} />
-            <Route exact strict path="/swap">
-              <MainRoute>
-                <Updater comp="swap" />
-                <MainFlex>
-                  <div>swap</div>
-                </MainFlex>
-              </MainRoute>
-            </Route>
+            <MainInvestment exact strict path={['/iframe.html', '/invest']} />
+            <MainPool exact strict path="/pool" />
+            <MainRoute exact strict path={['/swap', '/freeze']}>
+              <Updater comp="swap" />
+              <MainFlex>
+                <div>swap</div>
+              </MainFlex>
+            </MainRoute>
             <Route exact path="/iframe.html">
               <Redirect to="/pool" />
             </Route>
+            <div>Test</div>
           </MainSection>
         </Switch>
       </Suspense>

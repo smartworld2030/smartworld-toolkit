@@ -9,6 +9,7 @@ import { Skeleton } from '../Skeleton'
 import { useWindowSize } from '../..'
 import { MainComp, MainFlex } from '../Box'
 import { MainRoute } from '.'
+import { RouteProps } from 'react-router'
 
 export const Updater = ({ comp }: { comp: string }) => {
   let int: NodeJS.Timeout
@@ -22,10 +23,10 @@ export const Updater = ({ comp }: { comp: string }) => {
   return null
 }
 
-const MainInvestment = () => {
+const MainInvestment: React.FC<RouteProps> = (props) => {
   const { isMobile, flexSize, isTablet } = useWindowSize()
   return (
-    <MainRoute>
+    <MainRoute {...props}>
       <Updater comp="invest" />
       <MainDeposit {...{ isMobile, isTablet, flexSize }} />
       <MainWithdraw {...{ isMobile, isTablet, flexSize }} />
