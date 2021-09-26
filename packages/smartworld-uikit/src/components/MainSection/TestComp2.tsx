@@ -1,79 +1,21 @@
-import { Children, useEffect, useState } from 'react'
-import { Route } from 'react-router'
-import { BrowserRouter as Router } from 'react-router-dom'
-import { BalanceInput } from '../BalanceInput'
-import { MainComp, MainFlex } from '../Box'
+import React, { useState } from 'react'
+import Text from '../Text/Text'
 import { Button } from '../Button'
+import { BalanceInput } from '../BalanceInput'
+import { WithdrawCircle } from '../WithdrawCircle'
+import { TooltipText } from '../Text'
 import { LongPressButton } from '../LongPressButton'
 import { Skeleton } from '../Skeleton'
-import { TooltipText, Text } from '../Text'
-import { WithdrawCircle } from '../WithdrawCircle'
-import RecursiveMap from '../../util/recursiveRouteMap'
-import { MainRoute } from '../MainSection/Component'
+import { useWindowSize } from '../..'
+import { MainComp, MainFlex } from '../Box'
+import { MainRoute } from '.'
+import { Updater } from './TestComp'
 
-export default {
-  title: 'Components/RecursiveMap',
-  component: RecursiveMap,
-}
-export const RecursiveMaper = () => (
-  <Router>
-    <Mapping>
-      <Route exact strict path={['/iframe.html', '/invest']}>
-        <MainInvestment />
-      </Route>
-      <Route exact strict path={['/swap', '/freeze']}>
-        <Updater comp="swap" />
-        <MainFlex>
-          <div>swap</div>
-        </MainFlex>
-      </Route>
-      <div>swap</div>
-    </Mapping>
-  </Router>
-)
-
-const Mapping = ({ children }) => {
-  console.log(RecursiveMap(children))
-  return (
-    <pre>
-      <code>{Children.map(RecursiveMap(children), (child) => JSON.stringify(child, safeStringify(), 2))}</code>
-    </pre>
-  )
-}
-
-// safely handles circular references
-const safeStringify = () => {
-  const seen = new WeakSet()
-  return (key, value) => {
-    if (typeof value === 'object' && value !== null) {
-      if (seen.has(value)) {
-        return
-      }
-      seen.add(value)
-    }
-    return value
-  }
-}
-
-const Updater = ({ comp }: { comp: string }) => {
-  let int: NodeJS.Timeout
-  useEffect(() => {
-    console.log(comp)
-    int = setInterval(() => {
-      console.log(comp)
-    }, 3000)
-    return () => clearInterval(int)
-  }, [])
-  return null
-}
-
-const MainInvestment = () => {
-  const isMobile = false,
-    flexSize = 12,
-    isTablet = false
+export const MainPool = () => {
+  const { isMobile, flexSize, isTablet } = useWindowSize()
   return (
     <MainRoute>
-      <Updater comp="invest" />
+      <Updater comp="pool" />
       <MainDeposit {...{ isMobile, isTablet, flexSize }} />
       <MainWithdraw {...{ isMobile, isTablet, flexSize }} />
       <MainDetails {...{ isMobile, isTablet, flexSize }} />
@@ -81,7 +23,7 @@ const MainInvestment = () => {
   )
 }
 
-const MainWithdraw = ({ isMobile, flexSize, isTablet }) => {
+const MainWithdraw = ({ isMobile, flexSize, isTablet }: any) => {
   return (
     <MainFlex {...{ flex: 3, md: 6, sm: 4, xs: 4 }}>
       <MainComp
@@ -124,7 +66,7 @@ const MainWithdraw = ({ isMobile, flexSize, isTablet }) => {
   )
 }
 
-const MainDetails = ({ isMobile, flexSize, isTablet }) => {
+const MainDetails = ({ isMobile, flexSize, isTablet }: any) => {
   return (
     <MainFlex {...{ flex: 3, md: 6, sm: 4, xs: 4 }}>
       <MainComp
@@ -140,7 +82,7 @@ const MainDetails = ({ isMobile, flexSize, isTablet }) => {
     </MainFlex>
   )
 }
-const MainDeposit = ({ isMobile, flexSize, isTablet }) => {
+const MainDeposit = ({ isMobile, flexSize, isTablet }: any) => {
   const [value, setValue] = useState('100')
 
   return (
@@ -178,7 +120,7 @@ const MainDeposit = ({ isMobile, flexSize, isTablet }) => {
       </MainComp>
       <MainComp
         tip="Long Press Button"
-        flex={6}
+        flex={3}
         justifyContent="space-around"
         alignItems="center"
         tipSize={3}
@@ -189,3 +131,5 @@ const MainDeposit = ({ isMobile, flexSize, isTablet }) => {
     </MainFlex>
   )
 }
+
+export default MainPool

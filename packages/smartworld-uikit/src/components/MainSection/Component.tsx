@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, isValidElement, ReactNode } from 'react'
+import React, { ReactNode, ReactElement } from 'react'
 import styled from 'styled-components'
 import { AnimatedFlex, Box, AnimatedTipFlex } from '../Box'
 

@@ -1,6 +1,6 @@
 {
   "name": "@smartworld-libs/uikit",
-  "version": "0.51.1",
+  "version": "0.51.2",
   "description": "Set of UI components for pancake projects",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -53,7 +53,6 @@
     "@types/styled-system": "^5.1.10",
     "lodash": "^4.17.20",
     "react": "^17.0.2",
-    "react-children-utilities": "^2.6.2",
     "react-popper": "^2.2.5",
     "react-spring": "^9.2.4",
     "react-transition-group": "^4.4.1",

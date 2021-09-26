@@ -1,4 +1,4 @@
-import { SpringConfig } from '@react-spring/core'
+import { SpringConfig, TransitionFrom, TransitionTo } from '@react-spring/core'
 import { ReactElement, ReactNode } from 'react'
 import { FlexboxProps } from 'styled-system'
 import { MediaQueries, MenuEntry } from '../..'
@@ -27,6 +27,13 @@ export interface DefaltToggle {
   showLeft: boolean
   showRight: boolean
 }
+export type MainContainerTransition<Item = any> = {
+  from?: TransitionFrom<Item>
+  initial?: TransitionFrom<Item>
+  enter?: TransitionTo<Item>
+  update?: TransitionTo<Item>
+  leave?: TransitionTo<Item>
+}
 
 export interface MainSectionProps {
   initialValue?: WindowSizes
@@ -35,6 +42,7 @@ export interface MainSectionProps {
   height?: string
   width?: string
   loading?: boolean
+  transition?: MainContainerTransition
   rightIcon?: (props: { checked: boolean; onChange: () => void }) => ReactNode
   leftIcon?: (props: { checked: boolean; onChange: () => void }) => ReactNode
   left?: (props: AdditionalCompProps) => ReactNode

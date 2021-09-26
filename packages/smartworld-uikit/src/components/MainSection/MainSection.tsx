@@ -1,11 +1,11 @@
-import React, { Children, ReactElement, useRef, useState } from 'react'
+import React, { Children, ReactElement, useRef, useState, isValidElement } from 'react'
 import { Menu, Spinner, useWindowSize } from '../..'
 import { AnimatedFlex, RelativeFlex, Flex } from '../Box'
 import { AbsoluteBody, Container, FlexWithTip } from './Component'
 import { useTransition, animated } from 'react-spring'
 import { MainSectionProps } from './types'
 import { useHistory, useLocation } from 'react-router'
-import recursiveMap from '../../util/recursiveMap'
+import recursiveRouteMap from '../../util/recursiveRouteMap'
 
 const defaultToggle = {
   showTip: false,
@@ -14,7 +14,7 @@ const defaultToggle = {
 }
 
 const MainSection: React.FC<MainSectionProps> = ({ children, ...rest }) => (
-  <MainContiner {...rest}>{recursiveMap(children)}</MainContiner>
+  <MainContiner {...rest}>{recursiveRouteMap(children)}</MainContiner>
 )
 
 const MainContiner: React.FC<MainSectionProps> = ({
@@ -27,6 +27,7 @@ const MainContiner: React.FC<MainSectionProps> = ({
   left,
   leftIcon,
   children,
+  transition = {},
   ...rest
 }) => {
   const counter = useRef(0)
@@ -58,6 +59,7 @@ const MainContiner: React.FC<MainSectionProps> = ({
     leave: { opacity: 0, transform: 'translate3d(-50%,0,0)' },
     onStart: () => setAnimLoading(true),
     onRest: () => setAnimLoading(false),
+    ...(transition as any),
   })
 
   const changePage = (value: string) => {
@@ -90,9 +92,9 @@ const MainContiner: React.FC<MainSectionProps> = ({
               <Container flexDirection={isMobile ? 'column' : 'row'} height={isMobile ? '100%' : height}>
                 {Children.map(children, (child: ReactElement) => {
                   const { type: Comp, props } = child
-                  const { children, compOrder, ...rest } = props
+                  const { children, comporder, pathArray, ...rest } = props
                   counter.current = 0
-                  return (
+                  return pathArray?.includes(pathname) ? (
                     <Comp {...rest}>
                       {isMobile && right && right({ flexSize, toggle, isMobile, responsiveSize })}
                       {!isTablet &&
@@ -105,75 +107,77 @@ const MainContiner: React.FC<MainSectionProps> = ({
                           showTip,
                           tipChanger: () => toggleHandler('showTip'),
                         })}
-                      {compOrder === 'First'
-                        ? Children.map(children, ({ props }: ReactElement) => {
-                            const { flex = 12, children, compOrder, ...rest } = props
+                      {comporder === 'First'
+                        ? Children.map(children, (child: ReactElement) => {
+                            const { flex = 12, children, comporder, ...rest } = child.props
                             const w = rest[screen] ? rest[screen]! : sideToggle ? flex - 1 : flex
                             const itemFlex = (flexSize * w) / 12
-                            return (
-                              compOrder !== 'Last' && (
-                                <AnimatedFlex
-                                  key={counter.current++}
-                                  {...responsiveSize(w)}
-                                  flexDirection={isMobile ? 'column' : 'row'}
-                                  {...rest}
-                                >
-                                  {isTablet &&
-                                    counter.current === 0 &&
-                                    left &&
-                                    left({
-                                      flexSize,
-                                      toggle,
-                                      isMobile,
-                                      responsiveSize,
-                                      showTip,
-                                      tipChanger: () => toggleHandler('showTip'),
-                                    })}
-                                  {compOrder === 'Second'
-                                    ? Children.map(children, ({ props }: ReactElement, i) => {
-                                        const { tip, demo, tipSize, children, flex = 12, ...ss } = props
-                                        const w = ss[screen] ? ss[screen]! : flex
-                                        return animLoading || loading ? (
-                                          <AnimatedFlex
-                                            key={i}
-                                            {...(isMobile
-                                              ? { width: '100%', height: w * itemFlex }
-                                              : { width: w * itemFlex, height: '100%' })}
-                                            {...ss}
-                                          >
-                                            {demo ? demo : <Spinner />}
-                                          </AnimatedFlex>
-                                        ) : (
-                                          <FlexWithTip
-                                            key={i}
-                                            showTip={showTip}
-                                            isMobile={isMobile}
-                                            flex={w * itemFlex}
-                                            tip={tip}
-                                            tipSize={tipSize}
-                                            {...ss}
-                                          >
-                                            {children}
-                                          </FlexWithTip>
-                                        )
-                                      })
-                                    : child}
-                                  {isTablet &&
-                                    counter.current === 0 &&
-                                    right &&
-                                    right({
-                                      flexSize,
-                                      toggle,
-                                      isMobile,
-                                      responsiveSize,
-                                    })}
-                                </AnimatedFlex>
-                              )
+                            return comporder !== 'Last' ? (
+                              <AnimatedFlex
+                                key={counter.current++}
+                                {...responsiveSize(w)}
+                                flexDirection={isMobile ? 'column' : 'row'}
+                                {...rest}
+                              >
+                                {isTablet &&
+                                  counter.current === 0 &&
+                                  left &&
+                                  left({
+                                    flexSize,
+                                    toggle,
+                                    isMobile,
+                                    responsiveSize,
+                                    showTip,
+                                    tipChanger: () => toggleHandler('showTip'),
+                                  })}
+                                {isValidElement(children) && comporder === 'Second'
+                                  ? Children.map(children, ({ props }: ReactElement, i) => {
+                                      const { tip, demo, tipSize, children, flex = 12, ...ss } = props
+                                      const w = ss[screen] ? ss[screen]! : flex
+                                      return animLoading || loading ? (
+                                        <AnimatedFlex
+                                          key={i}
+                                          {...(isMobile
+                                            ? { width: '100%', height: w * itemFlex }
+                                            : { width: w * itemFlex, height: '100%' })}
+                                          {...ss}
+                                        >
+                                          {demo ? demo : <Spinner />}
+                                        </AnimatedFlex>
+                                      ) : (
+                                        <FlexWithTip
+                                          key={i}
+                                          showTip={showTip}
+                                          isMobile={isMobile}
+                                          flex={w * itemFlex}
+                                          tip={tip}
+                                          tipSize={tipSize}
+                                          {...ss}
+                                        >
+                                          {children}
+                                        </FlexWithTip>
+                                      )
+                                    })
+                                  : child}
+                                {isTablet &&
+                                  counter.current === 0 &&
+                                  right &&
+                                  right({
+                                    flexSize,
+                                    toggle,
+                                    isMobile,
+                                    responsiveSize,
+                                  })}
+                              </AnimatedFlex>
+                            ) : (
+                              child
                             )
                           })
                         : children}
                       {!isMobile && !isTablet && right && right({ flexSize, toggle, isMobile, responsiveSize })}
                     </Comp>
+                  ) : (
+                    child
                   )
                 })}
               </Container>
