@@ -37,7 +37,7 @@ export interface MenuEntry {
 export interface NavProps {
   selected?: string
   links: MenuEntry[]
-  userMenu?: ReactNode
-  settingMenu?: ReactNode
+  leftSide?: ReactNode
+  rightSide?: ReactNode
   onChange: (value: string) => void
 }

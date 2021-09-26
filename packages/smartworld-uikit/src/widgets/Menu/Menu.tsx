@@ -31,13 +31,13 @@ const Select = styled.select`
   }
 `
 
-const Menu: React.FC<NavProps> = ({ userMenu, links, selected, settingMenu, onChange }) => {
+const Menu: React.FC<NavProps> = ({ rightSide, links, selected, leftSide, onChange }) => {
   const item = links.find((link) => link.href === selected)
   return (
     <Wrapper>
       <StyledNav>
         <Flex flex="4" justifyContent="start">
-          {settingMenu}
+          {leftSide}
         </Flex>
         <Flex flex="4" justifyContent="center">
           {item?.icon}
@@ -50,7 +50,7 @@ const Menu: React.FC<NavProps> = ({ userMenu, links, selected, settingMenu, onCh
           </Select>
         </Flex>
         <Flex flex="4" justifyContent="end">
-          {userMenu}
+          {rightSide}
         </Flex>
       </StyledNav>
     </Wrapper>

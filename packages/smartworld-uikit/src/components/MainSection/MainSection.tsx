@@ -47,8 +47,8 @@ const MainContiner: React.FC<MainSectionProps> = ({
 
   function responsiveSize(w: number, toggle = true) {
     return isMobile
-      ? { height: toggle ? flexSize * w : 0, width: isTablet ? '50%' : '100%' }
-      : { width: toggle ? flexSize * w : 0, height: isTablet ? '50%' : '100%' }
+      ? { height: toggle ? flexSize * w : 0, width: '100%' }
+      : { width: toggle ? flexSize * w : 0, height: '100%' }
   }
 
   const transitions = useTransition(location, {
@@ -70,20 +70,31 @@ const MainContiner: React.FC<MainSectionProps> = ({
 
   const findPath = () => (links.some((link) => link.href === pathname) ? pathname : links[0].href)
 
+  const rightProps = { flexSize, toggle, isMobile, isTablet, responsiveSize }
+  const leftProps = {
+    flexSize,
+    toggle,
+    isMobile,
+    isTablet,
+    responsiveSize,
+    showTip,
+    tipChanger: () => toggleHandler('showTip'),
+  }
+
   return (
     <Flex justifyContent="start" flexDirection="column" {...rest}>
       <Menu
         onChange={changePage}
         links={links}
         selected={findPath()}
-        userMenu={
+        rightSide={
           rightIcon &&
           rightIcon({
-            checked: showLeft,
+            checked: showRight,
             onChange: () => toggleHandler('showRight'),
           })
         }
-        settingMenu={leftIcon && leftIcon({ checked: showRight, onChange: () => toggleHandler('showLeft') })}
+        leftSide={leftIcon && leftIcon({ checked: showLeft, onChange: () => toggleHandler('showLeft') })}
       />
       <RelativeFlex width={width} justifyContent={animLoading ? 'center' : 'start'}>
         {transitions((style, _1, _2, key) => (
@@ -96,39 +107,20 @@ const MainContiner: React.FC<MainSectionProps> = ({
                   counter.current = 0
                   return comporder === 1 ? (
                     <Comp {...rest}>
-                      {isMobile && right && right({ flexSize, toggle, isMobile, responsiveSize })}
-                      {!isTablet &&
-                        left &&
-                        left({
-                          flexSize,
-                          toggle,
-                          isMobile,
-                          responsiveSize,
-                          showTip,
-                          tipChanger: () => toggleHandler('showTip'),
-                        })}
+                      {isMobile && right && right(rightProps)}
+                      {!isTablet && left && left(leftProps)}
                       {Children.map(children, (child: ReactElement) => {
                         const { flex = 12, children, comporder, ...rest } = child.props
                         const w = rest[screen] ? rest[screen]! : sideToggle ? flex - 1 : flex
                         const itemFlex = (flexSize * w) / 12
                         return comporder == 2 ? (
                           <AnimatedFlex
-                            key={counter.current++}
-                            {...responsiveSize(w)}
+                            key={counter.current}
+                            {...(responsiveSize(w), isTablet && { height: '50%' })}
                             flexDirection={isMobile ? 'column' : 'row'}
                             {...rest}
                           >
-                            {isTablet &&
-                              counter.current === 0 &&
-                              left &&
-                              left({
-                                flexSize,
-                                toggle,
-                                isMobile,
-                                responsiveSize,
-                                showTip,
-                                tipChanger: () => toggleHandler('showTip'),
-                              })}
+                            {isTablet && counter.current === 0 && left && left(leftProps)}
                             {Children.map(children, ({ props }: ReactElement, i) => {
                               const { tip, demo, tipSize, children, flex = 12, ...ss } = props
                               const w = ss[screen] ? ss[screen]! : flex
@@ -156,21 +148,13 @@ const MainContiner: React.FC<MainSectionProps> = ({
                                 </FlexWithTip>
                               )
                             })}
-                            {isTablet &&
-                              counter.current === 0 &&
-                              right &&
-                              right({
-                                flexSize,
-                                toggle,
-                                isMobile,
-                                responsiveSize,
-                              })}
+                            {isTablet && counter.current++ === 0 && right && right(rightProps)}
                           </AnimatedFlex>
                         ) : (
                           child
                         )
                       })}
-                      {!isMobile && !isTablet && right && right({ flexSize, toggle, isMobile, responsiveSize })}
+                      {!isMobile && !isTablet && right && right(rightProps)}
                     </Comp>
                   ) : (
                     child

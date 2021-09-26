@@ -53,6 +53,7 @@ export interface MainSectionProps {
 interface AdditionalCompProps {
   flexSize: number
   isMobile?: boolean
+  isTablet?: boolean
   toggle: DefaltToggle
   showTip: boolean
   tipChanger: () => void
