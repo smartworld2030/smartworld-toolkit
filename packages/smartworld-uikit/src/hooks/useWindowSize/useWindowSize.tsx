@@ -15,7 +15,7 @@ const initValue = {
   width: 1200,
   isMobile: false,
   flexSize: 30,
-  height: 250,
+  height: 400,
   isTablet: false,
 } as const
 
@@ -36,11 +36,11 @@ const useWindowSize = (initialValue: WindowSizes = initValue, endFunc = (loading
       const isMobile = ['xs', 'sm'].includes(screen)
       const isTablet = 'md' === screen
 
-      const height = isMobile ? 800 : isTablet ? initialValue.height * 2 : initialValue.height
+      const height = initialValue.height
 
-      const flexSize = isMobile ? height / 12 : width / 12
+      const flexSize = height / 12
 
-      setSizes({ screen, width, height, flexSize, isMobile, isTablet })
+      setSizes({ screen, width: isMobile ? width : width / 2, height, flexSize, isMobile, isTablet })
       endFunc(false)
     }
 

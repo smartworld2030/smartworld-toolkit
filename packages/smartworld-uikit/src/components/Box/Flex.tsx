@@ -7,6 +7,11 @@ const Flex = styled(Box)<FlexProps>`
   display: flex;
   ${flexbox}
 `
+export const ReverseFlex = styled(Box)<FlexProps>`
+  display: flex;
+  flex-direction: column-reverse;
+  ${flexbox}
+`
 
 export const MainFlex = styled(Box)<FlexProps>`
   display: flex;
