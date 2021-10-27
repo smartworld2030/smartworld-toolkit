@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useState } from 'react'
+import React, { useState } from 'react'
 import Text from '../Text/Text'
 import { Button } from '../Button'
 import { BalanceInput } from '../BalanceInput'
@@ -6,13 +6,10 @@ import { WithdrawCircle } from '../WithdrawCircle'
 import { TooltipText } from '../Text'
 import { LongPressButton } from '../LongPressButton'
 import { Skeleton } from '../Skeleton'
-import { useWindowSize } from '../..'
-import { ReverseFlex, AnimatedFlex } from '../Box'
+import { ReverseFlex } from '../Box'
 import { Updater } from './TestComp'
 import { RouteProps } from 'react-router'
-import { Spinner } from '../Spinner'
-import { FlexWithTip } from '.'
-import { MainContext } from './MainSection2'
+import { MainComp } from '.'
 
 export const MainPool: React.FC<RouteProps> = (props) => {
   return (
@@ -130,15 +127,3 @@ const Deposit = () => {
 }
 
 export default MainPool
-
-const MainComp = (props: any) => {
-  const { showTip } = useContext(MainContext)
-  const { flexSize } = useWindowSize()
-
-  const { tip, demo, tipSize, children, flex = 12, ...ss } = props
-  return (
-    <FlexWithTip showTip={showTip} isMobile={true} flex={flexSize * flex} tip={tip} tipSize={tipSize} {...ss}>
-      {children}
-    </FlexWithTip>
-  )
-}

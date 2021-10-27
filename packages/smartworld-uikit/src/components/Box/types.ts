@@ -20,6 +20,7 @@ export interface BoxProps
 export interface FlexProps extends BoxProps, FlexboxProps {}
 
 export interface MainFlexProps extends BoxProps, FlexboxProps {
+  flex?: number
   tip?: ReactNode
   demo?: ReactNode
   tipSize?: number

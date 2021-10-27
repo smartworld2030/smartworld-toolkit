@@ -1,7 +1,10 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useContext } from 'react'
 import { Route, RouteProps } from 'react-router'
 import styled from 'styled-components'
 import { AnimatedFlex, Box, AnimatedTipFlex } from '../Box'
+import { useWindowSize } from '../..'
+import { MainContext } from './MainSection'
+import { MainFlexProps } from '../Box/types'
 
 export const Container = styled(Box)<{ flexDirection?: string; minheight?: string }>`
   position: relative;
@@ -59,5 +62,17 @@ export const FlexWithTip: React.FC<FlexWithTip> = ({
         {children}
       </AnimatedFlex>
     </AnimatedFlex>
+  )
+}
+
+export const MainComp = (props: MainFlexProps) => {
+  const { showTip } = useContext(MainContext)
+  const { flexSize } = useWindowSize()
+
+  const { tip, demo, tipSize, children, flex = 12, ...ss } = props
+  return (
+    <FlexWithTip showTip={showTip} isMobile={true} flex={flex * flexSize} tip={tip} tipSize={tipSize} {...ss}>
+      {children}
+    </FlexWithTip>
   )
 }

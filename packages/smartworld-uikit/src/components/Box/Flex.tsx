@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { flexbox } from 'styled-system'
 import Box from './Box'
-import { FlexProps, MainFlexProps } from './types'
+import { FlexProps } from './types'
 
 const Flex = styled(Box)<FlexProps>`
   display: flex;
@@ -14,11 +14,6 @@ export const ReverseFlex = styled(Box)<FlexProps>`
 `
 
 export const MainFlex = styled(Box)<FlexProps>`
-  display: flex;
-  ${flexbox}
-`
-
-export const MainComp = styled(Box)<MainFlexProps>`
   display: flex;
   ${flexbox}
 `

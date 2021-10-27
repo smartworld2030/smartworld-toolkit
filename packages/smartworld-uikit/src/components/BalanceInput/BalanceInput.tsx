@@ -1,3 +1,4 @@
+import { debounce } from 'lodash'
 import React, { ReactText } from 'react'
 import { useTheme } from 'styled-components'
 import { AbsoluteFlex, Flex, RelativeFlex } from '../Box'
@@ -35,6 +36,8 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   position,
   disabled = false,
   disabledKnob = false,
+  debounceTime = 100,
+  maxWait = 100,
   ...props
 }) => {
   const { colors } = useTheme()
@@ -44,7 +47,6 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
       onUserInput(e.currentTarget.value.replace(/,/g, '.'))
     }
   }
-
   const handleChangeRange = (val: any) => {
     onUserInput(percentToValue(val, maxValue))
   }
@@ -147,7 +149,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
         progressWidth={progressSize ? progressSize : sizeCalc(30)}
         circleWidth={borderSize ? borderSize : sizeCalc(30)}
         knobRadius={disabledKnob || disabled ? 0 : knobSize ? knobSize : sizeCalc(15)}
-        onInputChange={handleChangeRange}
+        onInputChange={debounce(handleChangeRange, debounceTime, { maxWait })}
         knobColor={knobColor ? knobColor : 'white'}
         progressColor={isWarning ? colors.failure : progressColor ? progressColor : colors.primary}
         insideColor={color ? color : colors.tertiary}

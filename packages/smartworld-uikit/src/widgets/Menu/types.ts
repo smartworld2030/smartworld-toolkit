@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, Ref } from 'react'
 import { Colors } from '../../theme/types'
 
 export interface Language {
@@ -35,6 +35,8 @@ export interface MenuEntry {
 }
 
 export interface NavProps {
+  width?: number
+  background?: string
   selected?: string
   links: MenuEntry[]
   leftSide?: ReactNode

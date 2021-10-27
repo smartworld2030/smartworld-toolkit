@@ -41,6 +41,8 @@ export interface MainSectionProps {
   links: MenuEntry[]
   height?: string
   width?: string
+  background?: string
+  menuBackground?: string
   loading?: boolean
   transition?: MainContainerTransition
   rightIcon?: (props: { checked: boolean; onChange: () => void }) => ReactNode

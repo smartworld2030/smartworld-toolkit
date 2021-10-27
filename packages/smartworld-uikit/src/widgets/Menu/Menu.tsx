@@ -4,9 +4,10 @@ import Flex from '../../components/Box/Flex'
 import { NavProps } from './types'
 import { MENU_HEIGHT } from './config'
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ width?: string; background?: string }>`
   position: relative;
-  width: 100%;
+  width: ${({ width }) => (width ? width : '100%')};
+  background: ${({ theme, background }) => (background ? background : theme.colors.background)};
 `
 
 const StyledNav = styled.nav`
@@ -31,10 +32,10 @@ const Select = styled.select`
   }
 `
 
-const Menu: React.FC<NavProps> = ({ rightSide, links, selected, leftSide, onChange }) => {
+const Menu: React.FC<NavProps> = ({ rightSide, width, background, links, selected, leftSide, onChange }) => {
   const item = links.find((link) => link.href === selected)
   return (
-    <Wrapper>
+    <Wrapper background={background} width={width ? `${width}px` : undefined}>
       <StyledNav>
         <Flex flex="4" justifyContent="start">
           {leftSide}
