@@ -5,6 +5,7 @@ export interface CircleSliderProps extends SvgProps {
   circleWidth?: number
   progressWidth?: number
   knobRadius?: number
+  knobWidth?: number
   value?: number
   stepSize?: number
   min?: number
@@ -15,8 +16,10 @@ export interface CircleSliderProps extends SvgProps {
   gradientColorTo?: string
   knobColor?: string
   onInputChange?: (value?: number) => void
+  onImageError?: () => void
   disabled?: boolean
   shadow?: boolean
+  image?: string
   showPercentage?: boolean
   tooltipSize?: number
   tooltipColor?: string

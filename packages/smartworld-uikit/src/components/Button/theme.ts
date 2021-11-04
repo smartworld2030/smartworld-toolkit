@@ -4,26 +4,38 @@ export const scaleVariants = {
   [scales.XL]: {
     height: '128px',
     fontSize: '16px',
+    borderWidth: '8px',
+    iconSize: '96px',
   },
   [scales.ML]: {
     height: '88px',
     fontSize: '12px',
+    borderWidth: '6px',
+    iconSize: '64px',
   },
   [scales.LG]: {
     height: '64px',
     fontSize: '8px',
+    borderWidth: '4px',
+    iconSize: '48px',
   },
   [scales.MD]: {
     height: '48px',
     padding: '0 24px',
+    borderWidth: '3px',
+    iconSize: '36px',
   },
   [scales.SM]: {
     height: '32px',
     padding: '0 16px',
+    borderWidth: '3px',
+    iconSize: '24px',
   },
   [scales.XS]: {
     height: '20px',
     padding: '0 8px',
+    borderWidth: '3px',
+    iconSize: '12px',
   },
 }
 
@@ -31,14 +43,12 @@ export const styleShape = {
   [shape.NOPAD]: {
     backgroundColor: 'primary',
     color: 'text',
-    boxShadow: 'none',
     padding: 0,
   },
   [shape.CIRCLE]: {
     display: 'flex',
     flexDirection: 'column',
     borderRadius: '50%',
-    boxShadow: 'none',
     padding: 0,
   },
 }
@@ -46,10 +56,9 @@ export const styleShape = {
 export const styleVariants = {
   [variants.PRIMARY]: {
     borderRadius: 'default',
-    backgroundColor: 'tertiary',
-    border: '2px solid',
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
     borderColor: 'primary',
-    boxShadow: 'none',
     color: 'primary',
     ':disabled': {
       backgroundColor: 'input',
@@ -57,10 +66,9 @@ export const styleVariants = {
   },
   [variants.SECONDARY]: {
     borderRadius: 'default',
-    backgroundColor: 'tertiary',
-    border: '2px solid',
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
     borderColor: 'textDisabled',
-    boxShadow: 'none',
     color: 'text',
     ':disabled': {
       backgroundColor: 'input',
@@ -69,9 +77,8 @@ export const styleVariants = {
   [variants.TRANSPARENT]: {
     borderRadius: 'default',
     backgroundColor: 'transparent',
-    border: '2px solid',
+    borderStyle: 'solid',
     borderColor: 'primary',
-    boxShadow: 'none',
     color: 'primary',
     ':disabled': {
       backgroundColor: 'transparent',
@@ -79,24 +86,31 @@ export const styleVariants = {
   },
   [variants.TERTIARY]: {
     borderRadius: 'default',
-    backgroundColor: 'tertiary',
-    boxShadow: 'none',
+    backgroundColor: 'transparent',
+    borderColor: 'tertiary',
     color: 'primary',
+    borderStyle: 'solid',
   },
   [variants.SUBTLE]: {
     borderRadius: 'default',
-    backgroundColor: 'textSubtle',
+    backgroundColor: 'transparent',
     color: 'white',
+    borderStyle: 'solid',
+    borderColor: 'textSubtle',
   },
   [variants.DANGER]: {
     borderRadius: 'default',
-    backgroundColor: 'failure',
+    backgroundColor: 'transparent',
     color: 'black',
+    borderStyle: 'solid',
+    borderColor: 'failure',
   },
   [variants.SUCCESS]: {
     borderRadius: 'default',
-    backgroundColor: 'success',
+    backgroundColor: 'transparent',
+    borderColor: 'success',
     color: 'black',
+    borderStyle: 'solid',
   },
   [variants.TEXT]: {
     borderRadius: 'default',

@@ -32,8 +32,8 @@ const Select = styled.select`
   }
 `
 
-const Menu: React.FC<NavProps> = ({ rightSide, width, background, links, selected, leftSide, onChange }) => {
-  const item = links.find((link) => link.href === selected)
+const Menu: React.FC<NavProps> = ({ rightSide, width, background, list, selected, leftSide, onChange }) => {
+  const item = list.links.find((link) => link.path.some((p) => p === selected))
   return (
     <Wrapper background={background} width={width ? `${width}px` : undefined}>
       <StyledNav>
@@ -43,8 +43,8 @@ const Menu: React.FC<NavProps> = ({ rightSide, width, background, links, selecte
         <Flex flex="4" justifyContent="center">
           {item?.icon}
           <Select value={selected} onChange={(e) => onChange(e.currentTarget.value)}>
-            {Object.values(links).map((link, i) => (
-              <option key={i} value={link.href}>
+            {Object.values(list.links).map((link, i) => (
+              <option key={i} value={link.path[0]}>
                 {link.label}
               </option>
             ))}

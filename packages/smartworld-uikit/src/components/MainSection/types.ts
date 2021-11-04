@@ -1,7 +1,7 @@
 import { SpringConfig, TransitionFrom, TransitionTo } from '@react-spring/core'
-import { ReactElement, ReactNode } from 'react'
+import { ReactElement, ReactNode, Ref } from 'react'
 import { FlexboxProps } from 'styled-system'
-import { MediaQueries, MenuEntry } from '../..'
+import { MediaQueries, ListItems } from '../..'
 import { WindowSizes } from '../../hooks/useWindowSize/useWindowSize'
 
 export type ScreenBreakPoint = keyof Omit<MediaQueries, 'nav'>
@@ -38,11 +38,13 @@ export type MainContainerTransition<Item = any> = {
 export interface MainSectionProps {
   initialValue?: WindowSizes
   config?: SpringConfig
-  links: MenuEntry[]
+  list: ListItems
   height?: string
   width?: string
+  refFunc?: Ref<HTMLDivElement>
   background?: string
   menuBackground?: string
+  mainBackground?: string
   loading?: boolean
   transition?: MainContainerTransition
   rightIcon?: (props: { checked: boolean; onChange: () => void }) => ReactNode
@@ -50,6 +52,7 @@ export interface MainSectionProps {
   left?: (props: AdditionalCompProps) => ReactNode
   right?: (props: Omit<AdditionalCompProps, 'showTip' | 'tipChanger'>) => ReactNode
   children: ReactElement | ReactElement[]
+  skeleton?: ReactElement | ReactElement[]
 }
 
 interface AdditionalCompProps {

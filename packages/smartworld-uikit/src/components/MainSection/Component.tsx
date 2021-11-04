@@ -5,8 +5,12 @@ import { AnimatedFlex, Box, AnimatedTipFlex } from '../Box'
 import { useWindowSize } from '../..'
 import { MainContext } from './MainSection'
 import { MainFlexProps } from '../Box/types'
+interface ContainerProps extends MainFlexProps {
+  background?: string
+  minHeight?: string
+}
 
-export const Container = styled(Box)<{ flexDirection?: string; minheight?: string }>`
+export const Container = styled(Box)<ContainerProps>`
   position: relative;
   display: flex;
   width: ${({ width }) => (width ? width : '100%')};
@@ -17,7 +21,7 @@ export const Container = styled(Box)<{ flexDirection?: string; minheight?: strin
   margin-right: auto;
   box-sizing: border-box;
   flex-direction: ${({ flexDirection }) => flexDirection};
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme, background }) => (background ? background : theme.colors.background)};
 `
 
 export const AbsoluteBody = styled(Box)`

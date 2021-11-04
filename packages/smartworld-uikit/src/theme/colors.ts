@@ -34,7 +34,7 @@ export const lightColors: Colors = {
   input: '#FFFAFF',
   inputSecondary: '#d7caec',
   tertiary: '#f1e0e9',
-  text: '#280D5F',
+  text: '#4614AC',
   textDisabled: '#BDC2C4',
   textSubtle: '#C93E86',
   disabled: '#E9EAEB',

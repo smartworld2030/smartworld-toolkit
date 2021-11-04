@@ -7,6 +7,7 @@ export interface BalanceInputProps extends BoxProps {
   onUserInput: (input: string) => void
   onUnitClick?: React.MouseEventHandler<HTMLDivElement>
   onLogoClick?: React.MouseEventHandler<HTMLDivElement>
+  onImageError?: () => void
   innerRef?: React.RefObject<HTMLInputElement>
   currencyValue?: ReactNode
   currencyUnit?: ReactNode
@@ -15,6 +16,7 @@ export interface BalanceInputProps extends BoxProps {
   isWarning?: boolean
   decimals?: number
   logo?: ReactElement
+  image?: string
   unit: string | ReactElement
   knobColor?: string
   progressColor?: string

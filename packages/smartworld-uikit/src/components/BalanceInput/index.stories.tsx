@@ -77,9 +77,6 @@ export const Default: React.FC = () => {
         currencyValue={currencyValues}
         currencyUnit={conversionUnit}
         placeholder={'1006.086957'}
-        size={200}
-        borderSize={5}
-        progressSize={5}
         mb="32px"
         switchEditingUnits={switchEditingUnits}
       />
@@ -102,6 +99,7 @@ export const Default: React.FC = () => {
         onUserInput={handleSTTSChange}
         unit={editingUnit}
         logo={<LogoIcon width={10} />}
+        image="https://picsum.photos/id/237/300/300?grayscale"
         currencyValue={currencyValues}
         currencyUnit={conversionUnit}
         placeholder="1.5"
@@ -204,6 +202,7 @@ export const SwitchUnits: React.FC = () => {
       maxValue={1006.086957}
       currencyValue={`~${currencyValue} ${conversionUnit}`}
       placeholder="0.0"
+      image="https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png"
       unit={editingUnit}
       isWarning={!values[editingUnit] || parseFloat(values[editingUnit]) <= 0}
       switchEditingUnits={switchEditingUnits}
@@ -248,6 +247,7 @@ export const BigSwitchUnits: React.FC = () => {
         currencyValue={currencyValues}
         size={600}
         maxValue={1006.086957}
+        image="https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png"
         inputProps={{ inputMode: 'numeric' }}
         onUserInput={(val) => setValues((prev) => ({ ...prev, CAKE: val }))}
         placeholder="0"

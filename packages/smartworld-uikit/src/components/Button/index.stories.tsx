@@ -1,22 +1,24 @@
-import { capitalize } from "lodash";
-import React, { useState } from "react";
-import { BrowserRouter, Link } from "react-router-dom";
-import styled from "styled-components";
-import Box from "../Box/Box";
-import Text from "../Text/Text";
-import Flex from "../Box/Flex";
-import { AddIcon, AutoRenewIcon, LogoIcon } from "../Svg";
-import DetailedButton from "./DetailedButton";
-import IconButton from "./IconButton";
-import Button from "./Button";
-import { ExpandableButton, ExpandableLabel } from "./ExpandableButton";
-import { scales, variants } from "./types";
+import { capitalize } from 'lodash'
+import React, { useState } from 'react'
+import { BrowserRouter, Link } from 'react-router-dom'
+import styled from 'styled-components'
+import Box from '../Box/Box'
+import Text from '../Text/Text'
+import Flex from '../Box/Flex'
+import { AddIcon, AutoRenewIcon, LogoIcon } from '../Svg'
+import DetailedButton from './DetailedButton'
+import IconButton from './IconButton'
+import Button from './Button'
+import PayButton from './PayButton'
+import PolygonButton from './PolygonButton'
+import { ExpandableButton, ExpandableLabel } from './ExpandableButton'
+import { scales, variants } from './types'
 
 export default {
-  title: "Components/Button",
+  title: 'Components/Button',
   component: Button,
   argTypes: {},
-};
+}
 
 const Row = styled(Flex)`
   margin-bottom: 32px;
@@ -24,7 +26,7 @@ const Row = styled(Flex)`
   & > a + a {
     margin-left: 16px;
   }
-`;
+`
 
 export const Default: React.FC = () => {
   return (
@@ -41,10 +43,10 @@ export const Default: React.FC = () => {
                   <Button key={scale} variant={variant} scale={scale} mr="8px">
                     {`${capitalize(variant)} ${scale.toUpperCase()}`}
                   </Button>
-                );
+                )
               })}
             </Box>
-          );
+          )
         })}
       </Box>
       <Box>
@@ -56,8 +58,8 @@ export const Default: React.FC = () => {
         </Button>
       </Box>
     </>
-  );
-};
+  )
+}
 
 export const Circle: React.FC = () => {
   return (
@@ -74,10 +76,10 @@ export const Circle: React.FC = () => {
                   <Button shape="circle" key={scale} variant={variant} scale={scale} mr="8px">
                     {`${capitalize(variant)} ${scale.toUpperCase()}`}
                   </Button>
-                );
+                )
               })}
             </Box>
-          );
+          )
         })}
       </Box>
       <Box>
@@ -89,8 +91,8 @@ export const Circle: React.FC = () => {
         </Button>
       </Box>
     </>
-  );
-};
+  )
+}
 
 export const Anchors: React.FC = () => {
   return (
@@ -112,10 +114,10 @@ export const Anchors: React.FC = () => {
                   >
                     {`${capitalize(variant)} anchor ${scale.toUpperCase()}`}
                   </Button>
-                );
+                )
               })}
             </Box>
-          );
+          )
         })}
       </Box>
       <Box>
@@ -127,8 +129,8 @@ export const Anchors: React.FC = () => {
         </Button>
       </Box>
     </>
-  );
-};
+  )
+}
 
 export const Variants: React.FC = () => {
   return (
@@ -175,8 +177,8 @@ export const Variants: React.FC = () => {
         </Row>
       </BrowserRouter>
     </Box>
-  );
-};
+  )
+}
 
 export const CircleVariants: React.FC = () => {
   return (
@@ -207,9 +209,7 @@ export const CircleVariants: React.FC = () => {
           </Button>
         </Row>
         <Row>
-          <IconButton shape="circle">
-            <LogoIcon />
-          </IconButton>
+          <IconButton scale="lg" icon={(w) => <LogoIcon width={w} />} />
           <IconButton shape="circle" variant="secondary">
             <AddIcon />
           </IconButton>
@@ -240,20 +240,26 @@ export const CircleVariants: React.FC = () => {
           <DetailedButton shape="circle" scale="ml" variant="danger">
             <LogoIcon />
           </DetailedButton>
-          <DetailedButton variant="subtle" shape="circle" scale="xl" topIcon={"Token"} bottomIcon={100}>
+          <DetailedButton variant="subtle" shape="circle" scale="xl" topIcon={'Token'} bottomIcon={100}>
             <AddIcon width="40" />
           </DetailedButton>
-          <DetailedButton shape="circle" width="300" topIcon={<Text>Token</Text>} bottomIcon={<Text>100</Text>}>
+          <DetailedButton
+            shape="circle"
+            width="300"
+            scale="xl"
+            topIcon={<Text>Token</Text>}
+            bottomIcon={<Text>100</Text>}
+          >
             <AddIcon width="40" />
           </DetailedButton>
         </Row>
       </BrowserRouter>
     </Box>
-  );
-};
+  )
+}
 
 export const Expandable: React.FC = () => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false)
   return (
     <Box width="640px">
       <BrowserRouter>
@@ -265,5 +271,96 @@ export const Expandable: React.FC = () => {
         </Row>
       </BrowserRouter>
     </Box>
-  );
-};
+  )
+}
+
+export const PayButtonExample: React.FC = () => {
+  const [loading, setLoading] = useState(false)
+  const onClick = () => {
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 3000)
+  }
+  return (
+    <Box mb="32px" background="white">
+      {Object.values(variants).map((variant) => {
+        return (
+          <Box key={variant} mb="32px">
+            {Object.values(scales).map((scale) => {
+              return (
+                <PayButton
+                  key={scale}
+                  variant={variant}
+                  scale={scale}
+                  external
+                  mr="8px"
+                  isLoading={loading}
+                  onClick={onClick}
+                />
+              )
+            })}
+          </Box>
+        )
+      })}
+    </Box>
+  )
+}
+
+export const IconButtonExample: React.FC = () => {
+  return (
+    <Box mb="32px">
+      {Object.values(scales).map((scale) => {
+        return (
+          <IconButton
+            key={scale}
+            scale={scale}
+            color="white"
+            mr="8px"
+            shadow
+            icon={(size) => <LogoIcon width={size} />}
+            onClick={() => {}}
+          >
+            STTS
+          </IconButton>
+        )
+      })}
+      {Object.values(scales).map((scale) => {
+        return (
+          <IconButton
+            key={scale}
+            scale={scale}
+            color="white"
+            mr="8px"
+            shadow
+            bottomIcon={() => '1220'}
+            icon={(size) => <LogoIcon width={size} />}
+            onClick={() => {}}
+          >
+            STTS
+          </IconButton>
+        )
+      })}
+    </Box>
+  )
+}
+
+export const PolygonButtonExample: React.FC = () => {
+  return (
+    <Box mb="32px">
+      {Object.values(scales).map((scale) => {
+        return (
+          <PolygonButton
+            key={scale}
+            scale={scale}
+            color="white"
+            mr="8px"
+            shadow
+            icon={(size) => <LogoIcon width={size / 3} />}
+            onClick={() => {}}
+          ></PolygonButton>
+        )
+      })}
+    </Box>
+  )
+}

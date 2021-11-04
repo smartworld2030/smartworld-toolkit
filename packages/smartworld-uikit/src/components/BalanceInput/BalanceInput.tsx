@@ -2,11 +2,16 @@ import { debounce } from 'lodash'
 import React, { ReactText } from 'react'
 import { useTheme } from 'styled-components'
 import { AbsoluteFlex, Flex, RelativeFlex } from '../Box'
-import { Button } from '../Button'
 import { InputGroup } from '../Input'
 import { SwapVertIcon } from '../Svg'
-import Text from '../Text/Text'
-import { UnitContainer, SwitchUnitsButton, StyledInput, StyledCircleSlider } from './styles'
+import {
+  UnitContainer,
+  SwitchUnitsButton,
+  StyledInput,
+  StyledCircleSlider,
+  ShadowedText,
+  ShadowedButton,
+} from './styles'
 import { BalanceInputProps } from './types'
 
 const BalanceInput: React.FC<BalanceInputProps> = ({
@@ -16,6 +21,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   onUserInput,
   onUnitClick,
   onLogoClick,
+  onImageError,
   currencyValue,
   currencyUnit,
   inputProps,
@@ -30,8 +36,9 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   knobSize,
   color,
   logo,
+  image,
   knobColor,
-  borderColor,
+  borderColor = 'white',
   progressColor,
   position,
   disabled = false,
@@ -73,7 +80,13 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
           height={sizeCalc(1.7)}
         >
           <AbsoluteFlex top={-sizeCalc(30) + 'px'}>
-            <UnitContainer onClick={onUnitClick} zIndex={2} fontWeight="bold" fontSize={sizeCalc(15) + 'px'}>
+            <UnitContainer
+              shadowSize={sizeCalc(100) + 'px'}
+              onClick={onUnitClick}
+              zIndex={2}
+              fontWeight="bold"
+              fontSize={sizeCalc(12) + 'px'}
+            >
               {unit}
             </UnitContainer>
           </AbsoluteFlex>
@@ -117,28 +130,34 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
                 />
               </InputGroup>
               <Flex zIndex={2} justifyContent="flex-end">
-                <Text color="secondary" fontSize={sizeCalc(15) + 'px'}>
+                <ShadowedText shadowSize={sizeCalc(100) + 'px'} fontSize={sizeCalc(15) + 'px'}>
                   {currencyValue ?? currencyValue}
-                </Text>
-                <Text color="secondary" fontWeight="bold" ml="3px" fontSize={sizeCalc(15) + 'px'}>
+                </ShadowedText>
+                <ShadowedText
+                  shadowSize={sizeCalc(100) + 'px'}
+                  fontWeight="bold"
+                  ml="3px"
+                  fontSize={sizeCalc(15) + 'px'}
+                >
                   {currencyUnit ?? currencyUnit}
-                </Text>
+                </ShadowedText>
               </Flex>
             </Flex>
           </AbsoluteFlex>
           {maxValue && (
             <AbsoluteFlex bottom={-sizeCalc(15) + 'px'}>
-              <Button
+              <ShadowedButton
+                shadowSize={sizeCalc(100) + 'px'}
                 zIndex={2}
                 disabled={disabled}
                 variant="text"
                 fontWeight="bold"
                 onClick={maxButtonHandler}
                 height={sizeCalc(8)}
-                fontSize={sizeCalc(15)}
+                fontSize={sizeCalc(12)}
               >
                 MAX
-              </Button>
+              </ShadowedButton>
             </AbsoluteFlex>
           )}
         </RelativeFlex>
@@ -146,15 +165,18 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
       <StyledCircleSlider
         value={valueToPercent()}
         size={sizeCalc()}
-        progressWidth={progressSize ? progressSize : sizeCalc(30)}
-        circleWidth={borderSize ? borderSize : sizeCalc(30)}
-        knobRadius={disabledKnob || disabled ? 0 : knobSize ? knobSize : sizeCalc(15)}
+        progressWidth={progressSize ? progressSize : sizeCalc(25)}
+        knobWidth={progressSize ? progressSize : sizeCalc(30)}
+        circleWidth={borderSize ? borderSize : sizeCalc(25)}
+        knobRadius={disabledKnob || disabled ? 0 : knobSize ? knobSize : sizeCalc(17)}
         onInputChange={debounce(handleChangeRange, debounceTime, { maxWait })}
         knobColor={knobColor ? knobColor : 'white'}
         progressColor={isWarning ? colors.failure : progressColor ? progressColor : colors.primary}
         insideColor={color ? color : colors.tertiary}
         circleColor={isWarning ? colors.failure : borderColor}
         disabled={disabledKnob || disabled}
+        image={image}
+        onImageError={onImageError}
       />
     </RelativeFlex>
   )

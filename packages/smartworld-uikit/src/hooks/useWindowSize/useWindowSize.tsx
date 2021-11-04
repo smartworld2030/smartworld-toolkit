@@ -12,7 +12,7 @@ export interface WindowSizes {
 }
 const initValue = {
   screen: 'lg',
-  width: 1200,
+  width: 0,
   isMobile: false,
   flexSize: 30,
   height: 400,
@@ -40,7 +40,7 @@ const useWindowSize = (initialValue: WindowSizes = initValue, endFunc = (loading
 
       const flexSize = height / 12
 
-      setSizes({ screen, width: isMobile ? width : width / 2, height, flexSize, isMobile, isTablet })
+      setSizes({ screen, width: width, height, flexSize, isMobile, isTablet })
       endFunc(false)
     }
 

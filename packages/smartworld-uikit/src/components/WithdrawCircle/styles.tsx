@@ -34,7 +34,6 @@ export const StyledWithdrawCircle = styled(Box)<{ isWarning: WithdrawCircleProps
 `
 
 export const StyledButton = styled(Button)`
-  box-shadow: none;
   padding-left: 0;
   padding-right: 0;
   height: ${({ height }) => height}px;

@@ -22,7 +22,6 @@ export const AnimatedFlex = styled(Box)<FlexProps>`
   display: flex;
   transition: 0.5s all;
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.background};
   ${flexbox};
 `
 

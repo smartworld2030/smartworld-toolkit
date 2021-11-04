@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Flex, FullFlex } from '../Box'
 import { CircleSliderHelper } from './helpers/circle-slider-helper'
 import { MouseHelper } from './helpers/mouse-helper'
 import { pathGenerator } from './helpers/path-generator'
@@ -27,6 +26,8 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   circleColor,
   disabled,
   shadow,
+  image,
+  knobWidth,
   circleWidth,
   progressWidth,
   knobRadius,
@@ -38,6 +39,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   min,
   max,
   onInputChange,
+  onImageError,
   ...rest
 }) => {
   const radius = useRef(0)
@@ -173,22 +175,42 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
       style={{
         boxSizing: 'border-box',
         touchAction: 'none',
+        overflow: 'visible',
       }}
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
       {...rest}
     >
+      {image && (
+        <defs>
+          <pattern id={image} x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
+            <image filter="blur(5px)" x="0%" y="0%" width="512" height="512" xlinkHref={image} onError={onImageError} />
+          </pattern>
+        </defs>
+      )}
+      {shadow && (
+        <filter id="dropShadow" filterUnits="userSpaceOnUse">
+          <feGaussianBlur in="SourceAlpha" stdDeviation={size! * 0.01} />
+          <feOffset dx={size! * 0.001} dy={size! * 0.001} />
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="0.3" />
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      )}
+      <circle
+        strokeWidth={circleWidth}
+        stroke={circleColor}
+        fill={image ? `url(#${image})` : insideColor}
+        filter={shadow ? 'url(#dropShadow)' : 'none'}
+        r={radius.current}
+        cx={center}
+        cy={center}
+      />
       <g style={{ transform: 'translate(100%, 100%) rotateZ(180deg)' }}>
-        <circle
-          style={{
-            strokeWidth: circleWidth!,
-            stroke: circleColor,
-            fill: insideColor,
-          }}
-          r={radius.current}
-          cx={center}
-          cy={center}
-        />
         {isAllGradientColorsAvailable && (
           <defs>
             <linearGradient id="gradient" x1="0" x2="0" y1="0" y2="1">
@@ -198,29 +220,16 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
           </defs>
         )}
         <path
-          style={{
-            strokeLinecap: 'round',
-            strokeWidth: progressWidth!,
-            stroke: isAllGradientColorsAvailable ? 'url(#gradient)' : progressColor,
-            fill: 'none',
-          }}
+          strokeWidth={progressWidth}
+          stroke={isAllGradientColorsAvailable ? 'url(#gradient)' : progressColor}
+          fill="none"
+          filter={shadow ? 'url(#dropShadow)' : 'none'}
           d={getPath()}
         />
-        {shadow && (
-          <filter id="dropShadow" filterUnits="userSpaceOnUse">
-            <feGaussianBlur in="SourceAlpha" stdDeviation={size! * 0.01} />
-            <feOffset dx={size! * 0.001} dy={size! * 0.001} />
-            <feComponentTransfer>
-              <feFuncA type="linear" slope="0.3" />
-            </feComponentTransfer>
-            <feMerge>
-              <feMergeNode />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        )}
         <circle
-          fill={knobColor}
+          stroke={progressColor}
+          strokeWidth={knobWidth}
+          fillOpacity="0"
           style={{
             cursor: disabled ? 'not-allowed' : 'pointer',
           }}
@@ -244,7 +253,8 @@ CircleSlider.defaultProps = {
   progressColor: '#007aff',
   knobColor: '#fff',
   circleWidth: 5,
-  progressWidth: 20,
+  progressWidth: 25,
+  knobWidth: 22,
   knobRadius: 15,
   stepSize: 1,
   min: 0,
@@ -257,6 +267,7 @@ CircleSlider.defaultProps = {
   insideColor: 'none',
   onChange: () => ({}),
   onInputChange: () => ({}),
+  onImageError: () => ({}),
 }
 
 export default CircleSlider

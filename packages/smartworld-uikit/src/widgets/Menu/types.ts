@@ -30,15 +30,15 @@ export interface MenuSubEntry {
 
 export interface MenuEntry {
   label: string
-  href: string
+  path: string[]
   icon: ReactNode
 }
-
+export type ListItems = { links: MenuEntry[]; default: string }
 export interface NavProps {
   width?: number
   background?: string
   selected?: string
-  links: MenuEntry[]
+  list: ListItems
   leftSide?: ReactNode
   rightSide?: ReactNode
   onChange: (value: string) => void
