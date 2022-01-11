@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
-import { Menu, useWindowSize } from '../..'
-import { RelativeFlex, Flex } from '../Box'
-import { Container } from './Component'
+import React, { useState, useRef } from 'react'
 import { useTransition, animated } from 'react-spring'
+import { useHistory } from 'react-router'
+import { Menu, useWindowSize } from '../..'
+import { Container } from './Component'
 import { MainSectionProps } from './types'
-import { useHistory, useLocation } from 'react-router'
 import { Spinner } from '../Spinner'
 
 const defaultToggle = {
@@ -18,7 +17,6 @@ export const MainContext = React.createContext(defaultToggle)
 const MainSection: React.FC<MainSectionProps> = ({
   initialValue,
   config,
-  loading = false,
   list,
   right,
   rightIcon,
@@ -31,14 +29,19 @@ const MainSection: React.FC<MainSectionProps> = ({
   mainBackground,
   transition = {},
   refFunc,
+  header,
+  location,
+  computedMatch,
+  loading,
   ...rest
 }) => {
   const [animLoading, setAnimLoading] = useState(true)
   const { width, isMobile, isTablet, flexSize } = useWindowSize(initialValue, setAnimLoading)
   const [toggle, setToggle] = useState(defaultToggle)
   const history = useHistory()
-  const location = useLocation()
-  const pathname = location.pathname
+  const { pathname } = location as Location
+
+  const divRef = useRef<HTMLDivElement>(null)
 
   const toggleHandler = (item: keyof typeof defaultToggle) => {
     setToggle((prev) => ({ ...defaultToggle, [item]: !prev[item] }))
@@ -46,8 +49,8 @@ const MainSection: React.FC<MainSectionProps> = ({
 
   const { showLeft, showRight, showTip } = toggle
 
-  const responsiveSize = (w: number, toggle = true) => ({
-    height: toggle ? flexSize * w : 0,
+  const responsiveSize = (w: number, toggles = true) => ({
+    height: toggles ? flexSize * w : 0,
     width: '100%',
   })
 
@@ -57,8 +60,7 @@ const MainSection: React.FC<MainSectionProps> = ({
     from: { opacity: 0, marginTop: '-300px' },
     enter: { opacity: 1, marginTop: '0px' },
     leave: { opacity: 0, marginTop: '-150px' },
-    onStart: () => setAnimLoading(true),
-    onRest: () => setAnimLoading(false),
+    onRest: () => divRef?.current?.scrollIntoView({ behavior: 'smooth' }),
     ...(transition as any),
   })
 
@@ -67,7 +69,7 @@ const MainSection: React.FC<MainSectionProps> = ({
     history.push(value)
   }
 
-  const findPath = () => (list.links.some((link) => link.path.some((p) => p === pathname)) ? pathname : list.default)
+  const findPath = () => (list?.links.some((link) => link.path.some((p) => p === pathname)) ? pathname : list?.default)
 
   const rightProps = { flexSize, toggle, isMobile, isTablet, responsiveSize }
   const leftProps = {
@@ -79,54 +81,44 @@ const MainSection: React.FC<MainSectionProps> = ({
     showTip,
     tipChanger: () => toggleHandler('showTip'),
   }
-
-  const divRef = (ref: any) => (animLoading ? ref?.scrollIntoView({ behavior: 'smooth' }) : undefined)
-
   return (
     <MainContext.Provider value={toggle}>
-      <Flex
-        background={background}
-        justifyContent="center"
-        alignItems="center"
-        alignContent="center"
-        flexDirection="column"
-        ref={refFunc}
-        {...rest}
-      >
-        <RelativeFlex width={width}>
-          {transitions((style, _1, _2, key) => (
-            <animated.div key={key} style={{ ...style, width: '100%' }}>
-              {animLoading ? (
-                <Container flexDirection="column-reverse" height="100%" background={mainBackground}>
-                  {skeleton ? skeleton : <Spinner />}
-                </Container>
-              ) : (
-                <Container flexDirection="column-reverse" height="100%" background={mainBackground}>
-                  {right && right(rightProps)}
-                  {left && left(leftProps)}
-                  {children}
-                </Container>
-              )}
-            </animated.div>
-          ))}
-        </RelativeFlex>
-        <Menu
-          width={width}
-          background={menuBackground}
-          onChange={changePage}
-          list={list}
-          selected={findPath()}
-          rightSide={
-            rightIcon &&
-            rightIcon({
-              checked: showRight,
-              onChange: () => toggleHandler('showRight'),
-            })
-          }
-          leftSide={leftIcon && leftIcon({ checked: showLeft, onChange: () => toggleHandler('showLeft') })}
-        />
-        <div ref={divRef} />
-      </Flex>
+      {transitions((style, _1, _2, key) => (
+        <animated.div
+          ref={refFunc}
+          key={key}
+          style={{ position: 'absolute', top: 0, left: 0, background, width: '100%', ...style }}
+          {...rest}
+        >
+          {loading || animLoading ? (
+            <Container flexDirection="column-reverse" background={mainBackground}>
+              {skeleton || <Spinner />}
+            </Container>
+          ) : (
+            <Container flexDirection="column-reverse" background={mainBackground}>
+              {right && right(rightProps)}
+              {left && left(leftProps)}
+              {children}
+            </Container>
+          )}
+          <Menu
+            width={width}
+            background={menuBackground}
+            onChange={changePage}
+            list={list}
+            selected={findPath()}
+            rightSide={
+              rightIcon &&
+              rightIcon({
+                checked: showRight,
+                onChange: () => toggleHandler('showRight'),
+              })
+            }
+            leftSide={leftIcon && leftIcon({ checked: showLeft, onChange: () => toggleHandler('showLeft') })}
+          />
+          <div ref={divRef}>{header}</div>
+        </animated.div>
+      ))}
     </MainContext.Provider>
   )
 }

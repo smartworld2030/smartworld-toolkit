@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { variant } from 'styled-system'
-import { BaseButtonProps } from '.'
+import { BaseButtonProps } from './types'
 import { PayIcon } from '../Svg'
 import Button from './Button'
 import { scaleVariants } from './theme'
@@ -31,7 +31,7 @@ const StyledButton = styled(Button)`
   }
 `
 
-const PayButton = (props: BaseButtonProps & { onClick: () => void }) => {
+export const PayButton = (props: BaseButtonProps & { onClick: () => void }): JSX.Element => {
   const size = variant({
     prop: 'scale',
     variants: scaleVariants,
@@ -46,4 +46,5 @@ const PayButton = (props: BaseButtonProps & { onClick: () => void }) => {
 PayButton.defaultProps = {
   scale: 'md',
 }
+
 export default PayButton

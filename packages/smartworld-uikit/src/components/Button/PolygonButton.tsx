@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { variant } from 'styled-system'
-import { buttonShadows } from '../../theme/base'
 import { HeaderIcon } from '../Svg'
 import Button from './Button'
 import { scaleVariants } from './theme'
@@ -12,8 +11,8 @@ const StyledPolygonIcon = styled(HeaderIcon)<{ color?: string; fill?: string }>`
   top: 0;
   left: 0;
   z-index: 1;
-  fill: ${({ fill }) => (fill ? fill : 'none')};
-  stroke: ${({ theme, color }) => (color ? color : theme.colors.primary)};
+  fill: ${({ fill }) => fill || 'none'};
+  stroke: ${({ theme, color }) => color || theme.colors.primary};
 `
 
 const StyledChild = styled.div<{ size: number }>`

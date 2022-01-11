@@ -1,5 +1,5 @@
 import { SpringConfig, TransitionFrom, TransitionTo } from '@react-spring/core'
-import { ReactElement, ReactNode, Ref } from 'react'
+import { CSSProperties, ReactElement, ReactNode, Ref } from 'react'
 import { FlexboxProps } from 'styled-system'
 import { MediaQueries, ListItems } from '../..'
 import { WindowSizes } from '../../hooks/useWindowSize/useWindowSize'
@@ -38,7 +38,7 @@ export type MainContainerTransition<Item = any> = {
 export interface MainSectionProps {
   initialValue?: WindowSizes
   config?: SpringConfig
-  list: ListItems
+  list?: ListItems
   height?: string
   width?: string
   refFunc?: Ref<HTMLDivElement>
@@ -51,8 +51,12 @@ export interface MainSectionProps {
   leftIcon?: (props: { checked: boolean; onChange: () => void }) => ReactNode
   left?: (props: AdditionalCompProps) => ReactNode
   right?: (props: Omit<AdditionalCompProps, 'showTip' | 'tipChanger'>) => ReactNode
+  header?: ReactElement | ReactElement[]
   children: ReactElement | ReactElement[]
   skeleton?: ReactElement | ReactElement[]
+  style?: CSSProperties
+  computedMatch?: unknown
+  location?: Location
 }
 
 interface AdditionalCompProps {

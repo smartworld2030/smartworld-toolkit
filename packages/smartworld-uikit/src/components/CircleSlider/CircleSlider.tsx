@@ -36,8 +36,10 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   tooltipColor,
   insideColor,
   stepSize,
+  zIndex,
   min,
   max,
+  id = 'dropShadow',
   onInputChange,
   onImageError,
   ...rest
@@ -176,6 +178,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
         boxSizing: 'border-box',
         touchAction: 'none',
         overflow: 'visible',
+        zIndex,
       }}
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
@@ -189,7 +192,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
         </defs>
       )}
       {shadow && (
-        <filter id="dropShadow" filterUnits="userSpaceOnUse">
+        <filter id={id} filterUnits="userSpaceOnUse">
           <feGaussianBlur in="SourceAlpha" stdDeviation={size! * 0.01} />
           <feOffset dx={size! * 0.001} dy={size! * 0.001} />
           <feComponentTransfer>
@@ -205,7 +208,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
         strokeWidth={circleWidth}
         stroke={circleColor}
         fill={image ? `url(#${image})` : insideColor}
-        filter={shadow ? 'url(#dropShadow)' : 'none'}
+        filter={shadow ? `url(#${id})` : 'none'}
         r={radius.current}
         cx={center}
         cy={center}
@@ -223,7 +226,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
           strokeWidth={progressWidth}
           stroke={isAllGradientColorsAvailable ? 'url(#gradient)' : progressColor}
           fill="none"
-          filter={shadow ? 'url(#dropShadow)' : 'none'}
+          filter={shadow ? `url(#${id})` : 'none'}
           d={getPath()}
         />
         <circle
@@ -233,7 +236,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
           style={{
             cursor: disabled ? 'not-allowed' : 'pointer',
           }}
-          filter={shadow ? 'url(#dropShadow)' : 'none'}
+          filter={shadow ? `url(#${id})` : 'none'}
           r={knobRadius!}
           cx={x}
           cy={y}
@@ -250,6 +253,7 @@ CircleSlider.defaultProps = {
   circleColor: 'transparent',
   size: 180,
   value: 0,
+  zIndex: 0,
   progressColor: '#007aff',
   knobColor: '#fff',
   circleWidth: 5,

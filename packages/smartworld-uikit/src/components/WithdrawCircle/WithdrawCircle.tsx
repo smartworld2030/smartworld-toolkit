@@ -39,6 +39,7 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
       insideColor={color ? color : colors.tertiary}
       circleColor={isWarning ? colors.failure : borderColor}
       disabled={true}
+      id="withdraw"
     >
       <RelativeFlex
         padding={sizeCalc(15)}

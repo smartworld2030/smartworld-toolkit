@@ -6,8 +6,10 @@ import Button from './Button'
 import { scaleVariants } from './theme'
 import { IconButtonProps } from './types'
 
-const StyledIcon = styled.div<{ size: number; blur?: boolean }>`
+const ResizableIcon = styled.div<{ size: number; blur?: boolean }>`
   position: absolute;
+  left: auto;
+  top: auto;
   z-index: 2;
   padding-top: ${({ size }) => size}px;
   font-size: ${({ size }) => size}px;
@@ -20,14 +22,23 @@ const StyledChild = styled.div<{ size: number; padding?: number; shadow?: boolea
   font-size: ${({ size }) => size}px;
   color: ${({ theme }) => theme.colors.text};
   text-shadow: ${({ theme, shadowSize, shadow }) =>
-    shadow ? buttonShadows(theme.colors.background, shadowSize + 'px') : 'none'};
+    shadow ? buttonShadows(theme.colors.background, `${shadowSize}px`) : 'none'};
 `
 
 const StyledButton = styled(Button)`
   position: relative;
 `
 
-const IconButton: React.FC<IconButtonProps> = ({ icon, bottomIcon, blur, shadow, fill, color, children, ...rest }) => {
+const IconButton: React.FC<IconButtonProps> = ({
+  icon,
+  iconProps,
+  bottomIcon,
+  blur,
+  shadow,
+  fontSize,
+  children,
+  ...rest
+}) => {
   const size = variant({
     prop: 'scale',
     variants: scaleVariants,
@@ -38,11 +49,16 @@ const IconButton: React.FC<IconButtonProps> = ({ icon, bottomIcon, blur, shadow,
   return (
     <StyledButton shape="circle" {...rest}>
       {icon && (
-        <StyledIcon blur={blur} size={borderCalc / 10}>
+        <ResizableIcon blur={blur} size={borderCalc / 10} style={iconProps}>
           {icon(sizeCalc - borderCalc * 2)}
-        </StyledIcon>
+        </ResizableIcon>
       )}
-      <StyledChild size={sizeCalc / 4} padding={!!icon ? 0 : sizeCalc / 9} shadowSize={borderCalc / 3} shadow={shadow}>
+      <StyledChild
+        size={fontSize || sizeCalc / 4}
+        padding={icon ? 0 : sizeCalc / 9}
+        shadowSize={borderCalc / 3}
+        shadow={shadow}
+      >
         {children}
       </StyledChild>
       {bottomIcon && (

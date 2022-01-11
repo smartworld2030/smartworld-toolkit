@@ -13,15 +13,15 @@ interface ContainerProps extends MainFlexProps {
 export const Container = styled(Box)<ContainerProps>`
   position: relative;
   display: flex;
-  width: ${({ width }) => (width ? width : '100%')};
-  height: ${({ height }) => (height ? height : '100%')};
-  min-height: ${({ minHeight }) => (minHeight ? minHeight : 0)}px;
+  width: ${({ width }) => width || '100%'};
+  height: ${({ height }) => height || undefined};
+  min-height: ${({ minHeight }) => minHeight || 0}px;
   flex-flow: wrap;
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
   flex-direction: ${({ flexDirection }) => flexDirection};
-  background-color: ${({ theme, background }) => (background ? background : theme.colors.background)};
+  background-color: ${({ theme, background }) => background || theme.colors.background};
 `
 
 export const AbsoluteBody = styled(Box)`

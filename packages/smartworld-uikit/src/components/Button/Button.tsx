@@ -9,7 +9,7 @@ const Button = <E extends ElementType = 'button'>(props: ButtonProps<E>): JSX.El
   const internalProps = external ? getExternalLinkProps() : {}
   const isDisabled = isLoading || disabled
   const classNames = className ? [className] : []
-  let shapeProps: any = {}
+  const shapeProps: any = {}
 
   if (isLoading) {
     classNames.push('pancake-button--loading')
@@ -22,8 +22,8 @@ const Button = <E extends ElementType = 'button'>(props: ButtonProps<E>): JSX.El
     const scale = scaleVariants[rest.scale]
     shapeProps.height = scale.height
     shapeProps.width = scale.height
-    const scales = scale.height.split('px')
-    shapeProps.fontSize = +scales[0] / 10
+    const s = scale.height.split('px')
+    shapeProps.fontSize = +s[0] / 10
   }
 
   return (

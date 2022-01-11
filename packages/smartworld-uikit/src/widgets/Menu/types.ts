@@ -38,7 +38,7 @@ export interface NavProps {
   width?: number
   background?: string
   selected?: string
-  list: ListItems
+  list?: ListItems
   leftSide?: ReactNode
   rightSide?: ReactNode
   onChange: (value: string) => void

@@ -1,4 +1,4 @@
-import { ComponentProps, ElementType, ReactElement, ReactNode } from 'react'
+import { ComponentProps, CSSProperties, ElementType, ReactElement, ReactNode } from 'react'
 import { LayoutProps, SpaceProps } from 'styled-system'
 import { Link } from 'react-router-dom'
 
@@ -52,7 +52,7 @@ export interface BaseButtonProps extends LayoutProps, SpaceProps {
   isLoading?: boolean
   scale?: Scale
   shape?: Shape
-  fontSize?: string | number
+  fontSize?: number
   fontWeight?: string | number
   variant?: Variant
   disabled?: boolean
@@ -78,4 +78,5 @@ export interface IconButtonProps extends BaseButtonProps {
   blur?: boolean
   shadow?: boolean
   onClick?: () => void
+  iconProps?: CSSProperties
 }

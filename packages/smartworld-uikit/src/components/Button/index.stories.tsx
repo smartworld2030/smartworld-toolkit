@@ -6,10 +6,11 @@ import Box from '../Box/Box'
 import Text from '../Text/Text'
 import Flex from '../Box/Flex'
 import { AddIcon, AutoRenewIcon, LogoIcon } from '../Svg'
-import DetailedButton from './DetailedButton'
+import { DetailedButton } from './DetailedButton'
+import { ButtonWithSlider } from './ButtonWithSlider'
 import IconButton from './IconButton'
 import Button from './Button'
-import PayButton from './PayButton'
+import { PayButton } from './PayButton'
 import PolygonButton from './PolygonButton'
 import { ExpandableButton, ExpandableLabel } from './ExpandableButton'
 import { scales, variants } from './types'
@@ -209,7 +210,9 @@ export const CircleVariants: React.FC = () => {
           </Button>
         </Row>
         <Row>
-          <IconButton scale="lg" icon={(w) => <LogoIcon width={w} />} />
+          <IconButton scale="lg" iconProps={{ color: 'red', left: 0, top: 0 }} icon={(w) => <LogoIcon width={w} />}>
+            STTS
+          </IconButton>
           <IconButton shape="circle" variant="secondary">
             <AddIcon />
           </IconButton>
@@ -240,7 +243,7 @@ export const CircleVariants: React.FC = () => {
           <DetailedButton shape="circle" scale="ml" variant="danger">
             <LogoIcon />
           </DetailedButton>
-          <DetailedButton variant="subtle" shape="circle" scale="xl" topIcon={'Token'} bottomIcon={100}>
+          <DetailedButton variant="subtle" shape="circle" scale="xl" topIcon="Token" bottomIcon={100}>
             <AddIcon width="40" />
           </DetailedButton>
           <DetailedButton
@@ -358,7 +361,33 @@ export const PolygonButtonExample: React.FC = () => {
             shadow
             icon={(size) => <LogoIcon width={size / 3} />}
             onClick={() => {}}
-          ></PolygonButton>
+          />
+        )
+      })}
+    </Box>
+  )
+}
+export const ButtonWithSliderExample: React.FC = () => {
+  const [click, setClick] = useState('')
+  return (
+    <Box mb="32px">
+      {Object.values(scales).map((scale) => {
+        return (
+          <ButtonWithSlider
+            key={scale}
+            scale={scale}
+            color="white"
+            mr="8px"
+            shadow
+            onClick={() => {
+              setClick('click')
+              setTimeout(() => {
+                setClick('')
+              }, 1000)
+            }}
+          >
+            {click}
+          </ButtonWithSlider>
         )
       })}
     </Box>

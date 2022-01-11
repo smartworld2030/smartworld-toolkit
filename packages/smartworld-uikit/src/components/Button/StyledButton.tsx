@@ -12,7 +12,7 @@ interface TransientButtonProps extends ThemedButtonProps {
   $isLoading?: boolean
 }
 
-const getDisabledStyles = ({ variant, $isLoading, theme }: TransientButtonProps) => {
+const getDisabledStyles = ({ variant: v, $isLoading, theme }: TransientButtonProps) => {
   if ($isLoading === true) {
     return `
       &:disabled,
@@ -25,7 +25,7 @@ const getDisabledStyles = ({ variant, $isLoading, theme }: TransientButtonProps)
   return `
     &:disabled,
     &.pancake-button--disabled {
-      background-color: ${variant === 'text' ? 'transparent' : theme.colors.backgroundDisabled};
+      background-color: ${v === 'text' ? 'transparent' : theme.colors.backgroundDisabled};
       border-color: ${theme.colors.backgroundDisabled};
       box-shadow: none;
       color: ${theme.colors.textDisabled};
@@ -45,11 +45,11 @@ const getOpacity = ({ $isLoading = false }: TransientButtonProps) => {
 }
 
 const getFontSize = ({ fontSize }: { fontSize?: string | number }) => {
-  return fontSize ? fontSize : 16
+  return fontSize || 16
 }
 
 const getFontWeight = ({ fontWeight }: { fontWeight?: string | number }) => {
-  return fontWeight ? fontWeight : 600
+  return fontWeight || 600
 }
 
 const StyledButton = styled.button<BaseButtonProps>`
@@ -95,7 +95,7 @@ const StyledButton = styled.button<BaseButtonProps>`
   ${layout}
   ${space}
 
-  padding: ${({ variant }) => (variant === 'text' ? 0 : undefined)};
+  padding: ${({ variant: v }) => (v === 'text' ? 0 : undefined)};
 `
 
 export default StyledButton

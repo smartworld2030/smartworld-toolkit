@@ -24,4 +24,5 @@ export interface CircleSliderProps extends SvgProps {
   tooltipSize?: number
   tooltipColor?: string
   insideColor?: string
+  zIndex?: number
 }

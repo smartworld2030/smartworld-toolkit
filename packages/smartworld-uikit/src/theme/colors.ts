@@ -22,7 +22,7 @@ export const lightColors: Colors = {
   ...baseColors,
   ...additionalColors,
   primary: '#E04696',
-  background: '#FAF9FA',
+  background: '#FFE5F2',
   backgroundDisabled: '#E9EAEB',
   backgroundTransparent: '#fb7ed05c',
   backgroundAlt: '#FFFFFF',

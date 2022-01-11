@@ -4,17 +4,26 @@ import Flex from '../../components/Box/Flex'
 import { NavProps } from './types'
 import { MENU_HEIGHT } from './config'
 
-const Wrapper = styled.div<{ width?: string; background?: string }>`
+const MenuItems = styled.div<{ position?: string }>`
+  flex: 4;
   position: relative;
-  width: ${({ width }) => (width ? width : '100%')};
-  background: ${({ theme, background }) => (background ? background : theme.colors.background)};
+  & > svg {
+    position: absolute;
+    top: 0;
+    ${({ position }) => position};
+  }
+`
+
+const Wrapper = styled.div<{ width?: string; background?: string }>`
+  width: ${({ width }) => width || '100%'};
+  background: ${({ theme, background }) => background || theme.colors.background};
 `
 
 const StyledNav = styled.nav`
+  position: relative;
   transition: top 0.2s;
   display: flex;
   justify-content: space-between;
-  align-items: center;
   width: 100%;
   height: ${MENU_HEIGHT}px;
   z-index: 20;
@@ -33,26 +42,24 @@ const Select = styled.select`
 `
 
 const Menu: React.FC<NavProps> = ({ rightSide, width, background, list, selected, leftSide, onChange }) => {
-  const item = list.links.find((link) => link.path.some((p) => p === selected))
+  const item = list?.links?.find((link) => link.path.some((p) => p === selected))
   return (
     <Wrapper background={background} width={width ? `${width}px` : undefined}>
       <StyledNav>
-        <Flex flex="4" justifyContent="start">
-          {leftSide}
-        </Flex>
+        <MenuItems position="left:0">{leftSide}</MenuItems>
         <Flex flex="4" justifyContent="center">
           {item?.icon}
-          <Select value={selected} onChange={(e) => onChange(e.currentTarget.value)}>
-            {Object.values(list.links).map((link, i) => (
-              <option key={i} value={link.path[0]}>
-                {link.label}
-              </option>
-            ))}
-          </Select>
+          {list && (
+            <Select value={selected} onChange={(e) => onChange(e.currentTarget.value)}>
+              {Object.values(list.links).map((link) => (
+                <option key={link.label} value={link.path[0]}>
+                  {link.label}
+                </option>
+              ))}
+            </Select>
+          )}
         </Flex>
-        <Flex flex="4" justifyContent="end">
-          {rightSide}
-        </Flex>
+        <MenuItems position="right:0">{rightSide}</MenuItems>
       </StyledNav>
     </Wrapper>
   )

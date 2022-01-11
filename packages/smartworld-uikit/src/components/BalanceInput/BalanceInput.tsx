@@ -36,11 +36,11 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   knobSize,
   color,
   logo,
+  id,
   image,
   knobColor,
   borderColor = 'white',
   progressColor,
-  position,
   disabled = false,
   disabledKnob = false,
   debounceTime = 100,
@@ -54,11 +54,11 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
       onUserInput(e.currentTarget.value.replace(/,/g, '.'))
     }
   }
-  const handleChangeRange = (val: any) => {
+  const percentToValue = (val?: ReactText, per: ReactText = 0) => (val ? ((+val * +per) / 100).toFixed(decimals) : '0')
+
+  const handleChangeRange = (val?: ReactText) => {
     onUserInput(percentToValue(val, maxValue))
   }
-
-  const percentToValue = (val: ReactText, per: ReactText = 0) => ((+val * +per) / 100).toFixed(decimals)
 
   const valueToPercent = () => +((+value / +maxValue) * 100)
 
@@ -66,7 +66,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
     if (maxValue) onUserInput(maxValue.toString())
   }
 
-  const sizeCalc = (divide: number = 1, minus: number = 0) => (size ? Number(size) : 150) / divide - minus
+  const sizeCalc = (divide = 1, minus = 0) => (size ? Number(size) : 150) / divide - minus
 
   return (
     <RelativeFlex width={sizeCalc()} height={sizeCalc(0.95)} {...props}>
@@ -79,18 +79,18 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
           margin="auto"
           height={sizeCalc(1.7)}
         >
-          <AbsoluteFlex top={-sizeCalc(30) + 'px'}>
+          <AbsoluteFlex top={`${-sizeCalc(30)}px`}>
             <UnitContainer
-              shadowSize={sizeCalc(100) + 'px'}
+              shadowSize={`${sizeCalc(100)}px`}
               onClick={onUnitClick}
               zIndex={2}
               fontWeight="bold"
-              fontSize={sizeCalc(12) + 'px'}
+              fontSize={`${sizeCalc(12)}px`}
             >
               {unit}
             </UnitContainer>
           </AbsoluteFlex>
-          <AbsoluteFlex top={sizeCalc(5) + 'px'} width={sizeCalc(1.4)}>
+          <AbsoluteFlex top={`${sizeCalc(5)}px`} width={sizeCalc(1.4)}>
             <Flex zIndex={2} flexDirection="column" justifyContent="center">
               <InputGroup
                 scale="none"
@@ -121,7 +121,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
                   inputMode="decimal"
                   min="0"
                   height={sizeCalc(6.5)}
-                  value={value ? value : ''}
+                  value={value || ''}
                   onChange={handleOnChange}
                   placeholder={placeholder}
                   ref={innerRef}
@@ -130,14 +130,14 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
                 />
               </InputGroup>
               <Flex zIndex={2} justifyContent="flex-end">
-                <ShadowedText shadowSize={sizeCalc(100) + 'px'} fontSize={sizeCalc(15) + 'px'}>
+                <ShadowedText shadowSize={`${sizeCalc(100)}px`} fontSize={`${sizeCalc(15)}px`}>
                   {currencyValue ?? currencyValue}
                 </ShadowedText>
                 <ShadowedText
-                  shadowSize={sizeCalc(100) + 'px'}
+                  shadowSize={`${sizeCalc(100)}px`}
                   fontWeight="bold"
                   ml="3px"
-                  fontSize={sizeCalc(15) + 'px'}
+                  fontSize={`${sizeCalc(15)}px`}
                 >
                   {currencyUnit ?? currencyUnit}
                 </ShadowedText>
@@ -145,9 +145,9 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
             </Flex>
           </AbsoluteFlex>
           {maxValue && (
-            <AbsoluteFlex bottom={-sizeCalc(15) + 'px'}>
+            <AbsoluteFlex bottom={`${-sizeCalc(15)}px`}>
               <ShadowedButton
-                shadowSize={sizeCalc(100) + 'px'}
+                shadowSize={`${sizeCalc(100)}px`}
                 zIndex={2}
                 disabled={disabled}
                 variant="text"
@@ -165,18 +165,19 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
       <StyledCircleSlider
         value={valueToPercent()}
         size={sizeCalc()}
-        progressWidth={progressSize ? progressSize : sizeCalc(25)}
-        knobWidth={progressSize ? progressSize : sizeCalc(30)}
-        circleWidth={borderSize ? borderSize : sizeCalc(25)}
-        knobRadius={disabledKnob || disabled ? 0 : knobSize ? knobSize : sizeCalc(17)}
-        onInputChange={debounce(handleChangeRange, debounceTime, { maxWait })}
-        knobColor={knobColor ? knobColor : 'white'}
-        progressColor={isWarning ? colors.failure : progressColor ? progressColor : colors.primary}
-        insideColor={color ? color : colors.tertiary}
+        progressWidth={progressSize || sizeCalc(25)}
+        knobWidth={progressSize || sizeCalc(30)}
+        circleWidth={borderSize || sizeCalc(25)}
+        knobRadius={disabledKnob || disabled ? 0 : knobSize || sizeCalc(17)}
+        onInputChange={debounce((val) => handleChangeRange(val), debounceTime, { maxWait })}
+        knobColor={knobColor || 'white'}
+        progressColor={isWarning ? colors.failure : progressColor || colors.primary}
+        insideColor={color || colors.tertiary}
         circleColor={isWarning ? colors.failure : borderColor}
         disabled={disabledKnob || disabled}
         image={image}
         onImageError={onImageError}
+        id={id}
       />
     </RelativeFlex>
   )
