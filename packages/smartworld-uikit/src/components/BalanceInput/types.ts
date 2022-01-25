@@ -4,7 +4,7 @@ import { BoxProps } from '../Box'
 export interface BalanceInputProps extends BoxProps {
   value: ReactText
   maxValue?: ReactText
-  onUserInput: (input: string) => void
+  onUserInput?: (input: string) => void
   onUnitClick?: React.MouseEventHandler<HTMLDivElement>
   onLogoClick?: React.MouseEventHandler<HTMLDivElement>
   onImageError?: () => void
@@ -27,6 +27,8 @@ export interface BalanceInputProps extends BoxProps {
   debounceTime?: number
   maxWait?: number
   disabledKnob?: boolean
+  selectable?: boolean
   disabled?: boolean
+  loading?: boolean
   switchEditingUnits?: () => void
 }

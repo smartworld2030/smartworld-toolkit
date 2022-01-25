@@ -1,12 +1,17 @@
-import React from "react";
-import Spinner from "./Spinner";
+import React from 'react'
+import { Box } from '../Box'
+import Spinner from './Spinner'
 
 export default {
-  title: "Components/Spinner",
+  title: 'Components/Spinner',
   component: Spinner,
   argTypes: {},
-};
+}
 
 export const Default: React.FC = () => {
-  return <Spinner size={64} />;
-};
+  return (
+    <Box size={300}>
+      <Spinner size={96} />
+    </Box>
+  )
+}

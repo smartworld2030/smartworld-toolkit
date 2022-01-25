@@ -16,7 +16,7 @@ const getDisabledStyles = ({ variant: v, $isLoading, theme }: TransientButtonPro
   if ($isLoading === true) {
     return `
       &:disabled,
-      &.pancake-button--disabled {
+      &.smartworld-button--disabled {
         cursor: not-allowed;
       }
     `
@@ -24,7 +24,7 @@ const getDisabledStyles = ({ variant: v, $isLoading, theme }: TransientButtonPro
 
   return `
     &:disabled,
-    &.pancake-button--disabled {
+    &.smartworld-button--disabled {
       background-color: ${v === 'text' ? 'transparent' : theme.colors.backgroundDisabled};
       border-color: ${theme.colors.backgroundDisabled};
       box-shadow: none;
@@ -55,7 +55,6 @@ const getFontWeight = ({ fontWeight }: { fontWeight?: string | number }) => {
 const StyledButton = styled.button<BaseButtonProps>`
   align-items: center;
   border: 0;
-  box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;
   z-index: ${({ zIndex }) => zIndex};
   cursor: pointer;
   display: inline-flex;
@@ -68,13 +67,14 @@ const StyledButton = styled.button<BaseButtonProps>`
   opacity: ${getOpacity};
   outline: 0;
   transition: background-color 0.2s, opacity 0.2s;
-  box-shadow: ${({ theme }) => buttonShadows(theme.colors.background, '4px')};
+  box-shadow: ${({ shadow, shadowSize, theme }) =>
+    shadow && buttonShadows(theme.colors.textDisabled, shadowSize || '4px')};
 
-  &:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+  &:hover:not(:disabled):not(.smartworld-button--disabled):not(.smartworld-button--disabled):not(:active) {
     opacity: 0.65;
   }
 
-  &:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+  &:active:not(:disabled):not(.smartworld-button--disabled):not(.smartworld-button--disabled) {
     transform: translateY(1px);
     box-shadow: none;
   }

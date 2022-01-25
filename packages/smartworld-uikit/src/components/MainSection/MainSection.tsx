@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useLayoutEffect } from 'react'
 import { useTransition, animated } from 'react-spring'
 import { useHistory } from 'react-router'
 import { Menu, useWindowSize } from '../..'
@@ -45,6 +45,9 @@ const MainSection: React.FC<MainSectionProps> = ({
 
   const toggleHandler = (item: keyof typeof defaultToggle) => {
     setToggle((prev) => ({ ...defaultToggle, [item]: !prev[item] }))
+    setTimeout(() => {
+      divRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 500)
   }
 
   const { showLeft, showRight, showTip } = toggle
@@ -60,7 +63,7 @@ const MainSection: React.FC<MainSectionProps> = ({
     from: { opacity: 0, marginTop: '-300px' },
     enter: { opacity: 1, marginTop: '0px' },
     leave: { opacity: 0, marginTop: '-150px' },
-    onRest: () => divRef?.current?.scrollIntoView({ behavior: 'smooth' }),
+    onRest: () => divRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }),
     ...(transition as any),
   })
 
@@ -98,24 +101,24 @@ const MainSection: React.FC<MainSectionProps> = ({
             <Container flexDirection="column-reverse" background={mainBackground}>
               {right && right(rightProps)}
               {left && left(leftProps)}
+              <Menu
+                width={width}
+                background={menuBackground}
+                onChange={changePage}
+                list={list}
+                selected={findPath()}
+                rightSide={
+                  rightIcon &&
+                  rightIcon({
+                    checked: showRight,
+                    onChange: () => toggleHandler('showRight'),
+                  })
+                }
+                leftSide={leftIcon && leftIcon({ checked: showLeft, onChange: () => toggleHandler('showLeft') })}
+              />
               {children}
             </Container>
           )}
-          <Menu
-            width={width}
-            background={menuBackground}
-            onChange={changePage}
-            list={list}
-            selected={findPath()}
-            rightSide={
-              rightIcon &&
-              rightIcon({
-                checked: showRight,
-                onChange: () => toggleHandler('showRight'),
-              })
-            }
-            leftSide={leftIcon && leftIcon({ checked: showLeft, onChange: () => toggleHandler('showLeft') })}
-          />
           <div ref={divRef}>{header}</div>
         </animated.div>
       ))}

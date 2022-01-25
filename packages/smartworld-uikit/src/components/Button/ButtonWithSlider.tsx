@@ -30,7 +30,7 @@ const StyledButton = styled(Button)`
   position: relative;
   animation: ${({ isLoading }) => (isLoading ? loadingKey : '')} 5s linear infinite;
   border-width: 0;
-  &:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) > svg {
+  &:hover:not(:disabled):not(.smartworld-button--disabled):not(.smartworld-button--disabled):not(:active) > svg {
     transform: scale(1.1, 1.1);
   }
 `
@@ -45,17 +45,20 @@ const StyledChild = styled.div<{ size: ReactText; padding?: number; shadow?: boo
     shadow ? buttonShadows(theme.colors.background, `${shadowSize}px`) : 'none'};
 `
 
-interface BWSProps extends CircleSliderProps {
+interface BWSProps extends Omit<CircleSliderProps, 'onInput'> {
   onClick: (e: any) => void
+  onInput: (e: number) => void
   icon?: (size: number) => ReactNode
   iconStyle?: CSSProperties
   iconColor?: string
   isWarning?: boolean
+  shadow?: boolean
 }
 
 export const ButtonWithSlider = ({
   onClick,
   icon,
+  onInput,
   fontSize,
   isWarning,
   progressColor,
@@ -63,19 +66,20 @@ export const ButtonWithSlider = ({
   iconColor,
   children,
   disabled,
+  shadow,
   ...rest
 }: BWSProps): JSX.Element => {
   const [input, setInput] = useState(100)
   const lastInput = useRef(100)
   const { colors } = useTheme()
 
-  const size = variant({
+  const { height, borderWidth, iconSize } = variant({
     prop: 'scale',
     variants: scaleVariants,
-  })
+  })(rest)
 
-  const sizeCalc = +size(rest).height.replace('px', '')
-  const borderCalc = +size(rest).borderWidth.replace('px', '')
+  const sizeCalc = height.replace('px', '')
+  const borderCalc = borderWidth.replace('px', '')
 
   const clickHandler = (e: any) => {
     if (lastInput.current === input) onClick(e)
@@ -94,12 +98,12 @@ export const ButtonWithSlider = ({
   }
 
   return (
-    <StyledButton shape="circle" {...rest}>
+    <StyledButton shape="circle" disabled={disabled} {...rest}>
       <ResizableIcon size={borderCalc / 10} style={iconStyle}>
         {icon ? (
-          icon(size(rest).iconSize)
+          icon(iconSize)
         ) : (
-          <svg width={size(rest).iconSize} viewBox="0 0 20 22">
+          <svg width={iconSize} viewBox="0 0 20 22">
             <path d="M 2 15 L 10 2 L 18 15 H 2 Z" stroke={strokeIconFunc()} strokeWidth="1.5" fill="none" />
           </svg>
         )}
@@ -108,13 +112,18 @@ export const ButtonWithSlider = ({
         {children || input}
       </StyledChild>
       <CircleSlider
+        id="circleButton"
         value={input}
         zIndex={10}
-        width={size(rest).height}
+        width={height}
         onMouseUp={!disabled ? clickHandler : undefined}
-        onInputChange={(i) => setInput(i!)}
+        onInputChange={(i) => {
+          onInput(i)
+          setInput(i)
+        }}
         progressColor={strokeSliderFunc()}
         disabled={disabled}
+        shadow={shadow}
         {...rest}
       />
     </StyledButton>
@@ -125,6 +134,11 @@ ButtonWithSlider.defaultProps = {
   scale: 'md',
   progressWidth: 12,
   knobWidth: 12,
+  icon: () => <></>,
+  iconStyle: {},
+  iconColor: '',
+  isWarning: false,
+  shadow: false,
 }
 
 export default ButtonWithSlider

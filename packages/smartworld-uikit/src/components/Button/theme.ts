@@ -4,13 +4,13 @@ export const scaleVariants = {
   [scales.XL]: {
     height: '128px',
     fontSize: '16px',
-    borderWidth: '8px',
+    borderWidth: '7px',
     iconSize: '96px',
   },
   [scales.ML]: {
     height: '88px',
     fontSize: '12px',
-    borderWidth: '6px',
+    borderWidth: '5px',
     iconSize: '64px',
   },
   [scales.LG]: {
@@ -28,13 +28,13 @@ export const scaleVariants = {
   [scales.SM]: {
     height: '32px',
     padding: '0 16px',
-    borderWidth: '3px',
+    borderWidth: '2px',
     iconSize: '24px',
   },
   [scales.XS]: {
     height: '20px',
     padding: '0 8px',
-    borderWidth: '3px',
+    borderWidth: '1px',
     iconSize: '12px',
   },
 }
@@ -56,20 +56,22 @@ export const styleShape = {
 export const styleVariants = {
   [variants.PRIMARY]: {
     borderRadius: 'default',
-    backgroundColor: 'transparent',
+    backgroundColor: 'backgroundTransparent',
     borderStyle: 'solid',
     borderColor: 'primary',
     color: 'primary',
+    fill: 'primary',
     ':disabled': {
       backgroundColor: 'input',
     },
   },
   [variants.SECONDARY]: {
     borderRadius: 'default',
-    backgroundColor: 'transparent',
+    backgroundColor: 'backgroundTransparent',
     borderStyle: 'solid',
     borderColor: 'textDisabled',
     color: 'text',
+    fill: 'text',
     ':disabled': {
       backgroundColor: 'input',
     },
@@ -80,42 +82,74 @@ export const styleVariants = {
     borderStyle: 'solid',
     borderColor: 'primary',
     color: 'primary',
+    fill: 'primary',
     ':disabled': {
       backgroundColor: 'transparent',
     },
   },
   [variants.TERTIARY]: {
     borderRadius: 'default',
-    backgroundColor: 'transparent',
+    backgroundColor: 'backgroundTransparent',
     borderColor: 'tertiary',
     color: 'primary',
+    fill: 'primary',
     borderStyle: 'solid',
   },
   [variants.SUBTLE]: {
     borderRadius: 'default',
-    backgroundColor: 'transparent',
+    backgroundColor: 'backgroundTransparent',
     color: 'white',
+    fill: 'white',
     borderStyle: 'solid',
     borderColor: 'textSubtle',
   },
   [variants.DANGER]: {
     borderRadius: 'default',
-    backgroundColor: 'transparent',
+    backgroundColor: 'backgroundTransparent',
     color: 'black',
+    fill: 'black',
     borderStyle: 'solid',
     borderColor: 'failure',
   },
   [variants.SUCCESS]: {
     borderRadius: 'default',
-    backgroundColor: 'transparent',
+    backgroundColor: 'backgroundTransparent',
     borderColor: 'success',
     color: 'black',
+    fill: 'black',
     borderStyle: 'solid',
   },
   [variants.TEXT]: {
     borderRadius: 'default',
     backgroundColor: 'transparent',
     color: 'primary',
+    fill: 'primary',
     boxShadow: 'none',
+  },
+}
+export const iconVariant = {
+  [variants.PRIMARY]: {
+    fill: 'primary',
+  },
+  [variants.SECONDARY]: {
+    fill: 'text',
+  },
+  [variants.TRANSPARENT]: {
+    fill: 'primary',
+  },
+  [variants.TERTIARY]: {
+    fill: 'primary',
+  },
+  [variants.SUBTLE]: {
+    fill: 'white',
+  },
+  [variants.DANGER]: {
+    fill: 'failure',
+  },
+  [variants.SUCCESS]: {
+    fill: 'success',
+  },
+  [variants.TEXT]: {
+    fill: 'primary',
   },
 }

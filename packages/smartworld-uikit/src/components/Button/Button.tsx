@@ -5,18 +5,18 @@ import StyledButton from './StyledButton'
 import { scaleVariants } from './theme'
 
 const Button = <E extends ElementType = 'button'>(props: ButtonProps<E>): JSX.Element => {
-  const { startIcon, endIcon, shape, external, className, isLoading, disabled, children, ...rest } = props
+  const { startIcon, endIcon, shape, external, className, isLoading, disabled, shadow, children, ...rest } = props
   const internalProps = external ? getExternalLinkProps() : {}
   const isDisabled = isLoading || disabled
   const classNames = className ? [className] : []
   const shapeProps: any = {}
 
   if (isLoading) {
-    classNames.push('pancake-button--loading')
+    classNames.push('smartworld-button--loading')
   }
 
   if (isDisabled && !isLoading) {
-    classNames.push('pancake-button--disabled')
+    classNames.push('smartworld-button--disabled')
   }
   if (shape === 'circle') {
     const scale = scaleVariants[rest.scale]
@@ -34,17 +34,18 @@ const Button = <E extends ElementType = 'button'>(props: ButtonProps<E>): JSX.El
       shape={shape}
       {...shapeProps}
       {...internalProps}
+      shadow={shadow}
       {...rest}
     >
       <>
         {isValidElement(startIcon) &&
           cloneElement(startIcon, {
-            mr: shape === 'circle' ? undefined : '0.5rem',
+            mr: shape !== 'circle' && '0.5rem',
           })}
         {children}
         {isValidElement(endIcon) &&
           cloneElement(endIcon, {
-            ml: shape === 'circle' ? undefined : '0.5rem',
+            ml: shape !== 'circle' && '0.5rem',
           })}
       </>
     </StyledButton>

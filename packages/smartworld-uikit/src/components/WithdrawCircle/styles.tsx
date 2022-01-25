@@ -1,11 +1,21 @@
 import styled from 'styled-components'
-import { colorStyle, variant } from 'styled-system'
+import { variant } from 'styled-system'
 import { Flex } from '../Box'
 import Box from '../Box/Box'
 import Text from '../Text/Text'
 import Button from '../Button/Button'
 import { WithdrawCircleProps } from './types'
 import { styleVariants } from '../Button/theme'
+
+const calcPadding = (width?: any) => {
+  const p = width ? +width / 10 : 16
+  return `${p / 2}px ${p}px`
+}
+
+const calcWidth = (width?: any, allowedMin = 0) => {
+  const w = width ? +width - allowedMin : 150
+  return `${w > 100 ? w : 100}px`
+}
 
 export const StyledFlex = styled(Flex)<{ fontSize?: string }>`
   flex: 4;
@@ -24,7 +34,7 @@ export const WithdrawUnitContainer = styled(Text)`
 
 export const StyledWithdrawCircle = styled(Box)<{ isWarning: WithdrawCircleProps['isWarning'] }>`
   position: relative;
-  background-color: ${({ theme, color }) => (color ? color : theme.colors.tertiary)};
+  background-color: ${({ theme, color }) => color || theme.colors.tertiary};
   border-radius: 50%;
   width: ${({ width }) => calcWidth(width)};
   height: ${({ width }) => calcWidth(width)};
@@ -44,21 +54,11 @@ export const StyledButton = styled(Button)`
     variants: styleVariants,
   })}
 
-  ${({ height }) => (+height! < 50 ? 'border-width: 1px' : undefined)};
+  ${({ height }) => height && height < 50 && 'border-width: 1px'};
   color: ${({ color }) => color ?? color};
-  background-color: ${({ backgroundColor, theme }) => (backgroundColor ? backgroundColor : theme.colors.input)};
+  background-color: ${({ backgroundColor, theme }) => backgroundColor || theme.colors.input};
 
   &:focus:not(:disabled) {
     box-shadow: 0px 0px 0px 1px ${({ theme }) => theme.colors.primary};
   }
 `
-
-const calcPadding = (width?: any) => {
-  const p = width ? +width / 10 : 16
-  return `${p / 2}px ${p}px`
-}
-
-const calcWidth = (width?: any, allowedMin: number = 0) => {
-  const w = width ? +width - allowedMin : 150
-  return `${w > 100 ? w : 100}px`
-}

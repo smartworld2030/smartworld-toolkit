@@ -28,11 +28,10 @@ export const Default: React.FC = () => {
   }
 
   const currencyValues = !Number.isNaN(parseFloat(values[conversionUnit]))
-    ? '~' +
-      parseFloat(values[conversionUnit]).toLocaleString(undefined, {
+    ? `~${parseFloat(values[conversionUnit]).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-      })
+      })}`
     : '0.00'
 
   const handleDecimalChange = (input) => {
@@ -76,7 +75,7 @@ export const Default: React.FC = () => {
         onUnitClick={() => console.log('Unit Clicked!')}
         currencyValue={currencyValues}
         currencyUnit={conversionUnit}
-        placeholder={'1006.086957'}
+        placeholder="1006.086957"
         mb="32px"
         switchEditingUnits={switchEditingUnits}
       />
@@ -210,6 +209,28 @@ export const SwitchUnits: React.FC = () => {
   )
 }
 
+export const SwapUnitLists: React.FC = () => {
+  const tokenList = [{ unit: 'STTS', value: '13.0325', image: 'https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png' }]
+  return (
+    <Box size="300px">
+      {tokenList.map((item) => (
+        <BalanceInput
+          selectable
+          loading
+          onSelect={() => console.log(item.unit)}
+          maxValue={0}
+          key={item.unit}
+          image="https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png"
+          inputProps={{ inputMode: 'numeric' }}
+          mb="32px"
+          borderColor="orange"
+          {...item}
+        />
+      ))}
+    </Box>
+  )
+}
+
 export const BigSwitchUnits: React.FC = () => {
   const CAKE_PRICE = 69
   const [editingUnit, setEditingUnit] = useState<'CAKE' | 'USD'>('CAKE')
@@ -232,11 +253,10 @@ export const BigSwitchUnits: React.FC = () => {
   }
 
   const currencyValues = !Number.isNaN(parseFloat(values[conversionUnit]))
-    ? '~' +
-      parseFloat(values[conversionUnit]).toLocaleString(undefined, {
+    ? `~${parseFloat(values[conversionUnit]).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-      })
+      })}`
     : '0.00'
 
   return (

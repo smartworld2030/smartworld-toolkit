@@ -1,10 +1,10 @@
 import React from 'react'
-import styled, { keyframes } from 'styled-components'
-import { variant } from 'styled-system'
-import { BaseButtonProps } from './types'
-import { PayIcon } from '../Svg'
+import styled, { css, keyframes } from 'styled-components'
+import { variant as v } from 'styled-system'
+import { PayButtonProps } from './types'
+import { CheckmarkIcon, PayIcon } from '../Svg'
 import Button from './Button'
-import { scaleVariants } from './theme'
+import { scaleVariants, iconVariant } from './theme'
 
 const loadingKey = keyframes`
   0% {
@@ -16,35 +16,88 @@ const loadingKey = keyframes`
   }
 `
 
-const StyledPayIcon = styled(PayIcon)`
-  position: absolute;
-  top: 2%;
-  stroke: ${({ theme }) => theme.colors.primary};
-`
-
 const StyledButton = styled(Button)`
   position: relative;
   animation: ${({ isLoading }) => (isLoading ? loadingKey : '')} 5s linear infinite;
-
-  &:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) > svg {
+  &:hover:not(:disabled):not(.smartworld-button--disabled):not(.smartworld-button--disabled):not(:active) > svg {
     transform: scale(1.1, 1.1);
   }
 `
 
-export const PayButton = (props: BaseButtonProps & { onClick: () => void }): JSX.Element => {
-  const size = variant({
+const rotatingY = keyframes`
+  0% {
+    transform: rotateY(0deg);
+  }
+
+  40% {
+    transform: rotateY(360deg);
+  }
+
+  100% {
+    transform: rotateY(0deg);
+  }
+`
+
+const loadingKeyFrame = keyframes`
+  0% {
+    transform: rotateY(0deg) scale(1);
+  }
+  100% {
+    transform: rotateY(360deg) scale(1.6);
+  }
+  0% {
+    transform: rotateY(0deg) scale(1);
+  }
+`
+
+const StyledDiv = styled.div<{ $loading?: boolean; width?: string }>`
+  transform-origin: center;
+  animation: ${({ $loading }) =>
+    $loading
+      ? css`
+          ${loadingKeyFrame} 1.5s alternate linear infinite;
+        `
+      : css`
+          ${rotatingY} 5s alternate ease-in infinite;
+        `};
+  & > svg {
+    width: ${({ width }) => width};
+    ${v({
+      variants: iconVariant,
+    })};
+  }
+`
+const StyledCheckmark = styled(CheckmarkIcon)`
+  ${v({
+    variants: iconVariant,
+  })}
+`
+
+export const PayButton = (props: PayButtonProps): JSX.Element => {
+  const { children, done, isLoading, variant, scale } = props
+  const size = v({
     prop: 'scale',
     variants: scaleVariants,
   })
+  const iconProps = { width: size({ scale }).iconSize, paddingTop: size({ scale }).borderWidth, variant, scale }
 
   return (
     <StyledButton shape="circle" {...props}>
-      <StyledPayIcon width={size(props).iconSize} />
+      {done ? (
+        <StyledCheckmark {...iconProps} />
+      ) : (
+        <StyledDiv $loading={isLoading} {...iconProps}>
+          {children ? children(iconProps) : <PayIcon {...iconProps} />}
+        </StyledDiv>
+      )}
     </StyledButton>
   )
 }
+
 PayButton.defaultProps = {
   scale: 'md',
+  done: false,
+  children: undefined,
 }
 
 export default PayButton

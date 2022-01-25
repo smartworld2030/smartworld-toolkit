@@ -26,19 +26,19 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
 }) => {
   const { colors } = useTheme()
 
-  const sizeCalc = (divide: number = 1) => (size ? Number(size) : 150) / divide
+  const sizeCalc = (divide = 1) => (size ? Number(size) : 150) / divide
 
   return (
     <CircleSlider
       value={percent}
       size={sizeCalc()}
-      progressWidth={progressSize ? progressSize : sizeCalc(30)}
-      circleWidth={borderSize ? borderSize : sizeCalc(30)}
+      progressWidth={progressSize || sizeCalc(30)}
+      circleWidth={borderSize || sizeCalc(30)}
       knobRadius={0}
-      progressColor={isWarning ? colors.failure : progressColor ? progressColor : colors.primary}
-      insideColor={color ? color : colors.tertiary}
+      progressColor={isWarning ? colors.failure : progressColor || colors.primary}
+      insideColor={color || colors.tertiary}
       circleColor={isWarning ? colors.failure : borderColor}
-      disabled={true}
+      disabled
       id="withdraw"
     >
       <RelativeFlex
@@ -64,14 +64,14 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
               variant="secondary"
               {...buttonProps}
             >
-              {name ? name : 'WITHRAW'}
+              {name || 'WITHRAW'}
             </StyledButton>
           </Flex>
           <Flex zIndex={2} overflow="hidden" justifyContent="flex-end" mt="-2px">
-            <Text color="secondary" fontSize={sizeCalc(16) + 'px'}>
+            <Text color="secondary" fontSize={`${sizeCalc(16)}px`}>
               {totalValue ?? totalValue}
             </Text>
-            <Text color="secondary" fontWeight="bold" ml="3px" fontSize={sizeCalc(16) + 'px'}>
+            <Text color="secondary" fontWeight="bold" ml="3px" fontSize={`${sizeCalc(16)}px`}>
               {totalValueUnit ?? totalValueUnit}
             </Text>
           </Flex>

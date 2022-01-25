@@ -24,24 +24,26 @@ const StyledChild = styled.div<{ size: number }>`
 
 const StyledButton = styled(Button)`
   position: relative;
-  &:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) > div {
+  &:hover:not(:disabled):not(.smartworld-button--disabled):not(.smartworld-button--disabled):not(:active) > div {
     transform: scale(1.1, 1.1);
   }
 `
 
 const PolygonButton: React.FC<PolygonButtonProps> = ({ icon, shadow, fill, color, children, ...rest }) => {
-  const size = variant({
+  const { height } = variant({
     prop: 'scale',
     variants: scaleVariants,
-  })
-  const sizeCalc = +size(rest).height.replace('px', '')
+  })(rest)
+
+  const sizeCalc = height.replace('px', '')
   return (
     <StyledButton shape="circle" variant="text" {...rest}>
-      <StyledPolygonIcon fill={fill} color={color} width={size(rest).height} shadow={shadow} />
+      <StyledPolygonIcon id="polygonButton" fill={fill} color={color} width={height} shadow={shadow} />
       <StyledChild size={sizeCalc}>{icon ? icon(sizeCalc) : children}</StyledChild>
     </StyledButton>
   )
 }
+
 PolygonButton.defaultProps = {
   scale: 'md',
 }

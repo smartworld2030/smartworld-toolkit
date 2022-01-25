@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { CircleSliderHelper } from './helpers/circle-slider-helper'
-import { MouseHelper } from './helpers/mouse-helper'
-import { pathGenerator } from './helpers/path-generator'
+import CircleSliderHelper from './helpers/CircleSliderHelper'
+import MouseHelper from './helpers/MouseHelper'
+import pathGenerator from './helpers/PathGenerator'
+import { LoadingCircle, StyledGroup } from './styles'
 import { CircleSliderProps } from './types'
 
 interface IPoint {
@@ -16,32 +17,30 @@ interface IState {
 }
 
 const CircleSlider: React.FC<CircleSliderProps> = ({
-  size,
-  value,
+  id = 'dropShadow',
+  circleColor = 'transparent',
+  size = 180,
+  value = 0,
+  zIndex = 0,
+  progressColor = '#007aff',
+  knobColor,
+  circleWidth = 5,
+  progressWidth = 25,
+  knobWidth = 22,
+  knobRadius = 15,
+  stepSize = 1,
+  min = 0,
+  max = 100,
+  loading = false,
+  disabled = false,
+  shadow = true,
+  insideColor = 'none',
+  onInputChange = () => null,
+  onImageError = () => null,
   children,
-  progressColor,
   gradientColorFrom,
   gradientColorTo,
-  knobColor,
-  circleColor,
-  disabled,
-  shadow,
   image,
-  knobWidth,
-  circleWidth,
-  progressWidth,
-  knobRadius,
-  showPercentage,
-  tooltipSize,
-  tooltipColor,
-  insideColor,
-  stepSize,
-  zIndex,
-  min,
-  max,
-  id = 'dropShadow',
-  onInputChange,
-  onImageError,
   ...rest
 }) => {
   const radius = useRef(0)
@@ -56,40 +55,47 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   })
 
   useEffect(() => {
-    const maxLineWidth = Math.max(circleWidth!, progressWidth!)
-    radius.current = getCenter() - Math.max(maxLineWidth, knobRadius! * 2) / 2
-    countSteps.current = 1 + (max! - min!) / stepSize!
-    const stepsArray = getStepsArray(min!, stepSize!)
-    circleSliderHelper.current = new CircleSliderHelper(stepsArray, value!)
+    const maxLineWidth = Math.max(circleWidth, progressWidth)
+    radius.current = size / 2 - Math.max(maxLineWidth, knobRadius * 2) / 2
+
+    countSteps.current = 1 + (max - min) / stepSize
+    const stepsArray: number[] = []
+
+    for (let i = 0; i < countSteps.current; i++) {
+      stepsArray.push(min + i * stepSize)
+    }
+
+    circleSliderHelper.current = new CircleSliderHelper(stepsArray, value)
     setState((prev) => ({
       ...prev,
       angle: circleSliderHelper.current.getAngle(),
       currentStepValue: circleSliderHelper.current.getCurrentStep(),
     }))
-  }, [size])
+  }, [circleWidth, knobRadius, max, min, progressWidth, size, stepSize, value])
 
   useEffect(() => {
     if (!state.isMouseMove) {
-      const newValue = Math.round(value! / stepSize!) * stepSize!
+      const newValue = Math.round(value / stepSize) * stepSize
       circleSliderHelper.current.updateStepIndexFromValue(newValue)
       setState((prev) => ({ ...prev, angle: circleSliderHelper.current.getAngle(), currentStepValue: newValue }))
     }
-  }, [value])
+  }, [state.isMouseMove, stepSize, value])
 
-  const updateAngle = (angle: number): void => {
+  const updateAngle = (angle?: number): void => {
+    if (!angle) return
     circleSliderHelper.current.updateStepIndexFromAngle(angle)
     const currentStep = circleSliderHelper.current.getCurrentStep()
     setState((prev) => ({ ...prev, angle, currentStepValue: currentStep }))
-    onInputChange!(currentStep)
+    onInputChange(currentStep)
   }
 
   const updateSlider = (): void => {
-    const angle = mouseHelper.current!.getNewSliderAngle()
+    const angle = mouseHelper.current?.getNewSliderAngle()
     updateAngle(angle)
   }
 
   const getCenter = (): number => {
-    return size! / 2
+    return size / 2
   }
 
   const getAngle = (): number => {
@@ -105,14 +111,6 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
     }
   }
 
-  const getStepsArray = (min: number, stepSize: number): number[] => {
-    const stepArray = []
-    for (let i = 0; i < countSteps.current; i++) {
-      stepArray.push(min + i * stepSize)
-    }
-    return stepArray
-  }
-
   const getPath = (): string => {
     const center = getCenter()
     const direction = getAngle() < 1.5 * Math.PI ? 0 : 1
@@ -121,10 +119,10 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
     return path
   }
 
-  const handleMouseMove = (event: Event): void => {
+  const handleMouseMove = (event: MouseEvent): void => {
     event.preventDefault()
     setState((prev) => ({ ...prev, isMouseMove: true }))
-    mouseHelper.current!.setPosition(event)
+    mouseHelper.current?.setPosition(event)
     updateSlider()
   }
 
@@ -142,11 +140,11 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
       window.addEventListener('mouseup', handleMouseUp)
     }
   }
-  const handleTouchMove: any = (event: React.TouchEvent<SVGSVGElement>): void => {
-    const targetTouches = event.targetTouches
+  const handleTouchMove = (event: globalThis.TouchEvent): void => {
+    const { targetTouches } = event
     const countTouches = targetTouches.length
-    const currentTouch: React.Touch = targetTouches.item(countTouches - 1)!
-    mouseHelper.current!.setPosition(currentTouch)
+    const currentTouch = targetTouches?.item(countTouches - 1)
+    mouseHelper.current?.setPosition(currentTouch)
     updateSlider()
   }
 
@@ -162,17 +160,21 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
     }
   }
 
-  const sizeCalc = (divide: number = 1) => (size ? Number(size) : 150) / divide
+  const sizeCalc = (divide = 1) => (size ? Number(size) : 150) / divide
 
   const { x, y } = getPointPosition()
   const center = getCenter()
   const isAllGradientColorsAvailable = gradientColorFrom && gradientColorTo
 
+  const circumference = radius.current * 2 * Math.PI
+
   return (
     <svg
-      ref={(svg) => (mouseHelper.current = new MouseHelper(svg))}
+      ref={(svg) => {
+        mouseHelper.current = new MouseHelper(svg)
+      }}
       width={`${size}px`}
-      height={`${size! + size! * 0.05}px`}
+      height={`${size + size * 0.05}px`}
       viewBox={`0 0 ${size} ${size}`}
       style={{
         boxSizing: 'border-box',
@@ -193,8 +195,8 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
       )}
       {shadow && (
         <filter id={id} filterUnits="userSpaceOnUse">
-          <feGaussianBlur in="SourceAlpha" stdDeviation={size! * 0.01} />
-          <feOffset dx={size! * 0.001} dy={size! * 0.001} />
+          <feGaussianBlur in="SourceAlpha" stdDeviation={size * 0.01} />
+          <feOffset dx={size * 0.001} dy={size * 0.001} />
           <feComponentTransfer>
             <feFuncA type="linear" slope="0.3" />
           </feComponentTransfer>
@@ -213,65 +215,53 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
         cx={center}
         cy={center}
       />
-      <g style={{ transform: 'translate(100%, 100%) rotateZ(180deg)' }}>
-        {isAllGradientColorsAvailable && (
-          <defs>
-            <linearGradient id="gradient" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor={gradientColorFrom} />
-              <stop offset="100%" stopColor={gradientColorTo} />
-            </linearGradient>
-          </defs>
-        )}
-        <path
-          strokeWidth={progressWidth}
-          stroke={isAllGradientColorsAvailable ? 'url(#gradient)' : progressColor}
-          fill="none"
-          filter={shadow ? `url(#${id})` : 'none'}
-          d={getPath()}
-        />
-        <circle
-          stroke={progressColor}
-          strokeWidth={knobWidth}
-          fillOpacity="0"
-          style={{
-            cursor: disabled ? 'not-allowed' : 'pointer',
-          }}
-          filter={shadow ? `url(#${id})` : 'none'}
-          r={knobRadius!}
-          cx={x}
-          cy={y}
-        />
-      </g>
+      {loading ? (
+        <StyledGroup $transform="rotate(-90deg) translate(-100%, 0%)">
+          <LoadingCircle
+            strokeDasharray={`${circumference} ${circumference}`}
+            strokeDashoffset={circumference}
+            r={radius.current}
+            cx={center}
+            cy={center}
+            strokeWidth={circleWidth}
+          />
+        </StyledGroup>
+      ) : (
+        <StyledGroup $transform="translate(100%, 100%) rotateZ(180deg)">
+          {isAllGradientColorsAvailable && (
+            <defs>
+              <linearGradient id="gradient" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stopColor={gradientColorFrom} />
+                <stop offset="100%" stopColor={gradientColorTo} />
+              </linearGradient>
+            </defs>
+          )}
+          <path
+            strokeWidth={progressWidth}
+            stroke={isAllGradientColorsAvailable ? 'url(#gradient)' : progressColor}
+            fill="none"
+            filter={shadow ? `url(#${id})` : 'none'}
+            d={getPath()}
+          />
+          <circle
+            stroke={knobColor || progressColor}
+            strokeWidth={knobWidth}
+            fillOpacity="0"
+            style={{
+              cursor: disabled ? 'not-allowed' : 'pointer',
+            }}
+            filter={shadow ? `url(#${id})` : 'none'}
+            r={knobRadius}
+            cx={x}
+            cy={y}
+          />
+        </StyledGroup>
+      )}
       <foreignObject x="0" y="0" width={sizeCalc(1)} height={sizeCalc(1)}>
         {children}
       </foreignObject>
     </svg>
   )
-}
-
-CircleSlider.defaultProps = {
-  circleColor: 'transparent',
-  size: 180,
-  value: 0,
-  zIndex: 0,
-  progressColor: '#007aff',
-  knobColor: '#fff',
-  circleWidth: 5,
-  progressWidth: 25,
-  knobWidth: 22,
-  knobRadius: 15,
-  stepSize: 1,
-  min: 0,
-  max: 100,
-  disabled: false,
-  shadow: true,
-  showPercentage: false,
-  tooltipSize: 32,
-  tooltipColor: '#333',
-  insideColor: 'none',
-  onChange: () => ({}),
-  onInputChange: () => ({}),
-  onImageError: () => ({}),
 }
 
 export default CircleSlider

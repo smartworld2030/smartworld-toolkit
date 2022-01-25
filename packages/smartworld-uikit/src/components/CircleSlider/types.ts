@@ -15,9 +15,10 @@ export interface CircleSliderProps extends SvgProps {
   gradientColorFrom?: string
   gradientColorTo?: string
   knobColor?: string
-  onInputChange?: (value?: number) => void
+  onInputChange?: (value: number) => void
   onImageError?: () => void
   disabled?: boolean
+  loading?: boolean
   shadow?: boolean
   image?: string
   showPercentage?: boolean

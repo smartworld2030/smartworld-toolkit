@@ -1,4 +1,3 @@
-import { DefaultTheme } from 'styled-components'
 import { MediaQueries, Breakpoints, Spacing } from './types'
 
 export const breakpointMap: { [key: string]: number } = {
@@ -32,7 +31,7 @@ export const shadows = {
   tip: 'inset 0 0 2px 1px rgba(74, 74, 104, 0.5)',
 }
 
-export const buttonShadows = (color: string, size: string) => `
+export const buttonShadows = (color: string, size: string): string => `
 1px 0px ${size} ${color},
 -1px 0px ${size} ${color},
 0px 1px ${size} ${color},

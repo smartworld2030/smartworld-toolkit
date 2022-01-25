@@ -83,6 +83,15 @@ export const Circle: React.FC = () => {
           )
         })}
       </Box>
+      <Box mb="32px">
+        {Object.values(scales).map((scale) => {
+          return (
+            <Button shape="circle" disabled key={scale} scale={scale} mr="8px">
+              {`Disabled ${scale.toUpperCase()}`}
+            </Button>
+          )
+        })}
+      </Box>
       <Box>
         <Button shape="circle" scale="ml" mr="8px" disabled>
           Disabled
@@ -264,49 +273,81 @@ export const CircleVariants: React.FC = () => {
 export const Expandable: React.FC = () => {
   const [expanded, setExpanded] = useState(false)
   return (
-    <Box width="640px">
-      <BrowserRouter>
-        <Row>
-          <ExpandableButton expanded={expanded} onClick={() => setExpanded((prev) => !prev)} />
-          <ExpandableLabel expanded={expanded} onClick={() => setExpanded((prev) => !prev)}>
-            ExpandableLabel
-          </ExpandableLabel>
+    <Box mb="32px">
+      {Object.values(scales).map((scale) => (
+        <Row key={scale}>
+          <ExpandableButton expanded={expanded} scale={scale} onClick={() => setExpanded((prev) => !prev)} />
         </Row>
-      </BrowserRouter>
+      ))}
+      <Row>
+        <ExpandableLabel expanded={expanded} onClick={() => setExpanded((prev) => !prev)}>
+          ExpandableLabel
+        </ExpandableLabel>
+      </Row>
     </Box>
   )
 }
 
 export const PayButtonExample: React.FC = () => {
   const [loading, setLoading] = useState(false)
+  const [done, setDone] = useState(false)
   const onClick = () => {
     setLoading(true)
     setTimeout(() => {
       setLoading(false)
-    }, 3000)
+      setDone(true)
+      setTimeout(() => {
+        setDone(false)
+      }, 5000)
+    }, 5000)
   }
   return (
-    <Box mb="32px" background="white">
-      {Object.values(variants).map((variant) => {
-        return (
-          <Box key={variant} mb="32px">
-            {Object.values(scales).map((scale) => {
-              return (
-                <PayButton
-                  key={scale}
-                  variant={variant}
-                  scale={scale}
-                  external
-                  mr="8px"
-                  isLoading={loading}
-                  onClick={onClick}
-                />
-              )
-            })}
-          </Box>
-        )
-      })}
-    </Box>
+    <>
+      <Box mb="32px">
+        {Object.values(variants).map((variant) => {
+          return (
+            <div key={variant}>
+              <h1>{variant}</h1>
+              <Box mb="32px">
+                {Object.values(scales).map((scale) => {
+                  return (
+                    <PayButton
+                      key={scale}
+                      variant={variant}
+                      scale={scale}
+                      shadow
+                      external
+                      mb="8px"
+                      done={done}
+                      isLoading={loading}
+                      onClick={onClick}
+                    />
+                  )
+                })}
+              </Box>
+            </div>
+          )
+        })}
+      </Box>
+      Disabled
+      <Box mb="32px">
+        {Object.values(scales).map((scale) => {
+          return (
+            <PayButton
+              key={scale}
+              scale={scale}
+              shadow
+              external
+              disabled
+              mb="8px"
+              done={done}
+              isLoading={loading}
+              onClick={onClick}
+            />
+          )
+        })}
+      </Box>
+    </>
   )
 }
 
@@ -320,9 +361,8 @@ export const IconButtonExample: React.FC = () => {
             scale={scale}
             color="white"
             mr="8px"
-            shadow
             icon={(size) => <LogoIcon width={size} />}
-            onClick={() => {}}
+            onClick={() => console.log('clicked')}
           >
             STTS
           </IconButton>
@@ -338,7 +378,7 @@ export const IconButtonExample: React.FC = () => {
             shadow
             bottomIcon={() => '1220'}
             icon={(size) => <LogoIcon width={size} />}
-            onClick={() => {}}
+            onClick={() => console.log('clicked')}
           >
             STTS
           </IconButton>
@@ -357,18 +397,20 @@ export const PolygonButtonExample: React.FC = () => {
             key={scale}
             scale={scale}
             color="white"
-            mr="8px"
             shadow
+            mr="8px"
             icon={(size) => <LogoIcon width={size / 3} />}
-            onClick={() => {}}
+            onClick={() => console.log('clicked')}
           />
         )
       })}
     </Box>
   )
 }
+
 export const ButtonWithSliderExample: React.FC = () => {
   const [click, setClick] = useState('')
+  const [value, seValue] = useState(100)
   return (
     <Box mb="32px">
       {Object.values(scales).map((scale) => {
@@ -378,6 +420,30 @@ export const ButtonWithSliderExample: React.FC = () => {
             scale={scale}
             color="white"
             mr="8px"
+            onInput={seValue}
+            value={value}
+            shadow
+            onClick={() => {
+              setClick('click')
+              setTimeout(() => {
+                setClick('')
+              }, 1000)
+            }}
+          >
+            {click}
+          </ButtonWithSlider>
+        )
+      })}
+      {Object.values(scales).map((scale) => {
+        return (
+          <ButtonWithSlider
+            key={scale}
+            scale={scale}
+            color="white"
+            mr="8px"
+            disabled
+            onInput={seValue}
+            value={value}
             shadow
             onClick={() => {
               setClick('click')

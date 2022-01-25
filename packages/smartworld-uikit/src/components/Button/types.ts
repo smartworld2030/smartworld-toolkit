@@ -50,9 +50,11 @@ export interface BaseButtonProps extends LayoutProps, SpaceProps {
   as?: 'a' | 'button' | typeof Link
   external?: boolean
   isLoading?: boolean
+  shadow?: boolean
   scale?: Scale
   shape?: Shape
   fontSize?: number
+  shadowSize?: string
   fontWeight?: string | number
   variant?: Variant
   disabled?: boolean
@@ -77,6 +79,18 @@ export interface IconButtonProps extends BaseButtonProps {
   color?: string
   blur?: boolean
   shadow?: boolean
+  shadowSize?: string
   onClick?: () => void
   iconProps?: CSSProperties
+}
+export interface PayButtonProps extends BaseButtonProps {
+  children?: (e: ChildrenProps) => JSX.Element
+  done?: boolean
+  onClick: () => void
+}
+
+export interface ChildrenProps {
+  width: string
+  variant?: Variant
+  done?: boolean
 }
