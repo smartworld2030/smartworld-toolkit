@@ -1,4 +1,5 @@
 export { default as MainSection } from './MainSection'
+export { default as MainComponent } from './MainComponent'
 export { MainContext } from './MainSection'
 export * from './Component'
 export * from './types'

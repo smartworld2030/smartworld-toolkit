@@ -1,14 +1,15 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
+import { variant } from 'styled-system'
 import { IconButtonProps } from './types'
 import { ChevronDownIcon, ChevronUpIcon } from '../Svg'
 import Button from './Button'
 import IconButton from './IconButton'
+import { scaleVariants } from './theme'
 
 const loading = keyframes`
   0%, 25% {
     border-color: #fe1d4d;
-    border-style: dotted;
   }
   50% {
     border-style: solid;
@@ -18,7 +19,18 @@ const loading = keyframes`
   }
   100% {
     border-color: #19e285;
-    border-style: dotted;
+  }
+`
+
+const pathLoading = keyframes`
+  0%, 25% {
+    stroke: #fe1d4d;
+  }
+  75% {
+    stroke: #19e285;
+  }
+  100% {
+    stroke: #19e285;
   }
 `
 
@@ -26,19 +38,46 @@ const ProgressingIconBorder = styled(IconButton)<IconButtonProps>`
   animation: ${loading} 2s linear infinite both;
 `
 
+const UpAnimatedIcon = styled(ChevronUpIcon)<IconButtonProps>`
+  animation: ${pathLoading} 2s linear infinite both;
+`
+
+const DownAnimatedIcon = styled(ChevronDownIcon)<IconButtonProps>`
+  animation: ${pathLoading} 2s linear infinite both;
+`
+
 interface Props extends IconButtonProps {
   onClick?: () => void
   expanded?: boolean
 }
 
-export const ExpandableButton: React.FC<Props> = ({ onClick, expanded, children, ...rest }) => {
+export const ExpandableButton: React.FC<Props> = ({
+  onClick,
+  expanded,
+  borderWidth,
+  size,
+  scale,
+  children,
+  ...rest
+}) => {
+  const { height, borderWidth: bw } = variant({
+    prop: 'scale',
+    variants: scaleVariants,
+  })({ scale })
+
+  const sizeCalc = size || height.replace('px', '')
+  const s = borderWidth || bw
+
   return (
     <ProgressingIconBorder
       aria-label="Hide or show expandable content"
       onClick={onClick}
       blur={false}
       color="text"
-      icon={(w: number) => (expanded ? <ChevronUpIcon width={w} /> : <ChevronDownIcon width={w} />)}
+      size={sizeCalc}
+      borderWidth={s}
+      scale={scale}
+      icon={(w: number) => (expanded ? <UpAnimatedIcon width={w} /> : <DownAnimatedIcon width={w} />)}
       {...rest}
     >
       {children}
@@ -47,6 +86,7 @@ export const ExpandableButton: React.FC<Props> = ({ onClick, expanded, children,
 }
 ExpandableButton.defaultProps = {
   expanded: false,
+  scale: 'md',
 }
 
 export const ExpandableLabel: React.FC<Props> = ({ onClick, expanded, children }) => {

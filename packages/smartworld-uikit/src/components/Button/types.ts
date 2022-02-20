@@ -56,6 +56,7 @@ export interface BaseButtonProps extends LayoutProps, SpaceProps {
   fontSize?: number
   shadowSize?: string
   fontWeight?: string | number
+  borderWidth?: string | number
   variant?: Variant
   disabled?: boolean
   startIcon?: ReactNode
@@ -77,6 +78,7 @@ export interface IconButtonProps extends BaseButtonProps {
   bottomIcon?: (size: number) => ReactNode
   fill?: string
   color?: string
+  borderWidth?: string | number
   blur?: boolean
   shadow?: boolean
   shadowSize?: string

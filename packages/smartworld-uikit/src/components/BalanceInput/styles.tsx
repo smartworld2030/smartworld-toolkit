@@ -60,10 +60,9 @@ export const StyledBalanceInput = styled(Box)<{ isWarning: BalanceInputProps['is
 `
 
 export const StyledInput = styled(Input)`
-  border-radius: 0;
-  box-shadow: none;
   padding-left: 0;
   padding-right: 0;
+  box-shadow: none;
   height: ${({ height }) => height}px;
   text-align: center;
   font-size: ${({ height }) => (height ? +height / 2.5 : undefined)}px;

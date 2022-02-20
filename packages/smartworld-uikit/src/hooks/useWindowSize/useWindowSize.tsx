@@ -1,6 +1,8 @@
 import { useLayoutEffect, useState } from 'react'
-import { ScreenBreakPoint } from '../..'
 import { breakpointMap } from '../../theme/base'
+import { MediaQueries } from '../../theme'
+
+export type ScreenBreakPoint = keyof Omit<MediaQueries, 'nav'>
 
 export interface WindowSizes {
   screen: ScreenBreakPoint
@@ -19,7 +21,8 @@ const initValue = {
   isTablet: false,
 } as const
 
-const useWindowSize = (initialValue: WindowSizes = initValue, endFunc = (loading: boolean) => {}) => {
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const useWindowSize = (initialValue: WindowSizes = initValue, endFunc = (_arg: boolean) => {}): WindowSizes => {
   const [sizes, setSizes] = useState(initialValue)
 
   useLayoutEffect(() => {
@@ -31,16 +34,16 @@ const useWindowSize = (initialValue: WindowSizes = initValue, endFunc = (loading
         .reverse()
         .find((key) => width >= breakpointMap[key]) as ScreenBreakPoint
 
-      const screen = findScreen ? findScreen : 'xs'
+      const screen = findScreen || 'xs'
 
       const isMobile = ['xs', 'sm'].includes(screen)
-      const isTablet = 'md' === screen
+      const isTablet = screen === 'md'
 
-      const height = initialValue.height
+      const { height } = initialValue
 
       const flexSize = height / 12
 
-      setSizes({ screen, width: width, height, flexSize, isMobile, isTablet })
+      setSizes({ screen, width, height, flexSize, isMobile, isTablet })
       endFunc(false)
     }
 
@@ -56,7 +59,7 @@ const useWindowSize = (initialValue: WindowSizes = initValue, endFunc = (loading
       window.removeEventListener('resize', debounce)
       clearTimeout(timerId)
     }
-  }, [])
+  }, [endFunc, initialValue])
 
   return sizes
 }

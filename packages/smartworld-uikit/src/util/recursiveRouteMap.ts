@@ -14,13 +14,12 @@ const recursiveRouteMap = (children: any, comporder = 0): any => {
         return Children.map(Comp({ ...props, comporder }), (child: any) =>
           recursiveRouteMap(child, comporder <= 1 ? 1 : 2),
         )
-      } else {
-        return cloneElement(child, {
-          // @ts-ignore
-          comporder: comporder,
-          children: recursiveRouteMap(props.children, comporder + 1),
-        })
       }
+      return cloneElement(child, {
+        // @ts-ignore
+        comporder,
+        children: recursiveRouteMap(props.children, comporder + 1),
+      })
     }
     if (nameArray && nameArray[0] === 'Updater') {
       return cloneElement(child, {

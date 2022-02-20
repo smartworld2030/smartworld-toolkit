@@ -216,7 +216,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
         cy={center}
       />
       {loading ? (
-        <StyledGroup $transform="rotate(-90deg) translate(-100%, 0%)">
+        <g>
           <LoadingCircle
             strokeDasharray={`${circumference} ${circumference}`}
             strokeDashoffset={circumference}
@@ -225,7 +225,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
             cy={center}
             strokeWidth={circleWidth}
           />
-        </StyledGroup>
+        </g>
       ) : (
         <StyledGroup $transform="translate(100%, 100%) rotateZ(180deg)">
           {isAllGradientColorsAvailable && (

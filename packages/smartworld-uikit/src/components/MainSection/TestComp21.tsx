@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { RouteProps } from 'react-router'
 import Text from '../Text/Text'
 import { Button } from '../Button'
 import { BalanceInput } from '../BalanceInput'
@@ -8,8 +9,8 @@ import { LongPressButton } from '../LongPressButton'
 import { Skeleton } from '../Skeleton'
 import { useWindowSize } from '../..'
 import { MainFlex } from '../Box'
-import { MainComp, MainRoute } from '.'
-import { RouteProps } from 'react-router'
+import MainComponent from './MainComponent'
+import { MainRoute } from './Component'
 
 export const Updater = ({ comp }: { comp: string }) => {
   let int: NodeJS.Timeout
@@ -38,7 +39,7 @@ const MainInvestment: React.FC<RouteProps> = (props) => {
 const MainWithdraw = ({ isMobile, flexSize, isTablet }: any) => {
   return (
     <MainFlex {...{ flex: 3, md: 6, sm: 4, xs: 4 }}>
-      <MainComp
+      <MainComponent
         tip="Withdraw Circle"
         flex={12}
         justifyContent="space-around"
@@ -73,7 +74,7 @@ const MainWithdraw = ({ isMobile, flexSize, isTablet }: any) => {
             </div>
           }
         />
-      </MainComp>
+      </MainComponent>
     </MainFlex>
   )
 }
@@ -81,7 +82,7 @@ const MainWithdraw = ({ isMobile, flexSize, isTablet }: any) => {
 const MainDetails = ({ isMobile, flexSize, isTablet }: any) => {
   return (
     <MainFlex {...{ flex: 3, md: 6, sm: 4, xs: 4 }}>
-      <MainComp
+      <MainComponent
         tip="Withdraw Circle"
         flex={12}
         justifyContent="space-around"
@@ -90,7 +91,7 @@ const MainDetails = ({ isMobile, flexSize, isTablet }: any) => {
         demo={<Skeleton size={80} />}
       >
         <LongPressButton shape="circle" size={80} onClick={() => console.log('object')} />
-      </MainComp>
+      </MainComponent>
     </MainFlex>
   )
 }
@@ -99,7 +100,7 @@ const MainDeposit = ({ isMobile, flexSize, isTablet }: any) => {
 
   return (
     <MainFlex {...{ flex: 6, md: 12, sm: 12, xs: 12 }}>
-      <MainComp
+      <MainComponent
         tip="Token Selection"
         flex={3}
         flexDirection={isMobile ? 'row' : 'column'}
@@ -112,8 +113,8 @@ const MainDeposit = ({ isMobile, flexSize, isTablet }: any) => {
         {[0, 1, 2].map((i) => (
           <Button key={i} shape="circle" scale="lg" value="BNB" />
         ))}
-      </MainComp>
-      <MainComp
+      </MainComponent>
+      <MainComponent
         tip="Balance Input"
         flex={6}
         flexDirection={isMobile ? 'row' : 'column'}
@@ -129,8 +130,8 @@ const MainDeposit = ({ isMobile, flexSize, isTablet }: any) => {
           unit="STTS"
           size={isMobile ? flexSize * 4 : isTablet ? flexSize * 3 : flexSize * 2}
         />
-      </MainComp>
-      <MainComp
+      </MainComponent>
+      <MainComponent
         tip="Long Press Button"
         flex={3}
         justifyContent="space-around"
@@ -139,7 +140,7 @@ const MainDeposit = ({ isMobile, flexSize, isTablet }: any) => {
         demo={<Skeleton size={80} />}
       >
         <LongPressButton shape="circle" size={80} onClick={() => console.log('object')} />
-      </MainComp>
+      </MainComponent>
     </MainFlex>
   )
 }

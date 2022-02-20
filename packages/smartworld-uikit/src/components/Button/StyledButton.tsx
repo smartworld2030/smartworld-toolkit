@@ -94,7 +94,7 @@ const StyledButton = styled.button<BaseButtonProps>`
 
   ${layout}
   ${space}
-
+  border-width: ${({ borderWidth }) => borderWidth}px;
   padding: ${({ variant: v }) => (v === 'text' ? 0 : undefined)};
 `
 

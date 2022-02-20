@@ -1,14 +1,12 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react'
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 import { AnimatedTipFlex, AnimatedFlex, MainFlex } from '../Box/Flex'
 import MainSection from './MainSection'
 import { LogoIcon, SwapIcon, NoProfileAvatarIcon, CogIcon } from '../Svg'
-import { Redirect, Route, Switch } from 'react-router'
-import { BrowserRouter as Router } from 'react-router-dom'
 import { Toggle } from '../Toggle'
 import { MainRoute } from './Component'
-import { Updater } from './TestComp'
-import { Spinner } from '../Spinner'
 import InvestSkeleton from './TestComp'
+import { Spinner } from '../Spinner'
 
 const MainPool2 = lazy(() => import('./TestComp22'))
 const MainInvestment2 = lazy(() => import('./TestComp21'))
@@ -86,17 +84,7 @@ export const Example: React.FC = () => {
               )}
               skeleton={<InvestSkeleton />}
             >
-              <MainInvestment2 exact strict path={['/iframe.html', '/invest']} />
-              <Route exact strict path="/pool" component={MainPool2} />
-              <MainRoute exact strict path={['/swap', '/freeze']}>
-                <Updater comp="swap" />
-                <MainFlex>
-                  <div>swap</div>
-                </MainFlex>
-              </MainRoute>
-              <Route exact path="/iframe.html">
-                <Redirect to="/pool" />
-              </Route>
+              <MainInvestment2 path="/iframe.html" />
             </MainSection>
           </Switch>
         </Suspense>

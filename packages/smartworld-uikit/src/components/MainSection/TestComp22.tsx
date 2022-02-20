@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { RouteProps } from 'react-router'
 import Text from '../Text/Text'
 import { Button } from '../Button'
 import { BalanceInput } from '../BalanceInput'
@@ -8,8 +9,7 @@ import { LongPressButton } from '../LongPressButton'
 import { Skeleton } from '../Skeleton'
 import { ReverseFlex } from '../Box'
 import { Updater } from './TestComp'
-import { RouteProps } from 'react-router'
-import { MainComp } from '.'
+import MainComponent from './MainComponent'
 
 export const MainPool: React.FC<RouteProps> = (props) => {
   return (
@@ -25,7 +25,7 @@ export const MainPool: React.FC<RouteProps> = (props) => {
 const Withdraw = () => {
   return (
     <ReverseFlex>
-      <MainComp
+      <MainComponent
         tip="Withdraw Circle"
         flex={8}
         justifyContent="space-around"
@@ -60,7 +60,7 @@ const Withdraw = () => {
             </div>
           }
         />
-      </MainComp>
+      </MainComponent>
     </ReverseFlex>
   )
 }
@@ -68,7 +68,7 @@ const Withdraw = () => {
 const Details = () => {
   return (
     <ReverseFlex>
-      <MainComp
+      <MainComponent
         tip="Withdraw Circle"
         flex={6}
         justifyContent="space-around"
@@ -77,7 +77,7 @@ const Details = () => {
         demo={<Skeleton size={80} />}
       >
         <LongPressButton shape="circle" size={80} onClick={() => console.log('object')} />
-      </MainComp>
+      </MainComponent>
     </ReverseFlex>
   )
 }
@@ -86,7 +86,7 @@ const Deposit = () => {
 
   return (
     <ReverseFlex>
-      <MainComp
+      <MainComponent
         tip="Token Selection"
         flex={6}
         flexDirection="row"
@@ -100,8 +100,8 @@ const Deposit = () => {
         {[0, 1, 2].map((i) => (
           <Button key={i} shape="circle" scale="lg" value="BNB" />
         ))}
-      </MainComp>
-      <MainComp
+      </MainComponent>
+      <MainComponent
         tip="Balance Input"
         flex={8}
         flexDirection="row"
@@ -111,8 +111,8 @@ const Deposit = () => {
         demo={<Skeleton size={180} />}
       >
         <BalanceInput onUserInput={(e) => setValue(e)} value={value} maxValue={200} unit="STTS" size={180} />
-      </MainComp>
-      <MainComp
+      </MainComponent>
+      <MainComponent
         tip="Long Press Button"
         flex={6}
         justifyContent="space-around"
@@ -121,7 +121,7 @@ const Deposit = () => {
         demo={<Skeleton size={80} />}
       >
         <LongPressButton shape="circle" size={80} onClick={() => console.log('object')} />
-      </MainComp>
+      </MainComponent>
     </ReverseFlex>
   )
 }

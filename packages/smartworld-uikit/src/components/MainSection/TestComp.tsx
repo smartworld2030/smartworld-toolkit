@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import { Skeleton } from '../Skeleton'
-import { MainFlex, ReverseFlex } from '../Box'
-import { MainComp } from '.'
 import { RouteProps } from 'react-router'
+import { Skeleton } from '../Skeleton'
+import { ReverseFlex } from '../Box'
+import MainComponent from './MainComponent'
 
 export const Updater = ({ comp }: { comp: string }) => {
   let int: NodeJS.Timeout
@@ -29,9 +29,9 @@ const MainInvestment: React.FC<RouteProps> = (props) => {
 const MainWithdraw = () => {
   return (
     <ReverseFlex>
-      <MainComp tip="Withdraw Circle" flex={12} justifyContent="space-around" alignItems="center" tipSize={3}>
+      <MainComponent tip="Withdraw Circle" flex={12} justifyContent="space-around" alignItems="center" tipSize={3}>
         <Skeleton size={150} />
-      </MainComp>
+      </MainComponent>
     </ReverseFlex>
   )
 }
@@ -39,33 +39,39 @@ const MainWithdraw = () => {
 const MainDetails = () => {
   return (
     <ReverseFlex>
-      <MainComp tip="Withdraw Circle" flex={12} justifyContent="space-around" alignItems="center" tipSize={3}>
+      <MainComponent tip="Withdraw Circle" flex={12} justifyContent="space-around" alignItems="center" tipSize={3}>
         <Skeleton size={80} />{' '}
-      </MainComp>
+      </MainComponent>
     </ReverseFlex>
   )
 }
 const MainDeposit = () => {
   return (
     <ReverseFlex>
-      <MainComp tip="Token Selection" flex={3} flexDirection={'row'} justifyContent="space-around" alignItems="center">
+      <MainComponent
+        tip="Token Selection"
+        flex={3}
+        flexDirection="row"
+        justifyContent="space-around"
+        alignItems="center"
+      >
         {[0, 1, 2].map((i) => (
           <Skeleton key={i} shape="circle" scale="lg" />
         ))}
-      </MainComp>
-      <MainComp
+      </MainComponent>
+      <MainComponent
         tip="Balance Input"
         flex={6}
-        flexDirection={'column'}
+        flexDirection="column"
         justifyContent="space-around"
         alignItems="center"
         tipSize={3}
       >
         <Skeleton size={150} />
-      </MainComp>
-      <MainComp tip="Long Press Button" flex={3} justifyContent="space-around" alignItems="center" tipSize={3}>
+      </MainComponent>
+      <MainComponent tip="Long Press Button" flex={3} justifyContent="space-around" alignItems="center" tipSize={3}>
         <Skeleton size={80} />{' '}
-      </MainComp>
+      </MainComponent>
     </ReverseFlex>
   )
 }

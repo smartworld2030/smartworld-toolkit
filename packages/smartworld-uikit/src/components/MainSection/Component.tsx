@@ -1,10 +1,9 @@
-import React, { ReactNode, useContext } from 'react'
-import { Route, RouteProps } from 'react-router'
+import React, { ReactNode } from 'react'
+import { Route, RouteProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { AnimatedFlex, Box, AnimatedTipFlex } from '../Box'
-import { useWindowSize } from '../..'
-import { MainContext } from './MainSection'
 import { MainFlexProps } from '../Box/types'
+
 interface ContainerProps extends MainFlexProps {
   background?: string
   minHeight?: string
@@ -66,17 +65,5 @@ export const FlexWithTip: React.FC<FlexWithTip> = ({
         {children}
       </AnimatedFlex>
     </AnimatedFlex>
-  )
-}
-
-export const MainComp = (props: MainFlexProps) => {
-  const { showTip } = useContext(MainContext)
-  const { flexSize } = useWindowSize()
-
-  const { tip, demo, tipSize, children, flex = 12, ...ss } = props
-  return (
-    <FlexWithTip showTip={showTip} isMobile={true} flex={flex * flexSize} tip={tip} tipSize={tipSize} {...ss}>
-      {children}
-    </FlexWithTip>
   )
 }

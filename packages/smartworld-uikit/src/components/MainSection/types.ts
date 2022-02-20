@@ -1,10 +1,8 @@
 import { SpringConfig, TransitionFrom, TransitionTo } from '@react-spring/core'
 import { CSSProperties, ReactElement, ReactNode, Ref } from 'react'
 import { FlexboxProps } from 'styled-system'
-import { MediaQueries, ListItems } from '../..'
-import { WindowSizes } from '../../hooks/useWindowSize/useWindowSize'
-
-export type ScreenBreakPoint = keyof Omit<MediaQueries, 'nav'>
+import { ListItems } from '../../widgets/Menu'
+import { ScreenBreakPoint, WindowSizes } from '../../hooks/useWindowSize/useWindowSize'
 
 export interface ExpandableColProps {
   ret?: any
@@ -57,6 +55,7 @@ export interface MainSectionProps {
   style?: CSSProperties
   computedMatch?: unknown
   location?: Location
+  pathname?: string
 }
 
 interface AdditionalCompProps {

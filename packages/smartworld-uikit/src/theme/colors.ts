@@ -7,6 +7,7 @@ export const baseColors = {
   secondary: '#8A6FFE',
   success: '#19E285',
   warning: '#FFE438',
+  transparent: 'transparent',
 }
 
 export const additionalColors = {

@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
-import Box from '../Box/Box'
-import { variants } from '../Button/types'
-import { LogoIcon } from '../Svg'
+import React, { useMemo, useState } from 'react'
+import { Flex } from '../Box'
 import SelectableToken from './SelectableToken'
+import SwapUnitList from './SwapUnitList'
 
 export default {
   title: 'Components/SelectableToken',
@@ -11,15 +10,28 @@ export default {
 }
 
 export const Default: React.FC = () => {
+  const tokenList = [
+    { unit: 'STTS', maxValue: '13.0325', image: 'https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png' },
+    { unit: 'BTCB', maxValue: '0.00000002', image: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=018' },
+    { unit: 'USDT', maxValue: '30', image: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=018' },
+    { unit: 'SHIB', maxValue: '6600', image: 'https://cryptologos.cc/logos/shiba-inu-shib-logo.png?v=018' },
+    { unit: 'DOGE', maxValue: '900', image: 'https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=018' },
+    {
+      unit: 'BNB',
+      maxValue: '138',
+      image: 'https://cryptologos.cc/logos/binance-coin-bnb-logo.svg?v=018',
+    },
+  ]
   const STTS_PRICE = 1.26
   const [decimalValue, setDecimalValue] = useState(1.43333)
   const [numericValue, setNumericValue] = useState(5)
-  const [editingUnit, setEditingUnit] = useState<'STTS' | 'USD'>('STTS')
+  const [selectedUnit, setSelectedUnit] = useState<string>('STTS')
+  const [editingUnit, setEditingUnit] = useState<string>('STTS')
   const [values, setValues] = useState({
-    STTS: '',
+    [selectedUnit]: '',
     USD: '',
   })
-  const conversionUnit = editingUnit === 'STTS' ? 'USD' : 'STTS'
+  const conversionUnit = useMemo(() => (editingUnit === 'USD' ? selectedUnit : 'USD'), [editingUnit, selectedUnit])
 
   const currencyValue = (input: number) => {
     return `~${(input * 1.3).toLocaleString(undefined, {
@@ -35,59 +47,27 @@ export const Default: React.FC = () => {
       })}`
     : '0.00'
 
-  return (
-    <Box size="300px">
-      <SelectableToken
-        value={values[editingUnit]}
-        unit={<div>{editingUnit}</div>}
-        onSelect={() => console.log('Unit Clicked!')}
-        currencyValue={currencyValues}
-        currencyUnit={conversionUnit}
-        placeholder="1006.086957"
-        mb="32px"
-      />
-      <SelectableToken
-        unit="STTS"
-        onSelect={() => console.log('clicked')}
-        value={decimalValue}
-        currencyValue={currencyValue(decimalValue)}
-        placeholder="0.0"
-        size={100}
-        mb="32px"
-      />
-      <SelectableToken
-        value={values[editingUnit]}
-        unit={editingUnit}
-        image="https://picsum.photos/id/237/300/300?grayscale"
-        currencyValue={currencyValues}
-        currencyUnit={conversionUnit}
-        placeholder="1.5"
-        disabled
-        mb="32px"
-        onSelect={() => console.log('clicked')}
-      />
-    </Box>
-  )
-}
+  const handleDecimalChange = (input) => {
+    setDecimalValue(input)
+  }
 
-export const SwitchUnits: React.FC = () => {
-  const CAKE_PRICE = 69
-  const [editingUnit, setEditingUnit] = useState<'CAKE' | 'USD'>('CAKE')
-  const conversionUnit = editingUnit === 'CAKE' ? 'USD' : 'CAKE'
-  const [values, setValues] = useState({
-    CAKE: '1006.086957',
-    USD: `${1006.086957 * CAKE_PRICE}`,
-  })
-
-  const currencyValue = !Number.isNaN(parseFloat(values[conversionUnit]))
-    ? parseFloat(values[conversionUnit]).toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
+  const handleSTTSChange = (input: string) => {
+    const inputAsFloat = parseFloat(input)
+    if (editingUnit !== 'USD') {
+      setValues({
+        [selectedUnit]: input,
+        USD: Number.isNaN(inputAsFloat) ? '' : `${inputAsFloat * STTS_PRICE}`,
       })
-    : '0.00'
+    } else {
+      setValues({
+        [selectedUnit]: Number.isNaN(inputAsFloat) ? '' : `${inputAsFloat / STTS_PRICE}`,
+        USD: input,
+      })
+    }
+  }
 
   const switchEditingUnits = () => {
-    const editingUnitAfterChange = editingUnit === 'CAKE' ? 'USD' : 'CAKE'
+    const editingUnitAfterChange = editingUnit === selectedUnit ? 'USD' : selectedUnit
     // This is needed to persist same value as shown for currencyValue after switching
     // otherwise user will see lots of decimals
     const valuesAfterChange = { ...values }
@@ -99,58 +79,25 @@ export const SwitchUnits: React.FC = () => {
   }
 
   return (
-    <SelectableToken
-      onSelect={() => console.log('clicked')}
-      value={values[editingUnit]}
-      currencyValue={`~${currencyValue} ${conversionUnit}`}
-      placeholder="0.0"
-      image="https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png"
-      unit={editingUnit}
-    />
-  )
-}
-
-export const SwapUnitLists: React.FC = () => {
-  const tokenList = [{ unit: 'STTS', value: '13.0325', image: 'https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png' }]
-  return (
-    <Box size="300px">
-      {tokenList.map((item) => (
-        <SelectableToken
-          loading
-          onSelect={() => console.log(item.unit)}
-          key={item.unit}
-          image="https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png"
-          inputProps={{ inputMode: 'numeric' }}
-          mb="32px"
-          borderColor="orange"
-          {...item}
-        />
-      ))}
-    </Box>
-  )
-}
-
-export const Variants: React.FC = () => {
-  return (
-    <Box>
-      {Object.values(variants).map((variant, i) => (
-        <SelectableToken
-          key={variant}
-          unit="STTS"
-          value={100 + i * 10}
-          currencyValue={16000}
-          variant={variant}
-          image="https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png"
-          inputProps={{ inputMode: 'numeric' }}
-          placeholder="0"
-          size={100 + i * 10}
-          mb="32px"
-          loading
-          text={variant.toUpperCase()}
-          onSelect={() => console.log('Button Clicked!')}
-          onClick={() => console.log('Clicked!')}
-        />
-      ))}
-    </Box>
+    <Flex marginTop={100}>
+      <SwapUnitList
+        tokenList={tokenList}
+        selectedUnit={(unit) => {
+          setSelectedUnit(unit)
+          setEditingUnit(unit)
+          setValues({
+            [unit]: '',
+            USD: '',
+          })
+        }}
+        value={values[editingUnit]}
+        onUserInput={handleSTTSChange}
+        unit={editingUnit}
+        currencyValue={currencyValues}
+        currencyUnit={conversionUnit}
+        mb="32px"
+        switchEditingUnits={switchEditingUnits}
+      />
+    </Flex>
   )
 }

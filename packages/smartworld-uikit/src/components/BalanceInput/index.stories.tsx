@@ -209,7 +209,7 @@ export const SwitchUnits: React.FC = () => {
   )
 }
 
-export const SwapUnitLists: React.FC = () => {
+export const WithLoading: React.FC = () => {
   const tokenList = [{ unit: 'STTS', value: '13.0325', image: 'https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png' }]
   return (
     <Box size="300px">

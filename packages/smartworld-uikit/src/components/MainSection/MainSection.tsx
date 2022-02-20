@@ -1,10 +1,10 @@
-import React, { useState, useRef, useLayoutEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { useTransition, animated } from 'react-spring'
-import { useHistory } from 'react-router'
-import { Menu, useWindowSize } from '../..'
+import { useWindowSize } from '../../hooks'
 import { Container } from './Component'
 import { MainSectionProps } from './types'
 import { Spinner } from '../Spinner'
+import { Menu } from '../../widgets/Menu'
 
 const defaultToggle = {
   showTip: false,
@@ -31,6 +31,7 @@ const MainSection: React.FC<MainSectionProps> = ({
   refFunc,
   header,
   location,
+  pathname,
   computedMatch,
   loading,
   ...rest
@@ -38,8 +39,6 @@ const MainSection: React.FC<MainSectionProps> = ({
   const [animLoading, setAnimLoading] = useState(true)
   const { width, isMobile, isTablet, flexSize } = useWindowSize(initialValue, setAnimLoading)
   const [toggle, setToggle] = useState(defaultToggle)
-  const history = useHistory()
-  const { pathname } = location as Location
 
   const divRef = useRef<HTMLDivElement>(null)
 
@@ -66,13 +65,6 @@ const MainSection: React.FC<MainSectionProps> = ({
     onRest: () => divRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }),
     ...(transition as any),
   })
-
-  const changePage = (value: string) => {
-    setToggle(defaultToggle)
-    history.push(value)
-  }
-
-  const findPath = () => (list?.links.some((link) => link.path.some((p) => p === pathname)) ? pathname : list?.default)
 
   const rightProps = { flexSize, toggle, isMobile, isTablet, responsiveSize }
   const leftProps = {
@@ -104,9 +96,7 @@ const MainSection: React.FC<MainSectionProps> = ({
               <Menu
                 width={width}
                 background={menuBackground}
-                onChange={changePage}
                 list={list}
-                selected={findPath()}
                 rightSide={
                   rightIcon &&
                   rightIcon({

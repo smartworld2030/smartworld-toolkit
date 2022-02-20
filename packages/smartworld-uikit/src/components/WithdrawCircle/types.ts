@@ -24,4 +24,5 @@ export interface WithdrawCircleProps {
   progressSize?: number
   borderSize?: number
   disabled?: boolean
+  loading?: boolean
 }

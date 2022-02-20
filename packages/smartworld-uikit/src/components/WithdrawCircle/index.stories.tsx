@@ -27,11 +27,10 @@ export const Default: React.FC = () => {
   }
 
   const currencyValues = !Number.isNaN(parseFloat(values[conversionUnit]))
-    ? '~' +
-      parseFloat(values[conversionUnit]).toLocaleString(undefined, {
+    ? `~${parseFloat(values[conversionUnit]).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-      })
+      })}`
     : '0.00'
 
   const handleDecimalChange = (input) => {
@@ -215,7 +214,7 @@ export const SwitchUnits: React.FC = () => {
   )
 }
 
-export const BigSwitchUnits: React.FC = () => {
+export const WithLoading: React.FC = () => {
   const CAKE_PRICE = 69
   const [editingUnit, setEditingUnit] = useState<'CAKE' | 'USD'>('CAKE')
   const conversionUnit = editingUnit === 'CAKE' ? 'USD' : 'CAKE'
@@ -224,24 +223,11 @@ export const BigSwitchUnits: React.FC = () => {
     USD: `${1006.086957 * CAKE_PRICE}`,
   })
 
-  const switchEditingUnits = () => {
-    const editingUnitAfterChange = editingUnit === 'CAKE' ? 'USD' : 'CAKE'
-    // This is needed to persist same value as shown for currencyValue after switching
-    // otherwise user will see lots of decimals
-    const valuesAfterChange = { ...values }
-    valuesAfterChange[editingUnitAfterChange] = !Number.isNaN(parseFloat(values[conversionUnit]))
-      ? parseFloat(values[conversionUnit]).toFixed(2)
-      : '0.00'
-    setValues(valuesAfterChange)
-    setEditingUnit(editingUnitAfterChange)
-  }
-
   const currencyValues = !Number.isNaN(parseFloat(values[conversionUnit]))
-    ? '~' +
-      parseFloat(values[conversionUnit]).toLocaleString(undefined, {
+    ? `~${parseFloat(values[conversionUnit]).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-      })
+      })}`
     : '0.00'
 
   return (
@@ -250,23 +236,24 @@ export const BigSwitchUnits: React.FC = () => {
         topElement={
           <div>
             <TooltipText size="md">HOURLY</TooltipText>
-            <Text fontWeight="bold" fontSize="50px">
+            <Text fontWeight="bold" fontSize="30px">
               190290909
             </Text>
           </div>
         }
         bottomElement={
           <div>
-            <Text fontWeight="bold" fontSize="50px">
+            <Text fontWeight="bold" fontSize="30px">
               190290909
             </Text>
             <TooltipText size="md">REFERRAL</TooltipText>
           </div>
         }
         totalValue={currencyValues}
-        size={600}
+        size={400}
         percent={1006.086957}
         totalValueUnit="$"
+        loading
         buttonProps={{ variant: 'secondary' }}
         onClick={() => console.log('Whithdraw')}
         onLogoClick={() => console.log('Logo Clicked!')}

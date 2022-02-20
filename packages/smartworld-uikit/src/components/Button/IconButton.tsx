@@ -37,18 +37,28 @@ const IconButton: React.FC<IconButtonProps> = ({
   shadowSize,
   fontSize,
   children,
+  borderWidth,
+  size,
+  scale,
   ...rest
 }) => {
-  const { height, borderWidth } = variant({
+  const { height, borderWidth: bw } = variant({
     prop: 'scale',
     variants: scaleVariants,
-  })(rest)
+  })({ scale })
 
-  const sizeCalc = height.replace('px', '')
-  const borderCalc = borderWidth.replace('px', '')
+  const sizeCalc = size || height.replace('px', '')
+  const borderCalc = (borderWidth || bw.replace('px', '')) as number
 
   return (
-    <StyledButton shape="circle" shadow={shadow} shadowSize={shadowSize} {...rest}>
+    <StyledButton
+      borderWidth={borderCalc}
+      shape="circle"
+      shadow={shadow}
+      size={`${sizeCalc}px`}
+      shadowSize={shadowSize}
+      {...rest}
+    >
       {icon && (
         <ResizableIcon blur={blur} size={borderCalc / 10} style={iconProps}>
           {icon(sizeCalc - borderCalc * 2)}

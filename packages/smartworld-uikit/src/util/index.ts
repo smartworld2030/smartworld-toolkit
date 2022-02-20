@@ -1,1 +1,1 @@
-export * from './recursiveRouteMap'
+export { default as RecursiveRouteMap } from './recursiveRouteMap'

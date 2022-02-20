@@ -20,6 +20,7 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
   progressSize,
   borderSize,
   color,
+  loading,
   borderColor,
   progressColor,
   disabled = false,
@@ -39,6 +40,7 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
       insideColor={color || colors.tertiary}
       circleColor={isWarning ? colors.failure : borderColor}
       disabled
+      loading={loading}
       id="withdraw"
     >
       <RelativeFlex

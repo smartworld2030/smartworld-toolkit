@@ -72,7 +72,7 @@ export type Colors = {
   textDisabled: string
   textSubtle: string
   disabled: string
-
+  transparent: string
   // Gradients
   gradients: Gradients
 

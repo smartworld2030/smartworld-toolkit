@@ -1,4 +1,4 @@
-import { ReactNode, Ref } from 'react'
+import { ReactNode } from 'react'
 import { Colors } from '../../theme/types'
 
 export interface Language {
@@ -41,5 +41,5 @@ export interface NavProps {
   list?: ListItems
   leftSide?: ReactNode
   rightSide?: ReactNode
-  onChange: (value: string) => void
+  onChange?: (value: string) => void
 }

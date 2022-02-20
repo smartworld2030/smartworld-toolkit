@@ -6,16 +6,17 @@ import { SelectableTokenProps } from './types'
 
 const SelectableToken: React.FC<SelectableTokenProps> = (props) => {
   const {
-    text = 'SELECT',
-    value,
+    text = '',
+    value = '0',
+    maxValue,
     variant,
+    stroked = true,
     placeholder = '0.0',
     onSelect,
     currencyValue,
     currencyUnit,
     inputProps,
     innerRef,
-    decimals = 8,
     unit,
     size = 150,
     disabled = false,
@@ -27,7 +28,7 @@ const SelectableToken: React.FC<SelectableTokenProps> = (props) => {
   const sizeCalc = (divide = 1, minus = 0) => (size ? Number(size) : 150) / divide - minus
 
   return (
-    <RelativeFlex width={sizeCalc()} height={sizeCalc(0.95)} {...rest}>
+    <RelativeFlex width={sizeCalc()} height={sizeCalc(0.95)} id={unit} {...rest}>
       <AbsoluteFlex top={0} left={0} width={sizeCalc()} height={sizeCalc(0.95)}>
         <RelativeFlex
           flexDirection="column"
@@ -50,11 +51,9 @@ const SelectableToken: React.FC<SelectableTokenProps> = (props) => {
           <AbsoluteFlex top={`${sizeCalc(5)}px`} width={sizeCalc(1.4)}>
             <Flex zIndex={2} flexDirection="column" justifyContent="center">
               <StyledInput
-                pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
-                inputMode="decimal"
                 min="0"
                 height={sizeCalc(6.5)}
-                value={value || ''}
+                value={maxValue || value}
                 placeholder={placeholder}
                 ref={innerRef}
                 disabled={disabled}
@@ -94,6 +93,7 @@ const SelectableToken: React.FC<SelectableTokenProps> = (props) => {
       </AbsoluteFlex>
       <ProgressRing
         variant={variant}
+        stroke={stroked ? sizeCalc(60) : undefined}
         size={sizeCalc()}
         blur="5px"
         onImageError={onImageError}

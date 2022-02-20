@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 import { flexbox } from 'styled-system'
+import { Colors } from '../../theme/types'
 import Box from './Box'
 import { FlexProps } from './types'
 
-const Flex = styled(Box)<FlexProps>`
+const Flex = styled(Box)<FlexProps & { variant?: keyof Colors }>`
   display: flex;
-  ${flexbox}
+  ${flexbox};
+  background: ${({ theme, variant }) => theme.colors[variant || 'transparent']};
 `
 export const ReverseFlex = styled(Box)<FlexProps>`
   display: flex;
