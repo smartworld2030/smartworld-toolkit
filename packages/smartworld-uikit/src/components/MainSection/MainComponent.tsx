@@ -8,10 +8,18 @@ const MainComponent: React.FC<MainFlexProps> = (props) => {
   const { showTip } = useContext(MainContext)
   const { flexSize } = useWindowSize()
 
-  const { tip, demo, tipSize, children, flex = 12, ...ss } = props
+  const { tip, demo, loading, overflow, tipSize, children, flex = 12, ...ss } = props
   return (
-    <FlexWithTip showTip={showTip} isMobile flex={flex * flexSize} tip={tip} tipSize={tipSize} {...ss}>
-      {children}
+    <FlexWithTip
+      showTip={showTip}
+      overflow={overflow}
+      isMobile
+      flex={flex * flexSize}
+      tip={tip}
+      tipSize={tipSize}
+      {...ss}
+    >
+      {loading ? demo : children}
     </FlexWithTip>
   )
 }

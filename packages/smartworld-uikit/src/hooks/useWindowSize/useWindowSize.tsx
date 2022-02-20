@@ -59,7 +59,8 @@ const useWindowSize = (initialValue: WindowSizes = initValue, endFunc = (_arg: b
       window.removeEventListener('resize', debounce)
       clearTimeout(timerId)
     }
-  }, [endFunc, initialValue])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return sizes
 }

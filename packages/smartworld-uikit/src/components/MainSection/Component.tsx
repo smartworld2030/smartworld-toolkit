@@ -41,6 +41,7 @@ interface FlexWithTip {
   tipSize?: number
   showTip?: boolean
   isMobile?: boolean
+  overflow?: boolean
 }
 
 export const FlexWithTip: React.FC<FlexWithTip> = ({
@@ -49,6 +50,7 @@ export const FlexWithTip: React.FC<FlexWithTip> = ({
   isMobile,
   tipSize = tip ? 6 : 0,
   showTip,
+  overflow = false,
   children,
   ...rest
 }) => {
@@ -57,7 +59,7 @@ export const FlexWithTip: React.FC<FlexWithTip> = ({
   return (
     <AnimatedFlex
       {...(isMobile ? { width: '100%', height: flex } : { width: flex, height: '100%' })}
-      overflow="hidden"
+      overflow={overflow ? 'hidden' : undefined}
       flexDirection={isMobile ? 'column' : 'row'}
     >
       {tip && <AnimatedTipFlex {...(isMobile ? { height: x } : { width: x })}>{tip}</AnimatedTipFlex>}

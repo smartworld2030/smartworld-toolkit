@@ -19,11 +19,13 @@ export interface BoxProps
 
 export interface FlexProps extends BoxProps, FlexboxProps {}
 
-export interface MainFlexProps extends BoxProps, FlexboxProps {
+export interface MainFlexProps extends Omit<BoxProps & FlexboxProps, 'overflow'> {
   flex?: number
   tip?: ReactNode
   demo?: ReactNode
   tipSize?: number
+  loading?: boolean
+  overflow?: boolean
 }
 
 export interface GridProps extends FlexProps, _GridProps {}
