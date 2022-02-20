@@ -1,7 +1,7 @@
 {
   "name": "@smartworld-libs/uikit",
-  "version": "0.60.0",
-  "description": "Set of UI components for pancake projects",
+  "version": "0.60.1",
+  "description": "Set of UI components for smartworld projects",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -20,8 +20,8 @@
     "storybook": "start-storybook -p 6006",
     "test": "jest",
     "storybook:build": "build-storybook",
-    "predeploy": "npm run storybook:build",
     "storybook:deploy": "gh-pages -d storybook-static",
+    "deploy": "npm run storybook:build && gh-pages -d storybook-static",
     "pub": "yarn build && yarn storybook:build && yarn publish"
   },
   "jest": {
@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.9.2",
+    "@react-spring/core": "^9.4.3",
     "@types/lodash": "^4.14.168",
     "@types/styled-system": "^5.1.10",
     "lodash": "^4.17.20",
