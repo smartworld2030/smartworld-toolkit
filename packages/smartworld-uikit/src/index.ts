@@ -36,6 +36,7 @@ export * from './components/CircleSlider'
 export * from './components/MainSection'
 export * from './components/LongPressButton'
 export * from './components/SelectableToken'
+export * from './components/SwapUnitList'
 
 // Hooks
 export * from './hooks'
