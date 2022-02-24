@@ -74,15 +74,18 @@ const StyledCheckmark = styled(CheckmarkIcon)`
 `
 
 export const PayButton = (props: PayButtonProps): JSX.Element => {
-  const { children, done, isLoading, variant, scale } = props
-  const size = v({
+  const { children, done, isLoading, variant, borderWidth, scale } = props
+  const { iconSize: width, borderWidth: bw } = v({
     prop: 'scale',
     variants: scaleVariants,
-  })
-  const iconProps = { width: size({ scale }).iconSize, paddingTop: size({ scale }).borderWidth, variant, scale }
+  })({ scale })
+
+  const borderCalc = borderWidth || +bw.replace('px', '')
+
+  const iconProps = { width, paddingTop: `${borderCalc}px`, variant, scale }
 
   return (
-    <StyledButton shape="circle" {...props}>
+    <StyledButton shape="circle" shadowSize={borderCalc} {...props}>
       {done ? (
         <StyledCheckmark {...iconProps} />
       ) : (
@@ -98,6 +101,7 @@ PayButton.defaultProps = {
   scale: 'md',
   done: false,
   children: undefined,
+  variant: 'primary',
 }
 
 export default PayButton

@@ -26,17 +26,17 @@ export const SwitchUnitsButton = styled(Button)`
       : `${theme.radii.default} 0 0 ${theme.radii.default}`};
 `
 
-export const ShadowedText = styled(Text)<{ shadowSize: string }>`
-  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, shadowSize)};
+export const ShadowedText = styled(Text)<{ shadowSize?: number }>`
+  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, shadowSize || 4)};
 }`
 
-export const ShadowedButton = styled(Button)<{ shadowSize: string }>`
-  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, shadowSize)};
+export const ShadowedButton = styled(Button)<{ shadowSize?: number }>`
+  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, shadowSize || 4)};
 }`
 
-export const UnitContainer = styled(Text)<{ shadowSize: string }>`
+export const UnitContainer = styled(Text)<{ shadowSize?: number }>`
   text-align: center;
-  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, shadowSize)};
+  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, shadowSize || 4)};
   color: ${({ theme }) => theme.colors.text};
   z-index: ${({ zIndex }) => zIndex};
   white-space: nowrap;

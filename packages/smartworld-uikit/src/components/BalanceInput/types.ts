@@ -2,8 +2,17 @@ import { InputHTMLAttributes, ReactElement, ReactNode, ReactText } from 'react'
 import { BoxProps } from '../Box'
 
 export interface BalanceInputProps extends BoxProps {
+  token?: {
+    chainId: string
+    address: string
+    decimals: number
+    symbol?: string
+    name?: string
+    logoURI?: string
+  }
   value: ReactText
   maxValue?: ReactText
+  balance?: ReactText
   onUserInput?: (input: string) => void
   onUnitClick?: React.MouseEventHandler<HTMLDivElement>
   onLogoClick?: React.MouseEventHandler<HTMLDivElement>
@@ -17,7 +26,7 @@ export interface BalanceInputProps extends BoxProps {
   decimals?: number
   logo?: ReactElement
   image?: string
-  unit: string | ReactElement
+  unit?: string | ReactElement
   knobColor?: string
   progressColor?: string
   borderColor?: string

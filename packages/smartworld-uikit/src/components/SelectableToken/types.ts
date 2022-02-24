@@ -1,12 +1,14 @@
 import { InputHTMLAttributes, ReactNode, ReactText } from 'react'
-import { Colors } from '../../theme/types'
-import { BalanceInputProps } from '../BalanceInput'
 import { BoxProps } from '../Box'
 import { Variant } from '../Button/types'
 
-export interface SelectableTokenProps extends BoxProps {
+export interface SelectableTokenBoxProps extends SelectableTokenProps, BoxProps {}
+export interface SelectableTokenProps {
+  token?: Token
+  address?: string
   value?: ReactText
   maxValue?: ReactText
+  balance?: ReactText
   text?: ReactText
   onImageError?: () => void
   innerRef?: React.RefObject<HTMLInputElement>
@@ -16,29 +18,21 @@ export interface SelectableTokenProps extends BoxProps {
   inputProps?: Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'placeholder' | 'onChange'>
   decimals?: number
   image?: string
-  unit: string
+  logoURI?: string
+  unit?: string
+  symbol?: string
   variant?: Variant
   stroked?: boolean
   disabled?: boolean
   loading?: boolean
-  onSelect?: () => void
+  onTextClick?: () => void
 }
 
-export interface SwapUnitListProps extends Omit<BalanceInputProps, 'unit' | 'selectable'> {
-  unit?: string
-  width?: ReactText
-  height?: ReactText
-  background?: keyof Colors
-  topElement?: JSX.Element
-  bottomElement?: JSX.Element
-  selectedUnit: (arg: string) => void
-  tokenList: TokenSelect[]
+export interface Token {
+  chainId: string
+  address: string
+  decimals: number
+  symbol?: string
+  name?: string
+  logoURI?: string
 }
-
-export interface TokenSelect {
-  unit: string
-  maxValue: string
-  image: string
-}
-
-export type TokenDivList = { [key: string]: HTMLDivElement }

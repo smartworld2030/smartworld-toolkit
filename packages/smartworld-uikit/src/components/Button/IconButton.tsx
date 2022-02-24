@@ -16,12 +16,12 @@ const ResizableIcon = styled.div<{ size: number; blur?: boolean }>`
   color: ${({ theme }) => theme.colors.text};
   filter: ${({ blur }) => (blur ? 'blur(1px)' : 'none')};
 `
-const StyledChild = styled.div<{ size: number; padding?: number; shadowSize?: number }>`
+const StyledChild = styled.div<{ size: number; padding?: number; shadowSize: number }>`
   z-index: 3;
   padding-top: ${({ padding }) => padding}px;
   font-size: ${({ size }) => size}px;
   color: ${({ theme }) => theme.colors.text};
-  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, `${shadowSize}px`)};
+  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, shadowSize)};
 `
 
 const StyledButton = styled(Button)<BaseButtonProps>`
@@ -48,7 +48,7 @@ const IconButton: React.FC<IconButtonProps> = ({
   })({ scale })
 
   const sizeCalc = size || height.replace('px', '')
-  const borderCalc = (borderWidth || bw.replace('px', '')) as number
+  const borderCalc = borderWidth || +bw.replace('px', '')
 
   return (
     <StyledButton
@@ -56,7 +56,7 @@ const IconButton: React.FC<IconButtonProps> = ({
       shape="circle"
       shadow={shadow}
       size={`${sizeCalc}px`}
-      shadowSize={shadowSize}
+      shadowSize={shadowSize || borderCalc}
       {...rest}
     >
       {icon && (
@@ -78,7 +78,5 @@ const IconButton: React.FC<IconButtonProps> = ({
 IconButton.defaultProps = {
   scale: 'md',
   blur: true,
-  shadow: false,
-  shadowSize: '4px',
 }
 export default IconButton

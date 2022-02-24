@@ -13,6 +13,7 @@ const ProgressRing: FC<ProgressRingProps> = ({
   loading = false,
   progress = 0,
   shadow = true,
+  shadowColor,
   insideColor = 'transparent',
   onImageError = () => null,
   image,
@@ -25,7 +26,7 @@ const ProgressRing: FC<ProgressRingProps> = ({
   })(rest)
 
   const r = (size || radius || height.replace('px', '')) / 2
-  const s = stroke || borderWidth.replace('px', '')
+  const s = stroke || +borderWidth.replace('px', '')
 
   const normalizedRadius = r - s * 2
   const circumference = normalizedRadius * 2 * Math.PI
@@ -33,10 +34,18 @@ const ProgressRing: FC<ProgressRingProps> = ({
   const strokeDashoffset = circumference - (progress / 100) * circumference
 
   return (
-    <StyledRing height={r * 2} width={r * 2} $offset={strokeDashoffset} $animation={loading && !progress} {...rest}>
+    <StyledRing
+      $blur={shadow && s}
+      $shadowColor={shadowColor}
+      height={r * 2}
+      width={r * 2}
+      $offset={strokeDashoffset}
+      $animation={loading && !progress}
+      {...rest}
+    >
       <defs>
         {image && (
-          <pattern id={image} x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
+          <pattern id={id} x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
             <image
               filter={`blur(${blur})`}
               x="0%"
@@ -49,25 +58,8 @@ const ProgressRing: FC<ProgressRingProps> = ({
           </pattern>
         )}
       </defs>
-      <filter id={id} filterUnits="userSpaceOnUse">
-        <feGaussianBlur in="SourceAlpha" stdDeviation={s / 2} />
-        <feOffset dx="0" dy="0" />
-        <feComponentTransfer>
-          <feFuncA type="linear" slope="0.3" />
-        </feComponentTransfer>
-        <feMerge>
-          <feMergeNode />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
-      </filter>
-      <circle
-        fill={image ? `url(#${image})` : insideColor}
-        filter={shadow ? `url(#${id})` : 'none'}
-        strokeWidth={+s + 4}
-        r={normalizedRadius}
-        cx={r}
-        cy={r}
-      />
+      <circle fill={insideColor} r={normalizedRadius} cx={r} cy={r} />
+      <circle fill={image ? `url(#${id})` : insideColor} strokeWidth={+s + 4} r={normalizedRadius} cx={r} cy={r} />
       <circle
         strokeWidth={s}
         strokeDasharray={`${circumference} ${circumference}`}

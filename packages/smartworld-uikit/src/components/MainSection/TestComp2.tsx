@@ -121,7 +121,6 @@ const MainDeposit = ({ isMobile, flexSize, isTablet }: any) => {
         />
       </MainComponent>
       <MainComponent
-        overflow
         tip="Long Press Button"
         flex={3}
         justifyContent="space-around"

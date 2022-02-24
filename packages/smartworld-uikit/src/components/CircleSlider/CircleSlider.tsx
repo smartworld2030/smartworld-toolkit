@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { ShadowSvg } from '../Svg'
 import CircleSliderHelper from './helpers/CircleSliderHelper'
 import MouseHelper from './helpers/MouseHelper'
 import pathGenerator from './helpers/PathGenerator'
@@ -17,12 +18,11 @@ interface IState {
 }
 
 const CircleSlider: React.FC<CircleSliderProps> = ({
-  id = 'dropShadow',
   circleColor = 'transparent',
   size = 180,
   value = 0,
   zIndex = 0,
-  progressColor = '#007aff',
+  progressColor,
   knobColor,
   circleWidth = 5,
   progressWidth = 25,
@@ -34,7 +34,8 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   loading = false,
   disabled = false,
   shadow = true,
-  insideColor = 'none',
+  shadowColor,
+  insideColor = 'transparent',
   onInputChange = () => null,
   onImageError = () => null,
   children,
@@ -169,7 +170,9 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   const circumference = radius.current * 2 * Math.PI
 
   return (
-    <svg
+    <ShadowSvg
+      $blur={shadow && size * 0.015}
+      $shadowColor={shadowColor || progressColor}
       ref={(svg) => {
         mouseHelper.current = new MouseHelper(svg)
       }}
@@ -193,24 +196,11 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
           </pattern>
         </defs>
       )}
-      {shadow && (
-        <filter id={id} filterUnits="userSpaceOnUse">
-          <feGaussianBlur in="SourceAlpha" stdDeviation={size * 0.01} />
-          <feOffset dx={size * 0.001} dy={size * 0.001} />
-          <feComponentTransfer>
-            <feFuncA type="linear" slope="0.3" />
-          </feComponentTransfer>
-          <feMerge>
-            <feMergeNode />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      )}
+      <circle fill={insideColor} r={radius.current} cx={center} cy={center} />
       <circle
         strokeWidth={circleWidth}
         stroke={circleColor}
         fill={image ? `url(#${image})` : insideColor}
-        filter={shadow ? `url(#${id})` : 'none'}
         r={radius.current}
         cx={center}
         cy={center}
@@ -240,7 +230,6 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
             strokeWidth={progressWidth}
             stroke={isAllGradientColorsAvailable ? 'url(#gradient)' : progressColor}
             fill="none"
-            filter={shadow ? `url(#${id})` : 'none'}
             d={getPath()}
           />
           <circle
@@ -250,7 +239,6 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
             style={{
               cursor: disabled ? 'not-allowed' : 'pointer',
             }}
-            filter={shadow ? `url(#${id})` : 'none'}
             r={knobRadius}
             cx={x}
             cy={y}
@@ -260,7 +248,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
       <foreignObject x="0" y="0" width={sizeCalc(1)} height={sizeCalc(1)}>
         {children}
       </foreignObject>
-    </svg>
+    </ShadowSvg>
   )
 }
 

@@ -66,7 +66,7 @@ export const ExpandableButton: React.FC<Props> = ({
   })({ scale })
 
   const sizeCalc = size || height.replace('px', '')
-  const s = borderWidth || bw
+  const s = borderWidth || bw.replace('px', '')
 
   return (
     <ProgressingIconBorder

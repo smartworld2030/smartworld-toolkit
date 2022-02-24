@@ -1,5 +1,6 @@
 import styled, { css, Keyframes, keyframes } from 'styled-components'
 import { variant } from 'styled-system'
+import { ShadowSvg } from '../Svg'
 import { colorVariant1, colorVariant2 } from './theme'
 
 export const loading = (offset: number): Keyframes => keyframes`
@@ -22,7 +23,7 @@ export const loading = (offset: number): Keyframes => keyframes`
   }
 `
 
-export const StyledRing = styled.svg<{ $animation: boolean; $offset: number }>`
+export const StyledRing = styled(ShadowSvg)<{ $animation: boolean; $offset: number }>`
   overflow: visible;
   & > circle:nth-child(3) {
     ${variant({
@@ -32,10 +33,13 @@ export const StyledRing = styled.svg<{ $animation: boolean; $offset: number }>`
 
   & > circle:nth-child(4) {
     ${({ $animation, $offset }) =>
-      $animation &&
-      css`
-        animation: 1.5s ease-in-out infinite both ${loading($offset)};
-      `};
+      $animation
+        ? css`
+            animation: 1.5s ease-in-out infinite both ${loading($offset)};
+          `
+        : css`
+            transform: rotate(-90deg);
+          `};
     stroke-linecap: round;
     fill: transparent;
     transition: stroke-dashoffset 0.35s;

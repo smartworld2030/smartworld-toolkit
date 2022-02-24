@@ -40,9 +40,6 @@ export * from './components/SelectableToken'
 // Hooks
 export * from './hooks'
 
-// Hooks
-export * from './util'
-
 // Widgets
 export * from './widgets/Modal'
 export * from './widgets/Menu'

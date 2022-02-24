@@ -396,7 +396,6 @@ export const PolygonButtonExample: React.FC = () => {
           <PolygonButton
             key={scale}
             scale={scale}
-            color="white"
             shadow
             mr="8px"
             icon={(size) => <LogoIcon width={size / 3} />}

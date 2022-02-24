@@ -42,7 +42,7 @@ const StyledChild = styled.div<{ size: ReactText; padding?: number; shadow?: boo
   font-size: ${({ size }) => size}px;
   color: ${({ theme }) => theme.colors.text};
   text-shadow: ${({ theme, shadowSize, shadow }) =>
-    shadow ? buttonShadows(theme.colors.background, `${shadowSize}px`) : 'none'};
+    shadow ? buttonShadows(theme.colors.background, shadowSize || 4) : 'none'};
 `
 
 interface BWSProps extends Omit<CircleSliderProps, 'onInput'> {
@@ -98,7 +98,7 @@ export const ButtonWithSlider = ({
   }
 
   return (
-    <StyledButton shape="circle" disabled={disabled} {...rest}>
+    <StyledButton shape="circle" shadow={shadow} shadowSize={borderCalc / 4} disabled={disabled} {...rest}>
       <ResizableIcon size={borderCalc / 10} style={iconStyle}>
         {icon ? (
           icon(iconSize)
@@ -108,10 +108,9 @@ export const ButtonWithSlider = ({
           </svg>
         )}
       </ResizableIcon>
-      <StyledChild size={fontSize || sizeCalc / 6} shadowSize={borderCalc / 4}>
-        {children || input}
-      </StyledChild>
+      <StyledChild size={fontSize || sizeCalc / 6}>{children || input}</StyledChild>
       <CircleSlider
+        shadow={false}
         id="circleButton"
         value={input}
         zIndex={10}
@@ -123,7 +122,6 @@ export const ButtonWithSlider = ({
         }}
         progressColor={strokeSliderFunc()}
         disabled={disabled}
-        shadow={shadow}
         {...rest}
       />
     </StyledButton>

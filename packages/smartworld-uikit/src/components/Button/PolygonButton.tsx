@@ -1,12 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 import { variant } from 'styled-system'
-import { HeaderIcon } from '../Svg'
+import { ShadowSvg, SvgProps } from '../Svg'
 import Button from './Button'
 import { scaleVariants } from './theme'
 import { PolygonButtonProps } from './types'
 
-const StyledPolygonIcon = styled(HeaderIcon)<{ color?: string; fill?: string }>`
+interface PolygonProps extends SvgProps {
+  $blur?: number | false | undefined
+  $shadowColor?: string | undefined
+}
+
+const StyledShadowSvg = styled(ShadowSvg)<{ color?: string; fill?: string }>`
   position: absolute;
   top: 0;
   left: 0;
@@ -14,6 +19,14 @@ const StyledPolygonIcon = styled(HeaderIcon)<{ color?: string; fill?: string }>`
   fill: ${({ fill }) => fill || 'none'};
   stroke: ${({ theme, color }) => color || theme.colors.primary};
 `
+
+const Polygon: React.FC<PolygonProps> = (props) => {
+  return (
+    <StyledShadowSvg viewBox="0 0 20 17" {...props} overflow="visible">
+      <path d="M1.74842 16L10 1.97231L18.2516 16H1.74842Z" strokeWidth="2" />
+    </StyledShadowSvg>
+  )
+}
 
 const StyledChild = styled.div<{ size: number }>`
   z-index: 2;
@@ -29,16 +42,18 @@ const StyledButton = styled(Button)`
   }
 `
 
-const PolygonButton: React.FC<PolygonButtonProps> = ({ icon, shadow, fill, color, children, ...rest }) => {
-  const { height } = variant({
+const PolygonButton: React.FC<PolygonButtonProps> = ({ icon, shadow, borderWidth, fill, color, children, ...rest }) => {
+  const { borderWidth: bw, height } = variant({
     prop: 'scale',
     variants: scaleVariants,
   })(rest)
 
   const sizeCalc = height.replace('px', '')
+  const borderCalc = (borderWidth || bw.replace('px', '')) as number
+
   return (
     <StyledButton shape="circle" variant="text" {...rest}>
-      <StyledPolygonIcon id="polygonButton" fill={fill} color={color} width={height} shadow={shadow} />
+      <Polygon fill={fill} color={color} width={height} $blur={shadow && borderCalc / 2} $shadowColor={color} />
       <StyledChild size={sizeCalc}>{icon ? icon(sizeCalc) : children}</StyledChild>
     </StyledButton>
   )

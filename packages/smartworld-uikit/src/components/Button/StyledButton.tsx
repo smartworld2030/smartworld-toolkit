@@ -67,11 +67,11 @@ const StyledButton = styled.button<BaseButtonProps>`
   opacity: ${getOpacity};
   outline: 0;
   transition: background-color 0.2s, opacity 0.2s;
-  box-shadow: ${({ shadow, shadowSize, theme }) =>
-    shadow && buttonShadows(theme.colors.textDisabled, shadowSize || '4px')};
+  box-shadow: ${({ shadow, shadowSize, theme }) => shadow && buttonShadows(theme.colors.primary, shadowSize || 2)};
 
   &:hover:not(:disabled):not(.smartworld-button--disabled):not(.smartworld-button--disabled):not(:active) {
     opacity: 0.65;
+    filter: saturate(1.5);
   }
 
   &:active:not(:disabled):not(.smartworld-button--disabled):not(.smartworld-button--disabled) {

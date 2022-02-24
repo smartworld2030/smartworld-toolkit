@@ -23,7 +23,6 @@ export const MainFlex = styled(Box)<FlexProps>`
 export const AnimatedFlex = styled(Box)<FlexProps>`
   display: flex;
   transition: 0.5s all;
-  overflow: hidden;
   ${flexbox};
 `
 

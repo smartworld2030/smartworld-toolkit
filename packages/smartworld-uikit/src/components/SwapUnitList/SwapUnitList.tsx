@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { uniqueId } from 'lodash'
 import { BalanceInput } from '../BalanceInput'
+import ListContainer from './styles'
 import { Flex } from '../Box'
 import { ExpandableButton } from '../Button'
-import SelectableToken from './SelectableToken'
-import { StyledFlex } from './styles'
+import { SelectableToken, Token } from '../SelectableToken'
 import { SwapUnitListProps } from './types'
 
 const SwapUnitList: React.FC<SwapUnitListProps> = ({
@@ -11,15 +12,16 @@ const SwapUnitList: React.FC<SwapUnitListProps> = ({
   height = 400,
   background = 'background',
   unit,
+  defaultSelected = 0,
   topElement,
   bottomElement,
-  selectedUnit,
+  selectedItem = () => null,
+  selectedToken = () => null,
   tokenList,
+  children,
   ...rest
 }) => {
   const tokenRef = useRef<HTMLCollection>()
-  const defaultSelected = useMemo(() => tokenList.findIndex((item) => item.unit === unit), [tokenList, unit])
-
   const [inSelection, setInSelection] = useState(false)
   const [selected, setSelected] = useState(defaultSelected)
 
@@ -32,10 +34,17 @@ const SwapUnitList: React.FC<SwapUnitListProps> = ({
       })
   }, [inSelection, selected])
 
+  const onClick = (index: number, item: string, token?: Token) => {
+    setSelected(index)
+    selectedItem(item)
+    selectedToken(token)
+    setInSelection(false)
+  }
+
   return (
     <Flex width={width} position="relative" alignItems="center" justifyContent="space-between">
       {inSelection && (
-        <StyledFlex
+        <ListContainer
           ref={(ref) => {
             tokenRef.current = ref?.children
           }}
@@ -44,35 +53,30 @@ const SwapUnitList: React.FC<SwapUnitListProps> = ({
           height={height}
         >
           {topElement && topElement}
-          {tokenList.map((item, i) => (
+          {tokenList?.map((item, i) => (
             <SelectableToken
-              loading
               size={Number(width) - 40}
-              onClick={() => {
-                setSelected(i)
-                selectedUnit(item.unit)
-                setInSelection(false)
-              }}
-              key={`${item.unit + i}`}
+              onClick={() => onClick(i, item.token?.address || item.symbol || item.unit || '', item.token)}
+              key={`${(item.token?.address || item.symbol || uniqueId()) + i}`}
               inputProps={{ inputMode: 'numeric' }}
               mb="5px"
               borderColor="orange"
               {...item}
             />
           ))}
+          {children && children({ onClick })}
           {bottomElement && bottomElement}
-        </StyledFlex>
+        </ListContainer>
       )}
       <BalanceInput
         size={Number(width) - 30}
         onUnitClick={() => {
           setInSelection(true)
         }}
-        key={selected}
-        {...tokenList[selected]}
+        {...tokenList?.[selected]}
         unit={
           <Flex alignItems="center">
-            {unit || tokenList[selected]?.unit || 'Select'}
+            {unit || tokenList?.[selected]?.symbol || 'Select'}
             <ExpandableButton size="13" borderWidth={2} scale="xs" ml={1} />
           </Flex>
         }

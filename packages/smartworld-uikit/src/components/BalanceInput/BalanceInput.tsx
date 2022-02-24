@@ -1,6 +1,7 @@
 import { debounce } from 'lodash'
 import React, { ReactText, useCallback } from 'react'
 import { useTheme } from 'styled-components'
+import getFixedDecimals from '../../util/getFixedDecimals'
 import { AbsoluteFlex, Flex, RelativeFlex } from '../Box'
 import { InputGroup } from '../Input'
 import { SwapVertIcon } from '../Svg'
@@ -14,65 +15,70 @@ import {
 } from './styles'
 import { BalanceInputProps } from './types'
 
-const BalanceInput: React.FC<BalanceInputProps> = (props) => {
-  const {
-    value,
-    maxValue = 0,
-    placeholder = '0.0',
-    onUserInput = () => null,
-    onUnitClick,
-    onLogoClick,
-    onImageError,
-    onSelect,
-    currencyValue,
-    currencyUnit,
-    inputProps,
-    innerRef,
-    isWarning = false,
-    decimals = 8,
-    unit,
-    switchEditingUnits,
-    size = 150,
-    progressSize,
-    borderSize,
-    knobSize,
-    color,
-    logo,
-    id,
-    image,
-    knobColor,
-    borderColor = 'white',
-    progressColor,
-    disabled = false,
-    disabledKnob = false,
-    debounceTime = 100,
-    maxWait = 100,
-    selectable,
-    loading,
-    ...rest
-  } = props
+const BalanceInput: React.FC<BalanceInputProps> = ({
+  token,
+  value,
+  maxValue = 0,
+  balance = 0,
+  placeholder = '0.0',
+  onUserInput = () => null,
+  onUnitClick,
+  onLogoClick,
+  onImageError,
+  onSelect,
+  currencyValue,
+  currencyUnit,
+  inputProps,
+  innerRef,
+  isWarning = false,
+  decimals = 8,
+  unit,
+  switchEditingUnits,
+  size = 150,
+  progressSize,
+  borderSize,
+  knobSize,
+  color,
+  logo,
+  id,
+  image,
+  knobColor,
+  borderColor = 'white',
+  progressColor,
+  disabled = false,
+  disabledKnob = false,
+  debounceTime = 100,
+  maxWait = 100,
+  selectable,
+  loading,
+  ...rest
+}) => {
   const { colors } = useTheme()
+  const tokenBalance = balance || maxValue
+
+  const tokenDecimals = token?.decimals || decimals
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.validity.valid) {
       onUserInput(e.currentTarget.value.replace(/,/g, '.'))
     }
   }
-  const percentToValue = (val?: ReactText, per: ReactText = 0) => (val ? ((+val * +per) / 100).toFixed(decimals) : '0')
+  const percentToValue = (val?: ReactText, per: ReactText = 0) =>
+    val ? getFixedDecimals(((+val * +per) / 100).toFixed(decimals)) : '0'
 
   const handleChangeRange = (val?: ReactText) => {
-    onUserInput(percentToValue(val, maxValue))
+    onUserInput(percentToValue(val, tokenBalance))
   }
 
-  const valueToPercent = () => +((+value / +maxValue) * 100)
+  const valueToPercent = () => +((+value / +tokenBalance) * 100)
 
   const maxButtonHandler = () => {
-    if (maxValue) onUserInput(maxValue.toString())
+    if (tokenBalance) onUserInput(tokenBalance.toString())
   }
 
   const sizeCalc = (divide = 1, minus = 0) => (size ? Number(size) : 150) / divide - minus
 
-  const isDisabled = disabledKnob || disabled || !maxValue
+  const isDisabled = disabledKnob || disabled || !tokenBalance
 
   const colorCompiler = useCallback(
     (item?: string) => {
@@ -96,13 +102,13 @@ const BalanceInput: React.FC<BalanceInputProps> = (props) => {
         >
           <AbsoluteFlex top={`${-sizeCalc(30)}px`}>
             <UnitContainer
-              shadowSize={`${sizeCalc(100)}px`}
+              shadowSize={sizeCalc(100)}
               onClick={onUnitClick}
               zIndex={2}
               fontWeight="bold"
               fontSize={`${sizeCalc(10)}px`}
             >
-              {unit}
+              {token?.symbol || unit}
             </UnitContainer>
           </AbsoluteFlex>
           <AbsoluteFlex top={`${sizeCalc(5)}px`} width={sizeCalc(1.4)}>
@@ -132,7 +138,7 @@ const BalanceInput: React.FC<BalanceInputProps> = (props) => {
                 }
               >
                 <StyledInput
-                  pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
+                  pattern={`^[0-9]*[.,]?[0-9]{0,${tokenDecimals}}$`}
                   inputMode="decimal"
                   min="0"
                   height={sizeCalc(6.5)}
@@ -145,24 +151,19 @@ const BalanceInput: React.FC<BalanceInputProps> = (props) => {
                 />
               </InputGroup>
               <Flex zIndex={2} justifyContent="flex-end">
-                <ShadowedText shadowSize={`${sizeCalc(100)}px`} fontSize={`${sizeCalc(15)}px`}>
+                <ShadowedText shadowSize={sizeCalc(100)} fontSize={`${sizeCalc(15)}px`}>
                   {currencyValue ?? currencyValue}
                 </ShadowedText>
-                <ShadowedText
-                  shadowSize={`${sizeCalc(100)}px`}
-                  fontWeight="bold"
-                  ml="3px"
-                  fontSize={`${sizeCalc(15)}px`}
-                >
+                <ShadowedText shadowSize={sizeCalc(100)} fontWeight="bold" ml="3px" fontSize={`${sizeCalc(15)}px`}>
                   {currencyUnit ?? currencyUnit}
                 </ShadowedText>
               </Flex>
             </Flex>
           </AbsoluteFlex>
-          {maxValue ? (
+          {tokenBalance ? (
             <AbsoluteFlex bottom={`${-sizeCalc(18)}px`}>
               <ShadowedButton
-                shadowSize={`${sizeCalc(100)}px`}
+                shadowSize={sizeCalc(100)}
                 zIndex={2}
                 disabled={disabled}
                 variant="text"
@@ -207,7 +208,7 @@ const BalanceInput: React.FC<BalanceInputProps> = (props) => {
         insideColor={color || colors.tertiary}
         circleColor={colorCompiler(borderColor)}
         disabled={isDisabled}
-        image={image}
+        image={token?.logoURI || image}
         onImageError={onImageError}
         id={id}
         loading={loading}

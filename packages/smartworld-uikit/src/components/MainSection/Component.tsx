@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import { Route, RouteProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { AnimatedFlex, Box, AnimatedTipFlex } from '../Box'
-import { MainFlexProps } from '../Box/types'
+import { BoxProps, MainFlexProps } from '../Box/types'
 
 interface ContainerProps extends MainFlexProps {
   background?: string
@@ -35,13 +35,12 @@ export const MainRoute: React.FC<RouteProps> = (props) => {
   return <Route {...props} />
 }
 
-interface FlexWithTip {
+interface FlexWithTip extends BoxProps {
   flex: number
   tip?: ReactNode
   tipSize?: number
   showTip?: boolean
   isMobile?: boolean
-  overflow?: boolean
 }
 
 export const FlexWithTip: React.FC<FlexWithTip> = ({
@@ -50,20 +49,21 @@ export const FlexWithTip: React.FC<FlexWithTip> = ({
   isMobile,
   tipSize = tip ? 6 : 0,
   showTip,
-  overflow = false,
+  overflow = 'hidden',
   children,
   ...rest
 }) => {
   const t = tipSize * (flex / 12)
   const x = showTip ? t : 0
+
   return (
     <AnimatedFlex
       {...(isMobile ? { width: '100%', height: flex } : { width: flex, height: '100%' })}
-      overflow={overflow ? 'hidden' : undefined}
+      overflow={overflow}
       flexDirection={isMobile ? 'column' : 'row'}
     >
       {tip && <AnimatedTipFlex {...(isMobile ? { height: x } : { width: x })}>{tip}</AnimatedTipFlex>}
-      <AnimatedFlex {...rest} {...(isMobile ? { height: flex - x } : { width: flex - x })}>
+      <AnimatedFlex overflow={overflow} {...rest} {...(isMobile ? { height: flex - x } : { width: flex - x })}>
         {children}
       </AnimatedFlex>
     </AnimatedFlex>

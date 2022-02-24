@@ -31,11 +31,7 @@ export const shadows = {
   tip: 'inset 0 0 2px 1px rgba(74, 74, 104, 0.5)',
 }
 
-export const buttonShadows = (color: string, size: string): string => `
-1px 0px ${size} ${color},
--1px 0px ${size} ${color},
-0px 1px ${size} ${color},
-0px -1px ${size} ${color};`
+export const buttonShadows = (color: string, size: number): string => `0 0 ${size}px ${color}`
 
 export const textShadows = {
   level1: '0px 2px 12px rgba(25, 19, 38, 0.1), 0px 1px rgba(25, 19, 38, 0.05)',
