@@ -2,19 +2,19 @@ import styled from 'styled-components'
 import Input from '../Input/Input'
 import Text from '../Text/Text'
 import { Button } from '../Button'
-import { buttonShadows } from '../../theme/base'
+import { getTextShadows } from '../../theme/base'
 
 export const ShadowedText = styled(Text)<{ shadowSize?: number }>`
-  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, shadowSize || 4)};
+text-shadow: ${({ theme, shadowSize }) => getTextShadows(theme.colors.background, shadowSize || 1)};
 }`
 
 export const ShadowedButton = styled(Button)<{ shadowSize?: number }>`
-  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, shadowSize || 4)};
+text-shadow: ${({ theme, shadowSize }) => getTextShadows(theme.colors.background, shadowSize || 1)};
 }`
 
 export const UnitContainer = styled(Text)<{ shadowSize?: number }>`
   text-align: center;
-  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, shadowSize || 4)};
+  text-shadow: ${({ theme, shadowSize }) => getTextShadows(theme.colors.background, shadowSize || 1)};
   color: ${({ theme }) => theme.colors.text};
   z-index: ${({ zIndex }) => zIndex};
   white-space: nowrap;
@@ -23,6 +23,7 @@ export const UnitContainer = styled(Text)<{ shadowSize?: number }>`
 export const StyledInput = styled(Input)`
   border-radius: 0;
   box-shadow: none;
+  cursor: pointer;
   padding-left: 0;
   padding-right: 0;
   height: ${({ height }) => height}px;

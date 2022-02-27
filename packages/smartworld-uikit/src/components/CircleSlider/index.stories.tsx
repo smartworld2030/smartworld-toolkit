@@ -1,36 +1,36 @@
-import * as React from "react";
-import { useState } from "react";
-import { CircleSlider } from ".";
+import * as React from 'react'
+import { useState } from 'react'
+import { CircleSlider } from '.'
 
 export default {
-  title: "Components/CircleSlider",
+  title: 'Components/CircleSlider',
   component: CircleSlider,
   argTypes: {},
-};
+}
 
 export const Default: React.FC = () => {
-  const [value, setValue] = useState(50);
-  const [timer, setTimer] = useState(90);
+  const [value, setValue] = useState(50)
+  const [timer, setTimer] = useState(90)
 
   React.useEffect(() => {
     const interval = setInterval(() => {
       return setTimer((prev) => {
-        if (prev > 99) return 0;
-        return prev + 1;
-      });
-    }, 1000);
+        if (prev > 99) return 0
+        return prev + 1
+      })
+    }, 1000)
     return () => {
-      clearInterval(interval);
-    };
-  }, []);
+      clearInterval(interval)
+    }
+  }, [])
 
-  const handleChange = (value: any) => {
-    setValue(value);
-  };
+  const handleChange = (v: number) => {
+    setValue(v)
+  }
 
-  const handleChangeRange = (event: any) => {
-    setValue(event.target.valueAsNumber);
-  };
+  const handleChangeRange = (event) => {
+    setValue(event.target.valueAsNumber)
+  }
 
   return (
     <div className="outer">
@@ -43,7 +43,6 @@ export const Default: React.FC = () => {
         onInputChange={handleChange}
         progressColor="#6656B6"
         tooltipColor="#6ab6e1"
-        showTooltip={true}
         tooltipSize={26}
       />
       <div className="title">{value}</div>
@@ -55,10 +54,9 @@ export const Default: React.FC = () => {
           size={500}
           shadow={false}
           knobColor="transparent"
-          disabled
+          noSlider
           onInputChange={handleChange}
-          showTooltip={true}
-          showPercentage={true}
+          showPercentage
           progressColor="#FDB11B"
         />
         <div className="title">{value}</div>
@@ -99,5 +97,5 @@ export const Default: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

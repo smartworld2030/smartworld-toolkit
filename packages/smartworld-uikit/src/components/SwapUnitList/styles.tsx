@@ -1,16 +1,38 @@
 import { ReactText } from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { Flex } from '../Box'
 
-const ListContainer = styled(Flex)<{ width: ReactText; height: ReactText }>`
-  overflow:auto;
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`
+
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+`
+
+const ListContainer = styled(Flex)<{ out: boolean; width: ReactText; height: ReactText; animationTime?: number }>`
   position:absolute;
+  top:-64px;
+  left:0;
   justify-content:space-between;
   align-items:center;
   flex-direction:column;
   --scrollbar-width: 8px;
   --mask-height: 32px;
   overflow-y: auto;
+  margin:auto;
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
   padding-top: var(--mask-height);
@@ -34,5 +56,9 @@ const ListContainer = styled(Flex)<{ width: ReactText; height: ReactText }>`
   mask-repeat: no-repeat, no-repeat;
 
   z-index: 20;
+  visibility: ${({ out }) => (out ? 'hidden' : 'visible')};
+  animation-name: ${({ out }) => (out ? fadeOut : fadeIn)};
+  animation-duration:${({ animationTime }) => animationTime || 500}ms;
+  transition: visibility ${({ animationTime }) => animationTime || 500}ms linear;
 }`
 export default ListContainer

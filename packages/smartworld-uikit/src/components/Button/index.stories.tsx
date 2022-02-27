@@ -391,18 +391,48 @@ export const IconButtonExample: React.FC = () => {
 export const PolygonButtonExample: React.FC = () => {
   return (
     <Box mb="32px">
-      {Object.values(scales).map((scale) => {
-        return (
-          <PolygonButton
-            key={scale}
-            scale={scale}
-            shadow
-            mr="8px"
-            icon={(size) => <LogoIcon width={size / 3} />}
-            onClick={() => console.log('clicked')}
-          />
-        )
-      })}
+      <PolygonButton
+        size={100}
+        fill="black"
+        stroke="white"
+        mr="8px"
+        icon={(size) => <LogoIcon width={size / 3} />}
+        onClick={() => console.log('clicked')}
+      />
+      <PolygonButton
+        scale="lg"
+        fill="white"
+        stroke="black"
+        mr="8px"
+        icon={(size) => <LogoIcon width={size / 3} />}
+        onClick={() => console.log('clicked')}
+      />
+      {Object.values(scales).map((scale) => (
+        <PolygonButton
+          key={scale}
+          scale={scale}
+          disabled
+          shadow
+          mr="8px"
+          icon={(size) => <LogoIcon width={size / 3} />}
+          onClick={() => console.log('clicked')}
+        />
+      ))}
+      {Object.values(variants).map((variant) =>
+        Object.values(scales).map((scale) => {
+          return (
+            <PolygonButton
+              key={scale}
+              variant={variant}
+              scale={scale}
+              shadow
+              mr="8px"
+              icon={(size) => <LogoIcon width={size / 3} />}
+              onClick={() => console.log('clicked')}
+            />
+          )
+        }),
+      )}
     </Box>
   )
 }
@@ -416,12 +446,11 @@ export const ButtonWithSliderExample: React.FC = () => {
         return (
           <ButtonWithSlider
             key={scale}
+            loading
             scale={scale}
             color="white"
-            mr="8px"
             onInput={seValue}
             value={value}
-            shadow
             onClick={() => {
               setClick('click')
               setTimeout(() => {

@@ -5,7 +5,7 @@ import Text from '../Text/Text'
 import { BalanceInputProps } from './types'
 import CircleSlider from '../CircleSlider/CircleSlider'
 import { Button } from '../Button'
-import { buttonShadows } from '../../theme/base'
+import { getTextShadows } from '../../theme/base'
 
 const calcPadding = (width?: any) => {
   const p = width ? +width / 10 : 16
@@ -27,16 +27,16 @@ export const SwitchUnitsButton = styled(Button)`
 `
 
 export const ShadowedText = styled(Text)<{ shadowSize?: number }>`
-  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, shadowSize || 4)};
+  text-shadow: ${({ theme, shadowSize }) => getTextShadows(theme.colors.background, shadowSize || 1)};
 }`
 
 export const ShadowedButton = styled(Button)<{ shadowSize?: number }>`
-  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, shadowSize || 4)};
+  text-shadow: ${({ theme, shadowSize }) => getTextShadows(theme.colors.background, shadowSize || 1)};
 }`
 
 export const UnitContainer = styled(Text)<{ shadowSize?: number }>`
   text-align: center;
-  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, shadowSize || 4)};
+  text-shadow: ${({ theme, shadowSize }) => getTextShadows(theme.colors.background, shadowSize || 1)};
   color: ${({ theme }) => theme.colors.text};
   z-index: ${({ zIndex }) => zIndex};
   white-space: nowrap;
@@ -47,17 +47,6 @@ export const StyledCircleSlider = styled(CircleSlider)`
   touch-action: none;
   z-index: 1;
 }`
-
-export const StyledBalanceInput = styled(Box)<{ isWarning: BalanceInputProps['isWarning'] }>`
-  position: relative;
-  background-color: ${({ theme, color }) => color || theme.colors.input};
-  border-radius: 50%;
-  width: ${({ width }) => calcWidth(width)};
-  height: ${({ width }) => calcWidth(width)};
-  min-width: ${({ width }) => calcWidth(width, 50)};
-  min-height: ${({ width }) => calcWidth(width, 50)};
-  padding: ${({ width }) => calcPadding(width)};
-`
 
 export const StyledInput = styled(Input)`
   padding-left: 0;
@@ -76,4 +65,15 @@ export const StyledInput = styled(Input)`
   &:focus:not(:disabled) {
     box-shadow: 0px 0px 0px 1px ${({ theme }) => theme.colors.primary};
   }
+`
+
+export const StyledBalanceInput = styled(Box)<{ isWarning: BalanceInputProps['isWarning'] }>`
+  position: relative;
+  background-color: ${({ theme, color }) => color || theme.colors.input};
+  border-radius: 50%;
+  width: ${({ width }) => calcWidth(width)};
+  height: ${({ width }) => calcWidth(width)};
+  min-width: ${({ width }) => calcWidth(width, 50)};
+  min-height: ${({ width }) => calcWidth(width, 50)};
+  padding: ${({ width }) => calcPadding(width)};
 `

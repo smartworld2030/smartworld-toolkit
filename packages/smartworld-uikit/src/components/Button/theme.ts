@@ -127,6 +127,33 @@ export const styleVariants = {
     boxShadow: 'none',
   },
 }
+
+export const polygonVariants = {
+  [variants.PRIMARY]: {
+    stroke: 'primary',
+  },
+  [variants.SECONDARY]: {
+    stroke: 'textDisabled',
+  },
+  [variants.TRANSPARENT]: {
+    stroke: 'primary',
+  },
+  [variants.TERTIARY]: {
+    stroke: 'tertiary',
+  },
+  [variants.SUBTLE]: {
+    stroke: 'textSubtle',
+  },
+  [variants.DANGER]: {
+    stroke: 'failure',
+  },
+  [variants.SUCCESS]: {
+    stroke: 'success',
+  },
+  [variants.TEXT]: {
+    stroke: 'transparent',
+  },
+}
 export const iconVariant = {
   [variants.PRIMARY]: {
     fill: 'primary',

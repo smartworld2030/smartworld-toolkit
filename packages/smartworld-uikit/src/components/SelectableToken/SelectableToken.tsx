@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { AbsoluteFlex, Flex, RelativeFlex } from '../Box'
+import { PointerRelativeFlex } from '../Box/Flex'
 import { ProgressRing } from '../ProgressRing'
 import { UnitContainer, StyledInput, ShadowedText, ShadowedButton } from './styles'
 import { SelectableTokenBoxProps } from './types'
@@ -30,10 +31,11 @@ const SelectableToken: React.FC<SelectableTokenBoxProps> = (props) => {
     loading,
     ...rest
   } = props
-  const sizeCalc = (divide = 1, minus = 0) => (size ? Number(size) : 150) / divide - minus
+  const sizeCalc = useCallback((divide = 1, minus = 0) => (size ? Number(size) : 150) / divide - minus, [size])
 
+  const shadowSize = useMemo(() => sizeCalc(300), [sizeCalc])
   return (
-    <RelativeFlex width={sizeCalc()} height={sizeCalc(0.95)} {...rest}>
+    <PointerRelativeFlex width={sizeCalc()} height={sizeCalc(0.95)} {...rest}>
       <AbsoluteFlex top={0} left={0} width={sizeCalc()} height={sizeCalc(0.95)}>
         <RelativeFlex
           flexDirection="column"
@@ -44,7 +46,12 @@ const SelectableToken: React.FC<SelectableTokenBoxProps> = (props) => {
           height={sizeCalc(1.7)}
         >
           <AbsoluteFlex top={`${-sizeCalc(30)}px`}>
-            <UnitContainer shadowSize={sizeCalc(100)} zIndex={2} fontWeight="bold" fontSize={`${sizeCalc(10)}px`}>
+            <UnitContainer
+              shadowSize={shadowSize > 1 ? shadowSize : 1}
+              zIndex={2}
+              fontWeight="bold"
+              fontSize={`${sizeCalc(10)}px`}
+            >
               {token?.symbol || symbol || unit}
             </UnitContainer>
           </AbsoluteFlex>
@@ -61,10 +68,15 @@ const SelectableToken: React.FC<SelectableTokenBoxProps> = (props) => {
                 {...inputProps}
               />
               <Flex zIndex={2} justifyContent="flex-end">
-                <ShadowedText shadowSize={sizeCalc(100)} fontSize={`${sizeCalc(15)}px`}>
+                <ShadowedText shadowSize={shadowSize > 1 ? shadowSize : 1} fontSize={`${sizeCalc(15)}px`}>
                   {currencyValue ?? currencyValue}
                 </ShadowedText>
-                <ShadowedText shadowSize={sizeCalc(100)} fontWeight="bold" ml="3px" fontSize={`${sizeCalc(15)}px`}>
+                <ShadowedText
+                  shadowSize={shadowSize > 1 ? shadowSize : 1}
+                  fontWeight="bold"
+                  ml="3px"
+                  fontSize={`${sizeCalc(15)}px`}
+                >
                   {currencyUnit ?? currencyUnit}
                 </ShadowedText>
               </Flex>
@@ -72,7 +84,7 @@ const SelectableToken: React.FC<SelectableTokenBoxProps> = (props) => {
           </AbsoluteFlex>
           <AbsoluteFlex bottom={`${-sizeCalc(30)}px`}>
             <ShadowedButton
-              shadowSize={sizeCalc(100)}
+              shadowSize={shadowSize > 1 ? shadowSize : 1}
               zIndex={2}
               disabled={disabled}
               variant="text"
@@ -87,7 +99,7 @@ const SelectableToken: React.FC<SelectableTokenBoxProps> = (props) => {
         </RelativeFlex>
       </AbsoluteFlex>
       <ProgressRing
-        id={token?.address.toLowerCase() || address?.toLowerCase() || symbol?.toLowerCase() || unit?.toLowerCase()}
+        id={token?.address?.toLowerCase() || address?.toLowerCase() || symbol?.toLowerCase() || unit?.toLowerCase()}
         insideColor="white"
         variant={variant}
         stroke={stroked ? sizeCalc(60) : undefined}
@@ -97,7 +109,7 @@ const SelectableToken: React.FC<SelectableTokenBoxProps> = (props) => {
         image={token?.logoURI || logoURI || image}
         loading={loading}
       />
-    </RelativeFlex>
+    </PointerRelativeFlex>
   )
 }
 

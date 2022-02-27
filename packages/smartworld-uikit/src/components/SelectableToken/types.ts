@@ -4,7 +4,9 @@ import { Variant } from '../Button/types'
 
 export interface SelectableTokenBoxProps extends SelectableTokenProps, BoxProps {}
 export interface SelectableTokenProps {
+  id?: string
   token?: Token
+  chainId?: ChainId
   address?: string
   value?: ReactText
   maxValue?: ReactText
@@ -29,10 +31,18 @@ export interface SelectableTokenProps {
 }
 
 export interface Token {
-  chainId: string
-  address: string
-  decimals: number
+  chainId?: ChainId
+  address?: string
+  decimals?: number
+  value?: string
   symbol?: string
   name?: string
+  balance?: string
   logoURI?: string
+  projectLink?: string
+}
+
+export declare enum ChainId {
+  MAINNET = 56,
+  TESTNET = 97,
 }

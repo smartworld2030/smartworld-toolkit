@@ -6,3 +6,8 @@ export interface SvgProps extends SVGAttributes<HTMLOrSVGElement>, SpaceProps {
   theme?: DefaultTheme
   spin?: boolean
 }
+export interface ShadowSvgProps extends SvgProps {
+  shadow?: boolean
+  shadowColor?: string
+  shadowSize?: number | false
+}

@@ -31,7 +31,28 @@ export const shadows = {
   tip: 'inset 0 0 2px 1px rgba(74, 74, 104, 0.5)',
 }
 
-export const buttonShadows = (color: string, size: number): string => `0 0 ${size}px ${color}`
+export const getBoxShadows = (color: string, size: number, array = [[0, 0]]): string =>
+  array.reduce(
+    (total, [item1, item2], i, { length }) =>
+      `${total}${item1 * size}px ${item2 * size}px ${size}px ${color}${i !== length - 1 ? ',' : ''}`,
+    '',
+  )
+
+export const getTextShadows = (
+  color: string,
+  size: number,
+  array = [
+    [1, 1],
+    [-1, -1],
+    [-1, 1],
+    [1, -1],
+  ],
+): string =>
+  array.reduce(
+    (total, [item1, item2], i, { length }) =>
+      `${total}${item1 * size}px ${item2 * size}px ${size}px ${color}${i !== length - 1 ? ',' : ''}`,
+    '',
+  )
 
 export const textShadows = {
   level1: '0px 2px 12px rgba(25, 19, 38, 0.1), 0px 1px rgba(25, 19, 38, 0.05)',

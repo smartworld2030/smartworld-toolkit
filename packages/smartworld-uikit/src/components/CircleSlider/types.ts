@@ -1,3 +1,4 @@
+import { ReactText } from 'react'
 import { SvgProps } from '../Svg'
 
 export interface CircleSliderProps extends SvgProps {
@@ -10,6 +11,7 @@ export interface CircleSliderProps extends SvgProps {
   stepSize?: number
   min?: number
   max?: number
+  blur?: ReactText
   circleColor?: string
   progressColor?: string
   gradientColorFrom?: string
@@ -18,6 +20,7 @@ export interface CircleSliderProps extends SvgProps {
   onInputChange?: (value: number) => void
   onImageError?: () => void
   disabled?: boolean
+  noSlider?: boolean
   loading?: boolean
   shadow?: boolean
   image?: string

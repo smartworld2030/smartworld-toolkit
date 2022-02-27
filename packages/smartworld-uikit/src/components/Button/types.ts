@@ -46,15 +46,19 @@ export type PolymorphicComponent<P, D extends ElementType = 'button'> = <E exten
   props: PolymorphicComponentProps<E, P>,
 ) => ReactElement | null
 
+export type ButtonProps<P extends ElementType = 'button'> = PolymorphicComponentProps<P, BaseButtonProps>
+
 export interface BaseButtonProps extends LayoutProps, SpaceProps {
   as?: 'a' | 'button' | typeof Link
+  className?: string
   external?: boolean
   isLoading?: boolean
   shadow?: boolean
+  shadowSize?: number | false
+  shadowColor?: string
   scale?: Scale
   shape?: Shape
   fontSize?: number
-  shadowSize?: number
   fontWeight?: string | number
   borderWidth?: number
   variant?: Variant
@@ -64,13 +68,11 @@ export interface BaseButtonProps extends LayoutProps, SpaceProps {
   zIndex?: number | string
 }
 
-export type ButtonProps<P extends ElementType = 'button'> = PolymorphicComponentProps<P, BaseButtonProps>
-
 export interface PolygonButtonProps extends BaseButtonProps {
   icon?: (size: number) => ReactNode
+  size?: number
   fill?: string
-  color?: string
-  shadow?: boolean
+  stroke?: string
   onClick: () => void
 }
 export interface IconButtonProps extends BaseButtonProps {
@@ -80,8 +82,6 @@ export interface IconButtonProps extends BaseButtonProps {
   color?: string
   borderWidth?: number
   blur?: boolean
-  shadow?: boolean
-  shadowSize?: number
   onClick?: () => void
   iconProps?: CSSProperties
 }

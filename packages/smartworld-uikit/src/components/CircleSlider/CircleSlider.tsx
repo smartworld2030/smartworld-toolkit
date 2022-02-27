@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { ShadowSvg } from '../Svg'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import CircleSliderHelper from './helpers/CircleSliderHelper'
 import MouseHelper from './helpers/MouseHelper'
 import pathGenerator from './helpers/PathGenerator'
-import { LoadingCircle, StyledGroup } from './styles'
+import { LoadingCircle, StyledGroup, StyledShadowSvg } from './styles'
 import { CircleSliderProps } from './types'
 
 interface IPoint {
@@ -19,6 +18,7 @@ interface IState {
 
 const CircleSlider: React.FC<CircleSliderProps> = ({
   circleColor = 'transparent',
+  className,
   size = 180,
   value = 0,
   zIndex = 0,
@@ -33,6 +33,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   max = 100,
   loading = false,
   disabled = false,
+  noSlider = false,
   shadow = true,
   shadowColor,
   insideColor = 'transparent',
@@ -42,9 +43,12 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   gradientColorFrom,
   gradientColorTo,
   image,
+  blur = 5,
   ...rest
 }) => {
-  const radius = useRef(0)
+  const classNames = className ? [className] : []
+  const r = useRef(0)
+  const { current: radius } = r
   const countSteps = useRef(0)
   const mouseHelper = useRef<MouseHelper | null>(null)
   const circleSliderHelper = useRef<CircleSliderHelper>(new CircleSliderHelper([], 0))
@@ -57,7 +61,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
 
   useEffect(() => {
     const maxLineWidth = Math.max(circleWidth, progressWidth)
-    radius.current = size / 2 - Math.max(maxLineWidth, knobRadius * 2) / 2
+    r.current = size / 2 - Math.max(maxLineWidth, knobRadius * 2) / 2
 
     countSteps.current = 1 + (max - min) / stepSize
     const stepsArray: number[] = []
@@ -107,8 +111,8 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
     const center = getCenter()
     const angle = getAngle()
     return {
-      x: center + radius.current * Math.cos(angle),
-      y: center + radius.current * Math.sin(angle),
+      x: center + radius * Math.cos(angle),
+      y: center + radius * Math.sin(angle),
     }
   }
 
@@ -116,7 +120,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
     const center = getCenter()
     const direction = getAngle() < 1.5 * Math.PI ? 0 : 1
     const { x, y } = getPointPosition()
-    const path = pathGenerator(center, radius.current, direction, x, y)
+    const path = pathGenerator(center, radius, direction, x, y)
     return path
   }
 
@@ -167,41 +171,69 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   const center = getCenter()
   const isAllGradientColorsAvailable = gradientColorFrom && gradientColorTo
 
-  const circumference = radius.current * 2 * Math.PI
+  const circumference = useMemo(() => radius * 2 * Math.PI, [radius])
+
+  const noInput = disabled || noSlider || loading
+
+  const cursor = useMemo(() => {
+    if (disabled) return 'not-allowed'
+    return noInput ? 'initial' : 'pointer'
+  }, [disabled, noInput])
+
+  if (disabled) {
+    classNames.push('smartworld-svg--disabled')
+  }
+  if (noSlider) {
+    classNames.push('smartworld-svg--no-slider')
+  }
+  if (loading) {
+    classNames.push('smartworld-svg--loading')
+  }
 
   return (
-    <ShadowSvg
-      $blur={shadow && size * 0.015}
-      $shadowColor={shadowColor || progressColor}
+    <StyledShadowSvg
+      className={classNames.join(' ')}
+      shadow={shadow}
+      shadowSize={size * 0.015}
+      shadowColor={shadowColor || progressColor}
+      $zIndex={zIndex}
+      $cursor={cursor}
       ref={(svg) => {
         mouseHelper.current = new MouseHelper(svg)
       }}
       width={`${size}px`}
       height={`${size + size * 0.05}px`}
       viewBox={`0 0 ${size} ${size}`}
-      style={{
-        boxSizing: 'border-box',
-        touchAction: 'none',
-        overflow: 'visible',
-        zIndex,
-      }}
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleTouchStart}
+      onMouseDown={!noSlider ? handleMouseDown : undefined}
+      onTouchStart={!noSlider ? handleTouchStart : undefined}
       {...rest}
     >
+      <defs>
+        <filter id="sg-blur-2">
+          <feGaussianBlur in="SourceGraphic" stdDeviation={blur} />
+        </filter>
+      </defs>
       {image && (
         <defs>
           <pattern id={image} x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
-            <image filter="blur(5px)" x="0%" y="0%" width="512" height="512" xlinkHref={image} onError={onImageError} />
+            <image
+              filter="url(#sg-blur-2)"
+              x="0%"
+              y="0%"
+              width="512"
+              height="512"
+              xlinkHref={image}
+              onError={onImageError}
+            />
           </pattern>
         </defs>
       )}
-      <circle fill={insideColor} r={radius.current} cx={center} cy={center} />
+      <circle fill={insideColor} r={radius} cx={center} cy={center} />
       <circle
         strokeWidth={circleWidth}
         stroke={circleColor}
         fill={image ? `url(#${image})` : insideColor}
-        r={radius.current}
+        r={radius}
         cx={center}
         cy={center}
       />
@@ -210,14 +242,14 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
           <LoadingCircle
             strokeDasharray={`${circumference} ${circumference}`}
             strokeDashoffset={circumference}
-            r={radius.current}
+            r={radius}
             cx={center}
             cy={center}
-            strokeWidth={circleWidth}
+            strokeWidth={circleWidth || size * 0.1}
           />
         </g>
       ) : (
-        <StyledGroup $transform="translate(100%, 100%) rotateZ(180deg)">
+        <StyledGroup className="knob" $transform="translate(100%, 100%) rotateZ(180deg)">
           {isAllGradientColorsAvailable && (
             <defs>
               <linearGradient id="gradient" x1="0" x2="0" y1="0" y2="1">
@@ -236,9 +268,6 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
             stroke={knobColor || progressColor}
             strokeWidth={knobWidth}
             fillOpacity="0"
-            style={{
-              cursor: disabled ? 'not-allowed' : 'pointer',
-            }}
             r={knobRadius}
             cx={x}
             cy={y}
@@ -248,7 +277,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
       <foreignObject x="0" y="0" width={sizeCalc(1)} height={sizeCalc(1)}>
         {children}
       </foreignObject>
-    </ShadowSvg>
+    </StyledShadowSvg>
   )
 }
 

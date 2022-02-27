@@ -35,8 +35,9 @@ const ProgressRing: FC<ProgressRingProps> = ({
 
   return (
     <StyledRing
-      $blur={shadow && s}
-      $shadowColor={shadowColor}
+      shadow={shadow}
+      shadowSize={s}
+      shadowColor={shadowColor}
       height={r * 2}
       width={r * 2}
       $offset={strokeDashoffset}

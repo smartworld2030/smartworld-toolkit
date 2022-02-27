@@ -58,6 +58,7 @@ export type Colors = {
   failure: string
   warning: string
   cardBorder: string
+  circleBorder: string
   contrast: string
   dropdown: string
   dropdownDeep: string

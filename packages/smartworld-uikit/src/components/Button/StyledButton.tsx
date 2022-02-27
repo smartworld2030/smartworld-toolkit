@@ -1,6 +1,6 @@
 import styled, { DefaultTheme } from 'styled-components'
 import { space, layout, variant } from 'styled-system'
-import { buttonShadows } from '../../theme/base'
+import { getBoxShadows } from '../../theme/base'
 import { scaleVariants, styleShape, styleVariants } from './theme'
 import { BaseButtonProps } from './types'
 
@@ -67,14 +67,19 @@ const StyledButton = styled.button<BaseButtonProps>`
   opacity: ${getOpacity};
   outline: 0;
   transition: background-color 0.2s, opacity 0.2s;
-  box-shadow: ${({ shadow, shadowSize, theme }) => shadow && buttonShadows(theme.colors.primary, shadowSize || 2)};
+  box-shadow: ${({ shadow, shadowSize, theme }) => shadow && getBoxShadows(theme.colors.primary, shadowSize || 2)};
 
-  &:hover:not(:disabled):not(.smartworld-button--disabled):not(.smartworld-button--disabled):not(:active) {
+  &:hover:not(:disabled):not(.smartworld-button--disabled):not(.smartworld-text):not(:active) {
     opacity: 0.65;
     filter: saturate(1.5);
   }
 
-  &:active:not(:disabled):not(.smartworld-button--disabled):not(.smartworld-button--disabled) {
+  &.smartworld-text:hover {
+    filter: saturate(1.5)
+      drop-shadow(${({ shadow, shadowSize, theme }) => shadow && getBoxShadows(theme.colors.primary, shadowSize || 2)});
+  }
+
+  &:active:not(:disabled):not(.smartworld-button--disabled) {
     transform: translateY(1px);
     box-shadow: none;
   }

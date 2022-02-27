@@ -44,6 +44,16 @@ export const RelativeFlex = styled(Box)<FlexProps>`
   ${flexbox}
 `
 
+export const PointerRelativeFlex = styled(Box)<FlexProps>`
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  ${flexbox}
+`
+
 export const FullFlex = styled(Box)<FlexProps>`
   position: relative;
   display: flex;

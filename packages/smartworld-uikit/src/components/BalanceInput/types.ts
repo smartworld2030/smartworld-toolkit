@@ -1,15 +1,9 @@
 import { InputHTMLAttributes, ReactElement, ReactNode, ReactText } from 'react'
 import { BoxProps } from '../Box'
+import { Token } from '../SelectableToken'
 
 export interface BalanceInputProps extends BoxProps {
-  token?: {
-    chainId: string
-    address: string
-    decimals: number
-    symbol?: string
-    name?: string
-    logoURI?: string
-  }
+  token?: Token
   value: ReactText
   maxValue?: ReactText
   balance?: ReactText

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import SwapUnitList from './SwapUnitList'
 import { MainComponent } from '../MainSection'
-import { SelectableToken, SelectableTokenProps } from '../SelectableToken'
+import { SelectableTokenProps } from '../SelectableToken'
 
 export default {
   title: 'Components/SwapUnitList',
@@ -9,34 +9,50 @@ export default {
   argTypes: {},
 }
 
-const tokenList: SelectableTokenProps[] = [
-  { address: 'a1', unit: 'STTS', maxValue: '13.0325', image: 'https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png' },
+const tokenList: SelectableTokenProps['token'][] = [
   {
+    chainId: 56,
+    address: 'a1',
+    symbol: 'STTS',
+    balance: '13.0325',
+    logoURI: 'https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png',
+  },
+  {
+    chainId: 56,
     address: 'a2',
     decimals: 18,
-    unit: 'BTCB',
-    maxValue: '0.00000002',
-    image: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=018',
+    symbol: 'BTCB',
+    balance: '0.00000002',
+    logoURI: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=018',
   },
-  { address: 'a3', unit: 'USDT', maxValue: '30', image: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=018' },
   {
+    chainId: 56,
+    address: 'a3',
+    symbol: 'USDT',
+    balance: '30',
+    logoURI: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=018',
+  },
+  {
+    chainId: 56,
     address: 'a4',
-    unit: 'SHIB',
+    symbol: 'SHIB',
     decimals: 18,
-    maxValue: '6600',
-    image: 'https://cryptologos.cc/logos/shiba-inu-shib-logo.png?v=018',
+    balance: '6600',
+    logoURI: 'https://cryptologos.cc/logos/shiba-inu-shib-logo.png?v=018',
   },
   {
+    chainId: 56,
     address: 'a5',
-    unit: 'DOGE',
-    maxValue: '900',
-    image: 'https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=018',
+    symbol: 'DOGE',
+    balance: '900',
+    logoURI: 'https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=018',
   },
   {
+    chainId: 56,
     address: 'a6',
-    unit: 'BNB',
-    maxValue: '138',
-    image: 'https://cryptologos.cc/logos/binance-coin-bnb-logo.svg?v=018',
+    symbol: 'BNB',
+    balance: '138',
+    logoURI: 'https://cryptologos.cc/logos/binance-coin-bnb-logo.svg?v=018',
   },
 ]
 
@@ -101,7 +117,7 @@ export const Default: React.FC = () => {
     <MainComponent overflow="visible" marginTop={100}>
       <SwapUnitList
         tokenList={tokenList}
-        selectedItem={(unit) => {
+        selectUnitHandler={(unit) => {
           setSelectedUnit(unit)
           setEditingUnit(unit)
           setValues({
@@ -121,22 +137,26 @@ export const Default: React.FC = () => {
   )
 }
 
-export const WithChildren: React.FC = () => {
+export const WithToken: React.FC = () => {
+  const [token, setToken] = useState(tokenList[4])
+  const [value, setValue] = useState('0')
+  console.log(token)
   return (
     <MainComponent overflow="visible" marginTop={100}>
       <SwapUnitList
-        selectedItem={(unit) => console.log(unit)}
-        selectedToken={(token) => console.log(token)}
-        defaultSelected={1}
+        selectUnitHandler={(unit) => console.log(unit)}
+        selectTokenHandler={(t) => {
+          setToken(t)
+          setValue('0')
+        }}
         mb="32px"
-        value={undefined}
-      >
-        {({ onClick }) =>
-          tokenList.map((item, i) => (
-            <SelectableToken mb={10} key={item.address} onClick={() => onClick(i, item.unit, item.token)} {...item} />
-          ))
-        }
-      </SwapUnitList>
+        defaultSelected={4}
+        onUserInput={(v) => setValue(v)}
+        value={value}
+        token={token}
+        maxValue={200}
+        tokenList={tokenList}
+      />
     </MainComponent>
   )
 }

@@ -39,7 +39,7 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
       progressColor={isWarning ? colors.failure : progressColor || colors.primary}
       insideColor={color || colors.tertiary}
       circleColor={isWarning ? colors.failure : borderColor}
-      disabled
+      noSlider
       loading={loading}
       id="withdraw"
     >

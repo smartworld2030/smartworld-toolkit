@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Box from '../Box/Box'
+import { Token } from '../SelectableToken'
 import { LogoIcon } from '../Svg'
 import BalanceInput from './BalanceInput'
 
@@ -215,7 +216,6 @@ export const WithLoading: React.FC = () => {
     <Box size="300px">
       {tokenList.map((item) => (
         <BalanceInput
-          selectable
           loading
           onSelect={() => console.log(item.unit)}
           maxValue={0}
@@ -223,8 +223,29 @@ export const WithLoading: React.FC = () => {
           image="https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png"
           inputProps={{ inputMode: 'numeric' }}
           mb="32px"
-          borderColor="orange"
           {...item}
+        />
+      ))}
+    </Box>
+  )
+}
+
+export const WithToken: React.FC = () => {
+  const tokenList: Token[] = [
+    { symbol: 'STTS', decimals: 18, value: '13.0325', logoURI: 'https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png' },
+  ]
+  return (
+    <Box size="300px">
+      {tokenList.map((item) => (
+        <BalanceInput
+          onSelect={() => console.log(item.symbol)}
+          maxValue={5}
+          key={item.symbol}
+          image="https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png"
+          inputProps={{ inputMode: 'numeric' }}
+          mb="32px"
+          token={item}
+          value=""
         />
       ))}
     </Box>

@@ -32,6 +32,7 @@ const MainSection: React.FC<MainSectionProps> = ({
   header,
   location,
   pathname,
+  computedMatch,
   loading,
   ...rest
 }) => {

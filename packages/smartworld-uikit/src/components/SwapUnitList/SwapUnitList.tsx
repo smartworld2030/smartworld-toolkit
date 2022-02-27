@@ -1,85 +1,119 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { uniqueId } from 'lodash'
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { elementScrollIntoViewPolyfill, scrollIntoView } from 'seamless-scroll-polyfill'
 import { BalanceInput } from '../BalanceInput'
 import ListContainer from './styles'
-import { Flex } from '../Box'
+import { Box, Flex } from '../Box'
 import { ExpandableButton } from '../Button'
-import { SelectableToken, Token } from '../SelectableToken'
+import { SelectableToken, SelectableTokenProps } from '../SelectableToken'
 import { SwapUnitListProps } from './types'
+
+elementScrollIntoViewPolyfill()
 
 const SwapUnitList: React.FC<SwapUnitListProps> = ({
   width = 200,
   height = 400,
-  background = 'background',
+  animationTime = 500,
+  listBackground = 'background',
   unit,
-  defaultSelected = 0,
+  token,
   topElement,
   bottomElement,
-  selectedItem = () => null,
-  selectedToken = () => null,
+  defaultSelected = 0,
+  selectUnitHandler = () => null,
+  selectTokenHandler = () => null,
   tokenList,
-  children,
   ...rest
 }) => {
-  const tokenRef = useRef<HTMLCollection>()
+  const tokenRef = useRef<HTMLDivElement>(null)
+  const selectRef = useRef<HTMLDivElement>(null)
+  const animation = useRef<number>()
   const [inSelection, setInSelection] = useState(false)
-  const [selected, setSelected] = useState(defaultSelected)
+
+  const clickHandler = useCallback((e) => {
+    const list = tokenRef.current?.contains(e.target)
+    const select = selectRef.current?.contains(e.target)
+    if (!select && !list) setInSelection(false)
+  }, [])
 
   useEffect(() => {
-    if (tokenRef.current)
-      tokenRef.current[selected]?.scrollIntoView({
-        behavior: 'auto',
+    const id = `selectable-token-${defaultSelected}`
+    scrollIntoView(tokenRef.current?.children[id], {
+      behavior: 'auto',
+      block: 'center',
+      inline: 'center',
+    })
+  }, [defaultSelected])
+
+  useLayoutEffect(() => {
+    document.addEventListener('click', clickHandler)
+    return () => {
+      document.removeEventListener('click', clickHandler)
+    }
+  }, [clickHandler])
+
+  const onClick = (item: string, t?: SelectableTokenProps, id = 'selectable-token-0') => {
+    if (!animation.current) {
+      selectUnitHandler(item)
+      selectTokenHandler(t)
+      scrollIntoView(tokenRef.current?.children[id], {
+        behavior: 'smooth',
         block: 'center',
         inline: 'center',
       })
-  }, [inSelection, selected])
-
-  const onClick = (index: number, item: string, token?: Token) => {
-    setSelected(index)
-    selectedItem(item)
-    selectedToken(token)
-    setInSelection(false)
+      animation.current = window.setTimeout(() => {
+        setInSelection(false)
+        setTimeout(() => {
+          animation.current = 0
+        }, animationTime)
+      }, animationTime)
+    }
   }
 
   return (
     <Flex width={width} position="relative" alignItems="center" justifyContent="space-between">
-      {inSelection && (
-        <ListContainer
-          ref={(ref) => {
-            tokenRef.current = ref?.children
-          }}
-          variant={background}
-          width={width}
-          height={height}
-        >
-          {topElement && topElement}
-          {tokenList?.map((item, i) => (
+      <ListContainer
+        id="list-item"
+        ref={tokenRef}
+        animationTime={animationTime}
+        variant={listBackground}
+        width={width}
+        height={height}
+        out={!inSelection}
+      >
+        <Box paddingTop={(Number(width) - 45) / 2} />
+        {topElement && topElement}
+        {tokenList.map((item, i) => (
+          <Box
+            key={item.id || `selectable-token-${i}`}
+            id={item.id || `selectable-token-${i}`}
+            onClick={() =>
+              onClick(item.token?.address || item.symbol || item.unit || '', item, item.id || `selectable-token-${i}`)
+            }
+          >
             <SelectableToken
               size={Number(width) - 40}
-              onClick={() => onClick(i, item.token?.address || item.symbol || item.unit || '', item.token)}
-              key={`${(item.token?.address || item.symbol || uniqueId()) + i}`}
               inputProps={{ inputMode: 'numeric' }}
               mb="5px"
               borderColor="orange"
               {...item}
             />
-          ))}
-          {children && children({ onClick })}
-          {bottomElement && bottomElement}
-        </ListContainer>
-      )}
+          </Box>
+        ))}
+        {bottomElement && bottomElement}
+        <Box paddingBottom={(Number(width) - 45) / 2} />
+      </ListContainer>
       <BalanceInput
         size={Number(width) - 30}
         onUnitClick={() => {
           setInSelection(true)
         }}
-        {...tokenList?.[selected]}
         unit={
-          <Flex alignItems="center">
-            {unit || tokenList?.[selected]?.symbol || 'Select'}
+          <Flex ref={selectRef} alignItems="center">
+            {token?.symbol || unit || 'Select'}
             <ExpandableButton size="13" borderWidth={2} scale="xs" ml={1} />
           </Flex>
         }
+        token={token}
         {...rest}
       />
     </Flex>

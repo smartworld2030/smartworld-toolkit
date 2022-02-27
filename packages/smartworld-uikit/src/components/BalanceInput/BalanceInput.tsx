@@ -1,5 +1,5 @@
 import { debounce } from 'lodash'
-import React, { ReactText, useCallback } from 'react'
+import React, { ReactText, useCallback, useMemo } from 'react'
 import { useTheme } from 'styled-components'
 import getFixedDecimals from '../../util/getFixedDecimals'
 import { AbsoluteFlex, Flex, RelativeFlex } from '../Box'
@@ -43,8 +43,8 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   id,
   image,
   knobColor,
-  borderColor = 'white',
-  progressColor,
+  borderColor,
+  progressColor = 'red',
   disabled = false,
   disabledKnob = false,
   debounceTime = 100,
@@ -76,22 +76,27 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
     if (tokenBalance) onUserInput(tokenBalance.toString())
   }
 
-  const sizeCalc = (divide = 1, minus = 0) => (size ? Number(size) : 150) / divide - minus
+  const sizeCalc = useCallback(
+    (divide = 1, minus = 0) => Number(((size ? Number(size) : 150) / divide - minus).toFixed(2)),
+    [size],
+  )
 
-  const isDisabled = disabledKnob || disabled || !tokenBalance
+  const shadowSize = useMemo(() => sizeCalc(300), [sizeCalc])
+
+  const isDisabled = disabledKnob || disabled || (!loading && !tokenBalance)
 
   const colorCompiler = useCallback(
-    (item?: string) => {
+    (item?: string, primary = false) => {
       if (isDisabled) return colors.disabled
       if (isWarning) return colors.failure
-      return item || colors.primary
+      return item || primary ? colors.primary : colors.input
     },
-    [colors.disabled, colors.failure, colors.primary, isDisabled, isWarning],
+    [isDisabled, colors.disabled, colors.failure, colors.primary, colors.input, isWarning],
   )
 
   return (
-    <RelativeFlex width={sizeCalc()} height={sizeCalc(0.95)} {...rest}>
-      <AbsoluteFlex top={0} left={0} width={sizeCalc()} height={sizeCalc(0.95)}>
+    <RelativeFlex overflow="visible" width={sizeCalc()} height={sizeCalc(0.95)} {...rest}>
+      <AbsoluteFlex overflow="visible" top={0} left={0} width={sizeCalc()} height={sizeCalc(0.95)}>
         <RelativeFlex
           flexDirection="column"
           justifyContent="space-between"
@@ -102,13 +107,13 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
         >
           <AbsoluteFlex top={`${-sizeCalc(30)}px`}>
             <UnitContainer
-              shadowSize={sizeCalc(100)}
+              shadowSize={shadowSize > 1 ? shadowSize : 1}
               onClick={onUnitClick}
               zIndex={2}
               fontWeight="bold"
               fontSize={`${sizeCalc(10)}px`}
             >
-              {token?.symbol || unit}
+              {unit || token?.symbol}
             </UnitContainer>
           </AbsoluteFlex>
           <AbsoluteFlex top={`${sizeCalc(5)}px`} width={sizeCalc(1.4)}>
@@ -151,10 +156,15 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
                 />
               </InputGroup>
               <Flex zIndex={2} justifyContent="flex-end">
-                <ShadowedText shadowSize={sizeCalc(100)} fontSize={`${sizeCalc(15)}px`}>
+                <ShadowedText shadowSize={shadowSize > 1 ? shadowSize : 1} fontSize={`${sizeCalc(15)}px`}>
                   {currencyValue ?? currencyValue}
                 </ShadowedText>
-                <ShadowedText shadowSize={sizeCalc(100)} fontWeight="bold" ml="3px" fontSize={`${sizeCalc(15)}px`}>
+                <ShadowedText
+                  shadowSize={shadowSize > 1 ? shadowSize : 1}
+                  fontWeight="bold"
+                  ml="3px"
+                  fontSize={`${sizeCalc(15)}px`}
+                >
                   {currencyUnit ?? currencyUnit}
                 </ShadowedText>
               </Flex>
@@ -163,7 +173,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
           {tokenBalance ? (
             <AbsoluteFlex bottom={`${-sizeCalc(18)}px`}>
               <ShadowedButton
-                shadowSize={sizeCalc(100)}
+                shadowSize={shadowSize > 1 ? shadowSize : 1}
                 zIndex={2}
                 disabled={disabled}
                 variant="text"
@@ -204,7 +214,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
         knobRadius={isDisabled ? 0 : knobSize || sizeCalc(17)}
         onInputChange={debounce((val) => handleChangeRange(val), debounceTime, { maxWait })}
         knobColor={knobColor}
-        progressColor={colorCompiler(progressColor)}
+        progressColor={colorCompiler(progressColor, true)}
         insideColor={color || colors.tertiary}
         circleColor={colorCompiler(borderColor)}
         disabled={isDisabled}

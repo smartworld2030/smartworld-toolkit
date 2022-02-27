@@ -26,6 +26,6 @@ export default class MouseHelper {
 
   public getNewSliderAngle(): number {
     const angleBetweenTwoVectors = Math.atan2(this.relativeY - this.center, -this.relativeX + this.center)
-    return (-angleBetweenTwoVectors + (3 * Math.PI) / 2) % (2 * Math.PI)
+    return (-angleBetweenTwoVectors + Math.PI * 1.5) % (Math.PI * 2)
   }
 }

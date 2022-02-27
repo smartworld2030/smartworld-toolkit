@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { loading } from '../ProgressRing/styles'
+import { ShadowSvg } from '../Svg'
 
 export const LoadingCircle = styled.circle`
   fill: transparent;
@@ -10,4 +11,24 @@ export const LoadingCircle = styled.circle`
 `
 export const StyledGroup = styled.g<{ $transform: string }>`
   transform: ${({ $transform }) => $transform};
+`
+
+export const StyledShadowSvg = styled(ShadowSvg)<{ $zIndex: number; $cursor: string }>`
+  box-sizing: border-box;
+  touch-action: none;
+  overflow: visible;
+  z-index: ${({ $zIndex }) => $zIndex};
+  cursor: ${({ $cursor }) => $cursor};
+  &:hover .knob {
+    opacity: 0.9;
+    filter: saturate(1.5);
+  }
+  &:focus .knob {
+    opacity: 0.9;
+    filter: saturate(1.5);
+  }
+  &:active .knob {
+    opacity: 0.9;
+    filter: saturate(1.5);
+  }
 `

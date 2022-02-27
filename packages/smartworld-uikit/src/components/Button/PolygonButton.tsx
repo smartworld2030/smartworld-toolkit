@@ -1,32 +1,46 @@
 import React from 'react'
-import styled from 'styled-components'
-import { variant } from 'styled-system'
-import { ShadowSvg, SvgProps } from '../Svg'
+import styled, { css, keyframes } from 'styled-components'
+import { variant as v } from 'styled-system'
+import { BaseButtonProps } from '.'
+import { ShadowSvg } from '../Svg'
 import Button from './Button'
-import { scaleVariants } from './theme'
-import { PolygonButtonProps } from './types'
+import { scaleVariants, polygonVariants } from './theme'
+import { PolygonButtonProps, Variant } from './types'
 
-interface PolygonProps extends SvgProps {
-  $blur?: number | false | undefined
-  $shadowColor?: string | undefined
-}
+const rotateIn = keyframes`
+  0% {
+    transform: rotateY(0deg);
+  }
 
-const StyledShadowSvg = styled(ShadowSvg)<{ color?: string; fill?: string }>`
+  100% {
+    transform: rotateY(360deg);
+  }
+`
+const rotateOut = keyframes`
+  0% {
+    transform: rotateY(360deg);
+  }
+
+  100% {
+    transform: rotateY(0deg);
+  }
+`
+
+const StyledShadowSvg = styled(ShadowSvg)<{ variant: Variant }>`
   position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
   fill: ${({ fill }) => fill || 'none'};
-  stroke: ${({ theme, color }) => color || theme.colors.primary};
+  ${v({
+    variants: polygonVariants,
+  })}
+  ${({ stroke }) =>
+    stroke &&
+    css`
+      stroke: ${stroke};
+    `}
 `
-
-const Polygon: React.FC<PolygonProps> = (props) => {
-  return (
-    <StyledShadowSvg viewBox="0 0 20 17" {...props} overflow="visible">
-      <path d="M1.74842 16L10 1.97231L18.2516 16H1.74842Z" strokeWidth="2" />
-    </StyledShadowSvg>
-  )
-}
 
 const StyledChild = styled.div<{ size: number }>`
   z-index: 2;
@@ -35,25 +49,60 @@ const StyledChild = styled.div<{ size: number }>`
   color: ${({ theme }) => theme.colors.text};
 `
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(Button)<BaseButtonProps>`
   position: relative;
-  &:hover:not(:disabled):not(.smartworld-button--disabled):not(.smartworld-button--disabled):not(:active) > div {
-    transform: scale(1.1, 1.1);
+  & > div {
+    animation: ${rotateOut} 0.5s;
+  }
+  &:hover:not(:disabled):not(.smartworld-button--disabled):not(:active) > div {
+    animation: ${rotateIn} 0.5s;
+  }
+  &:has(.smartworld-button--disabled) > svg {
+    filter: none;
   }
 `
 
-const PolygonButton: React.FC<PolygonButtonProps> = ({ icon, shadow, borderWidth, fill, color, children, ...rest }) => {
-  const { borderWidth: bw, height } = variant({
+const PolygonButton: React.FC<PolygonButtonProps> = ({
+  icon,
+  shadow,
+  className,
+  borderWidth,
+  fill,
+  variant = 'primary',
+  stroke,
+  children,
+  size,
+  ...rest
+}) => {
+  const { borderWidth: bw, height } = v({
     prop: 'scale',
     variants: scaleVariants,
   })(rest)
 
-  const sizeCalc = height.replace('px', '')
+  const classNames = className ? [className] : []
+
+  const sizeCalc = (size || height.replace('px', '')) as number
   const borderCalc = (borderWidth || bw.replace('px', '')) as number
 
+  if (rest.disabled) {
+    classNames.push('smartworld-svg--disabled')
+  }
+
   return (
-    <StyledButton shape="circle" variant="text" {...rest}>
-      <Polygon fill={fill} color={color} width={height} $blur={shadow && borderCalc / 2} $shadowColor={color} />
+    <StyledButton shape="circle" variant="text" size={`${sizeCalc}px`} {...rest}>
+      <StyledShadowSvg
+        viewBox="0 0 20 17"
+        shadow
+        className={classNames.join(' ')}
+        fill={fill}
+        stroke={stroke}
+        variant={variant}
+        width={sizeCalc}
+        shadowSize={shadow && borderCalc / 2}
+        overflow="visible"
+      >
+        <path d="M1.74842 16L10 1.97231L18.2516 16H1.74842Z" strokeWidth="2" />
+      </StyledShadowSvg>
       <StyledChild size={sizeCalc}>{icon ? icon(sizeCalc) : children}</StyledChild>
     </StyledButton>
   )

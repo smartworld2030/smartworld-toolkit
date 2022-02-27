@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { variant } from 'styled-system'
-import { buttonShadows } from '../../theme/base'
+import { getTextShadows } from '../../theme/base'
 import Button from './Button'
 import { scaleVariants } from './theme'
 import { IconButtonProps, BaseButtonProps } from './types'
@@ -21,7 +21,7 @@ const StyledChild = styled.div<{ size: number; padding?: number; shadowSize: num
   padding-top: ${({ padding }) => padding}px;
   font-size: ${({ size }) => size}px;
   color: ${({ theme }) => theme.colors.text};
-  text-shadow: ${({ theme, shadowSize }) => buttonShadows(theme.colors.background, shadowSize)};
+  text-shadow: ${({ theme, shadowSize }) => getTextShadows(theme.colors.background, shadowSize)};
 `
 
 const StyledButton = styled(Button)<BaseButtonProps>`
@@ -64,11 +64,11 @@ const IconButton: React.FC<IconButtonProps> = ({
           {icon(sizeCalc - borderCalc * 2)}
         </ResizableIcon>
       )}
-      <StyledChild size={fontSize || sizeCalc / 4} padding={icon ? 0 : sizeCalc / 9} shadowSize={borderCalc / 3}>
+      <StyledChild size={fontSize || sizeCalc / 4} padding={icon ? 0 : sizeCalc / 9} shadowSize={borderCalc / 10}>
         {children}
       </StyledChild>
       {bottomIcon && (
-        <StyledChild size={sizeCalc / 8} shadowSize={borderCalc / 3}>
+        <StyledChild size={sizeCalc / 8} shadowSize={borderCalc / 10}>
           {bottomIcon(sizeCalc / 8)}
         </StyledChild>
       )}

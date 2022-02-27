@@ -77,7 +77,9 @@ export const ExpandableButton: React.FC<Props> = ({
       size={sizeCalc}
       borderWidth={s}
       scale={scale}
-      icon={(w: number) => (expanded ? <UpAnimatedIcon width={w} /> : <DownAnimatedIcon width={w} />)}
+      icon={(w: number) =>
+        expanded ? <UpAnimatedIcon fill="none" width={w} /> : <DownAnimatedIcon fill="none" width={w} />
+      }
       {...rest}
     >
       {children}

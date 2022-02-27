@@ -38,6 +38,11 @@ const Button = <E extends ElementType = 'button'>(props: ButtonProps<E>): JSX.El
   if (isDisabled && !isLoading) {
     classNames.push('smartworld-button--disabled')
   }
+
+  if (rest.variant === 'text') {
+    classNames.push(`smartworld-text${isDisabled ? '--disabled' : ''}`)
+  }
+
   if (shape === 'circle') {
     shapeProps.height = `${height}px`
     shapeProps.width = `${height}px`
