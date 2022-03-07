@@ -1,4 +1,4 @@
-import styled, { DefaultTheme } from 'styled-components'
+import styled, { css, DefaultTheme } from 'styled-components'
 import { space, layout, variant } from 'styled-system'
 import { getBoxShadows } from '../../theme/base'
 import { scaleVariants, styleShape, styleVariants } from './theme'
@@ -99,6 +99,13 @@ const StyledButton = styled.button<BaseButtonProps>`
 
   ${layout}
   ${space}
+
+  ${({ active, shadow, shadowSize, theme }) =>
+    active &&
+    css`
+      filter: saturate(1.5) drop-shadow(${shadow && getBoxShadows(theme.colors.primary, shadowSize || 2)});
+    `}
+
   border-width: ${({ borderWidth }) => borderWidth}px;
   padding: ${({ variant: v }) => (v === 'text' ? 0 : undefined)};
 `

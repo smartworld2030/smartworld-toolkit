@@ -45,7 +45,7 @@ const MainSection: React.FC<MainSectionProps> = ({
   const toggleHandler = (item: keyof typeof defaultToggle) => {
     setToggle((prev) => ({ ...defaultToggle, [item]: !prev[item] }))
     setTimeout(() => {
-      divRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      divRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }, 500)
   }
 

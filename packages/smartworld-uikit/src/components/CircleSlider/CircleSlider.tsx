@@ -4,6 +4,7 @@ import MouseHelper from './helpers/MouseHelper'
 import pathGenerator from './helpers/PathGenerator'
 import { LoadingCircle, StyledGroup, StyledShadowSvg } from './styles'
 import { CircleSliderProps } from './types'
+import { BAD_SRCS } from '../../util/constant'
 
 interface IPoint {
   x: number
@@ -38,7 +39,6 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   shadowColor,
   insideColor = 'transparent',
   onInputChange = () => null,
-  onImageError = () => null,
   children,
   gradientColorFrom,
   gradientColorTo,
@@ -52,6 +52,10 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   const countSteps = useRef(0)
   const mouseHelper = useRef<MouseHelper | null>(null)
   const circleSliderHelper = useRef<CircleSliderHelper>(new CircleSliderHelper([], 0))
+
+  const imageList = useMemo(() => (typeof image === 'string' ? [image] : image), [image])
+
+  const [, refresh] = useState(0)
 
   const [state, setState] = useState<IState>({
     angle: 0,
@@ -190,6 +194,13 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
     classNames.push('smartworld-svg--loading')
   }
 
+  const src: string | undefined = imageList?.find((l) => !BAD_SRCS[l])
+
+  const onImageError = () => {
+    if (src) BAD_SRCS[src] = true
+    refresh((i) => i + 1)
+  }
+
   return (
     <StyledShadowSvg
       className={classNames.join(' ')}
@@ -213,16 +224,16 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
           <feGaussianBlur in="SourceGraphic" stdDeviation={blur} />
         </filter>
       </defs>
-      {image && (
+      {src && (
         <defs>
-          <pattern id={image} x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
+          <pattern id={src} x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
             <image
               filter="url(#sg-blur-2)"
               x="0%"
               y="0%"
               width="512"
               height="512"
-              xlinkHref={image}
+              xlinkHref={src}
               onError={onImageError}
             />
           </pattern>

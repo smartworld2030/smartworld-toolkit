@@ -14409,11 +14409,6 @@ scrypt-js@3.0.1:
   resolved "https://registry.yarnpkg.com/scrypt-js/-/scrypt-js-3.0.1.tgz#d314a57c2aef69d1ad98a138a21fe9eafa9ee312"
   integrity sha512-cdwTTnqPu0Hyvf5in5asVdZocVDTNRmR7XEcJuIzMjJeSHybHl7vpB66AzwTaIg6CLSbtjcxc8fqcySfnTkccA==
 
-seamless-scroll-polyfill@^2.1.8:
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/seamless-scroll-polyfill/-/seamless-scroll-polyfill-2.1.8.tgz#357b478b54a093e03581dcc9c0a86eae4b00eee2"
-  integrity sha512-cF92Op90//vEpHphRx25rttJGXIgxcTB1WR5y0ODQhN7O4d0lSEOp5+l3sQDx0aAZ2MfXCqFEb/rG/3ghvVDIQ==
-
 select@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/select/-/select-1.1.2.tgz#0e7350acdec80b1108528786ec1d4418d11b396d"

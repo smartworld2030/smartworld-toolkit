@@ -74,7 +74,7 @@ export const Circle: React.FC = () => {
             <Box key={variant} mb="32px">
               {Object.values(scales).map((scale) => {
                 return (
-                  <Button shape="circle" key={scale} variant={variant} scale={scale} mr="8px">
+                  <Button shape="circle" mb="12px" key={scale} variant={variant} scale={scale} mr="8px">
                     {`${capitalize(variant)} ${scale.toUpperCase()}`}
                   </Button>
                 )
@@ -86,17 +86,17 @@ export const Circle: React.FC = () => {
       <Box mb="32px">
         {Object.values(scales).map((scale) => {
           return (
-            <Button shape="circle" disabled key={scale} scale={scale} mr="8px">
+            <Button shape="circle" mb="12px" disabled key={scale} scale={scale} mr="8px">
               {`Disabled ${scale.toUpperCase()}`}
             </Button>
           )
         })}
       </Box>
       <Box>
-        <Button shape="circle" scale="ml" mr="8px" disabled>
+        <Button shape="circle" mb="12px" scale="ml" mr="8px" disabled>
           Disabled
         </Button>
-        <Button shape="circle" scale="ml" variant="secondary" disabled>
+        <Button shape="circle" mb="12px" scale="ml" variant="secondary" disabled>
           Disabled
         </Button>
       </Box>
@@ -276,6 +276,27 @@ export const Expandable: React.FC = () => {
     <Box mb="32px">
       {Object.values(scales).map((scale) => (
         <Row key={scale}>
+          <ExpandableButton
+            animation
+            iconAnimation
+            expanded={expanded}
+            scale={scale}
+            onClick={() => setExpanded((prev) => !prev)}
+          />
+        </Row>
+      ))}
+      {Object.values(scales).map((scale) => (
+        <Row key={scale}>
+          <ExpandableButton
+            iconAnimation
+            expanded={expanded}
+            scale={scale}
+            onClick={() => setExpanded((prev) => !prev)}
+          />
+        </Row>
+      ))}
+      {Object.values(scales).map((scale) => (
+        <Row key={scale}>
           <ExpandableButton expanded={expanded} scale={scale} onClick={() => setExpanded((prev) => !prev)} />
         </Row>
       ))}
@@ -352,33 +373,35 @@ export const PayButtonExample: React.FC = () => {
 }
 
 export const IconButtonExample: React.FC = () => {
+  const [active, setActive] = useState(0)
+
   return (
     <Box mb="32px">
-      {Object.values(scales).map((scale) => {
+      {Object.values(scales).map((scale, i) => {
         return (
           <IconButton
+            active={i === active}
             key={scale}
             scale={scale}
-            color="white"
-            mr="8px"
+            mb="8px"
             icon={(size) => <LogoIcon width={size} />}
-            onClick={() => console.log('clicked')}
+            onClick={() => setActive(i)}
           >
             STTS
           </IconButton>
         )
       })}
-      {Object.values(scales).map((scale) => {
+      {Object.values(scales).map((scale, i) => {
         return (
           <IconButton
+            active={i === active}
             key={scale}
             scale={scale}
-            color="white"
-            mr="8px"
-            shadow
+            mb="8px"
+            shadow={false}
             bottomIcon={() => '1220'}
             icon={(size) => <LogoIcon width={size} />}
-            onClick={() => console.log('clicked')}
+            onClick={() => setActive(i)}
           >
             STTS
           </IconButton>
@@ -389,9 +412,11 @@ export const IconButtonExample: React.FC = () => {
 }
 
 export const PolygonButtonExample: React.FC = () => {
+  const [active, setActive] = useState(0)
   return (
     <Box mb="32px">
       <PolygonButton
+        active
         size={100}
         fill="black"
         stroke="white"
@@ -407,28 +432,39 @@ export const PolygonButtonExample: React.FC = () => {
         icon={(size) => <LogoIcon width={size / 3} />}
         onClick={() => console.log('clicked')}
       />
-      {Object.values(scales).map((scale) => (
+      {Object.values(scales).map((scale, i) => (
         <PolygonButton
+          active={i === active}
+          key={scale}
+          scale={scale}
+          shadow={false}
+          mr="8px"
+          icon={(size) => <LogoIcon width={size / 3} />}
+          onClick={() => setActive(i)}
+        />
+      ))}
+      {Object.values(scales).map((scale, i) => (
+        <PolygonButton
+          active={i === active}
           key={scale}
           scale={scale}
           disabled
-          shadow
           mr="8px"
           icon={(size) => <LogoIcon width={size / 3} />}
-          onClick={() => console.log('clicked')}
+          onClick={() => setActive(i)}
         />
       ))}
       {Object.values(variants).map((variant) =>
-        Object.values(scales).map((scale) => {
+        Object.values(scales).map((scale, i) => {
           return (
             <PolygonButton
+              active={i === active}
               key={scale}
               variant={variant}
               scale={scale}
-              shadow
               mr="8px"
               icon={(size) => <LogoIcon width={size / 3} />}
-              onClick={() => console.log('clicked')}
+              onClick={() => setActive(i)}
             />
           )
         }),
@@ -451,6 +487,7 @@ export const ButtonWithSliderExample: React.FC = () => {
             color="white"
             onInput={seValue}
             value={value}
+            mb="8px"
             onClick={() => {
               setClick('click')
               setTimeout(() => {
@@ -468,11 +505,32 @@ export const ButtonWithSliderExample: React.FC = () => {
             key={scale}
             scale={scale}
             color="white"
-            mr="8px"
             disabled
             onInput={seValue}
             value={value}
             shadow
+            mb="8px"
+            onClick={() => {
+              setClick('click')
+              setTimeout(() => {
+                setClick('')
+              }, 1000)
+            }}
+          >
+            {click}
+          </ButtonWithSlider>
+        )
+      })}
+      {Object.values(scales).map((scale) => {
+        return (
+          <ButtonWithSlider
+            key={scale}
+            scale={scale}
+            color="white"
+            onInput={seValue}
+            value={value}
+            shadow
+            mb="8px"
             onClick={() => {
               setClick('click')
               setTimeout(() => {

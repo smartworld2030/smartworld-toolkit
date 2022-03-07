@@ -1,11 +1,10 @@
 import React from 'react'
 import styled, { css, keyframes } from 'styled-components'
 import { variant as v } from 'styled-system'
-import { BaseButtonProps } from '.'
 import { ShadowSvg } from '../Svg'
 import Button from './Button'
 import { scaleVariants, polygonVariants } from './theme'
-import { PolygonButtonProps, Variant } from './types'
+import { BaseButtonProps, PolygonButtonProps, Variant } from './types'
 
 const rotateIn = keyframes`
   0% {
@@ -64,7 +63,7 @@ const StyledButton = styled(Button)<BaseButtonProps>`
 
 const PolygonButton: React.FC<PolygonButtonProps> = ({
   icon,
-  shadow,
+  shadow = false,
   className,
   borderWidth,
   fill,
@@ -92,7 +91,7 @@ const PolygonButton: React.FC<PolygonButtonProps> = ({
     <StyledButton shape="circle" variant="text" size={`${sizeCalc}px`} {...rest}>
       <StyledShadowSvg
         viewBox="0 0 20 17"
-        shadow
+        shadow={shadow}
         className={classNames.join(' ')}
         fill={fill}
         stroke={stroke}
@@ -101,7 +100,7 @@ const PolygonButton: React.FC<PolygonButtonProps> = ({
         shadowSize={shadow && borderCalc / 2}
         overflow="visible"
       >
-        <path d="M1.74842 16L10 1.97231L18.2516 16H1.74842Z" strokeWidth="2" />
+        <path d="M1.74842 16L10 1.97231L18.2516 16H1.74842Z" strokeWidth={borderCalc / 7} />
       </StyledShadowSvg>
       <StyledChild size={sizeCalc}>{icon ? icon(sizeCalc) : children}</StyledChild>
     </StyledButton>

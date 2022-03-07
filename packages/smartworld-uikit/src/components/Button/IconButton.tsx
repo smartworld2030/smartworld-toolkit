@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { variant } from 'styled-system'
+import { variant as v } from 'styled-system'
 import { getTextShadows } from '../../theme/base'
 import Button from './Button'
 import { scaleVariants } from './theme'
@@ -40,9 +40,11 @@ const IconButton: React.FC<IconButtonProps> = ({
   borderWidth,
   size,
   scale,
+  active,
+  variant,
   ...rest
 }) => {
-  const { height, borderWidth: bw } = variant({
+  const { height, borderWidth: bw } = v({
     prop: 'scale',
     variants: scaleVariants,
   })({ scale })
@@ -55,8 +57,10 @@ const IconButton: React.FC<IconButtonProps> = ({
       borderWidth={borderCalc}
       shape="circle"
       shadow={shadow}
+      active={active}
       size={`${sizeCalc}px`}
       shadowSize={shadowSize || borderCalc}
+      variant={active ? 'primary' : variant}
       {...rest}
     >
       {icon && (
@@ -78,5 +82,6 @@ const IconButton: React.FC<IconButtonProps> = ({
 IconButton.defaultProps = {
   scale: 'md',
   blur: true,
+  variant: 'tertiary',
 }
 export default IconButton

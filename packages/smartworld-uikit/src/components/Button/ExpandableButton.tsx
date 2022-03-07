@@ -35,20 +35,22 @@ const pathLoading = keyframes`
 `
 
 const ProgressingIconBorder = styled(IconButton)<IconButtonProps>`
-  animation: ${loading} 2s linear infinite both;
+  animation: ${({ animation }) => animation && loading} 2s linear infinite both;
 `
 
 const UpAnimatedIcon = styled(ChevronUpIcon)<IconButtonProps>`
-  animation: ${pathLoading} 2s linear infinite both;
+  animation: ${({ animation }) => animation && pathLoading} 2s linear infinite both;
 `
 
 const DownAnimatedIcon = styled(ChevronDownIcon)<IconButtonProps>`
-  animation: ${pathLoading} 2s linear infinite both;
+  animation: ${({ animation }) => animation && pathLoading} 2s linear infinite both;
 `
 
 interface Props extends IconButtonProps {
   onClick?: () => void
   expanded?: boolean
+  animation?: boolean
+  iconAnimation?: boolean
 }
 
 export const ExpandableButton: React.FC<Props> = ({
@@ -58,6 +60,8 @@ export const ExpandableButton: React.FC<Props> = ({
   size,
   scale,
   children,
+  animation,
+  iconAnimation,
   ...rest
 }) => {
   const { height, borderWidth: bw } = variant({
@@ -77,8 +81,13 @@ export const ExpandableButton: React.FC<Props> = ({
       size={sizeCalc}
       borderWidth={s}
       scale={scale}
+      animation={animation}
       icon={(w: number) =>
-        expanded ? <UpAnimatedIcon fill="none" width={w} /> : <DownAnimatedIcon fill="none" width={w} />
+        expanded ? (
+          <UpAnimatedIcon animation={iconAnimation} fill="none" width={w} />
+        ) : (
+          <DownAnimatedIcon animation={iconAnimation} fill="none" width={w} />
+        )
       }
       {...rest}
     >

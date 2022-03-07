@@ -24,7 +24,6 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   onUserInput = () => null,
   onUnitClick,
   onLogoClick,
-  onImageError,
   onSelect,
   currencyValue,
   currencyUnit,
@@ -219,7 +218,6 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
         circleColor={colorCompiler(borderColor)}
         disabled={isDisabled}
         image={token?.logoURI || image}
-        onImageError={onImageError}
         id={id}
         loading={loading}
       />

@@ -15,7 +15,7 @@ const tokenList: SelectableTokenProps['token'][] = [
     address: 'a1',
     symbol: 'STTS',
     balance: '13.0325',
-    logoURI: 'https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png',
+    logoURI: ['https://i.postimg.cc/rqpyX8K0/ggd.png', 'https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png'],
   },
   {
     chainId: 56,

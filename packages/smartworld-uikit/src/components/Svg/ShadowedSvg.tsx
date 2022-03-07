@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import Svg from './Svg'
+import { SpaceSvg } from './Svg'
 import { getBoxShadows } from '../../theme/base'
 import { ShadowSvgProps } from './types'
 
-const ShadowSvg = styled(Svg)<ShadowSvgProps>`
+const ShadowSvg = styled(SpaceSvg)<ShadowSvgProps>`
   filter: drop-shadow(
     ${({ shadow, shadowSize, shadowColor, theme }) =>
       shadow && getBoxShadows(shadowColor || theme.colors.primary, shadowSize || 2)}

@@ -15,10 +15,9 @@ export interface ProgressRingProps {
   progress?: number
   loading?: boolean
   shadow?: boolean
-  image?: string
+  image?: string | string[]
   insideColor?: string
   shadowColor?: string
   showProgressBunny?: boolean
   onClick?: () => void
-  onImageError?: () => void
 }

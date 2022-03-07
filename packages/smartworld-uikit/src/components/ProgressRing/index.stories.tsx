@@ -35,7 +35,7 @@ export const Default: () => JSX.Element[] = () => {
 export const CustomSize: () => JSX.Element[] = () => {
   return Object.values(variants).map((variant, i) => (
     <ProgressRing
-      image={`https://picsum.photos/200/200?random=${i}`}
+      image={[`https://picsum.photos`, `https://picsum.photos/200/200?random=${i}`]}
       loading
       key={variant}
       variant={variant}

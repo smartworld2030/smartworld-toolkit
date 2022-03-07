@@ -27,7 +27,6 @@ const SelectableToken: React.FC<SelectableTokenBoxProps> = (props) => {
     disabled = false,
     image,
     logoURI,
-    onImageError,
     loading,
     ...rest
   } = props
@@ -105,7 +104,6 @@ const SelectableToken: React.FC<SelectableTokenBoxProps> = (props) => {
         stroke={stroked ? sizeCalc(60) : undefined}
         size={sizeCalc()}
         blur="5px"
-        onImageError={onImageError}
         image={token?.logoURI || logoURI || image}
         loading={loading}
       />

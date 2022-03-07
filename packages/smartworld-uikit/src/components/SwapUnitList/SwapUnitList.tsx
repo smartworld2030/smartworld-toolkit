@@ -1,13 +1,10 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { elementScrollIntoViewPolyfill, scrollIntoView } from 'seamless-scroll-polyfill'
 import { BalanceInput } from '../BalanceInput'
 import ListContainer from './styles'
 import { Box, Flex } from '../Box'
 import { ExpandableButton } from '../Button'
 import { SelectableToken, SelectableTokenProps } from '../SelectableToken'
 import { SwapUnitListProps } from './types'
-
-elementScrollIntoViewPolyfill()
 
 const SwapUnitList: React.FC<SwapUnitListProps> = ({
   width = 200,
@@ -37,7 +34,7 @@ const SwapUnitList: React.FC<SwapUnitListProps> = ({
 
   useEffect(() => {
     const id = `selectable-token-${defaultSelected}`
-    scrollIntoView(tokenRef.current?.children[id], {
+    tokenRef.current?.children[id].scrollIntoView({
       behavior: 'auto',
       block: 'center',
       inline: 'center',
@@ -55,7 +52,7 @@ const SwapUnitList: React.FC<SwapUnitListProps> = ({
     if (!animation.current) {
       selectUnitHandler(item)
       selectTokenHandler(t)
-      scrollIntoView(tokenRef.current?.children[id], {
+      tokenRef.current?.children[id].scrollIntoView({
         behavior: 'smooth',
         block: 'center',
         inline: 'center',

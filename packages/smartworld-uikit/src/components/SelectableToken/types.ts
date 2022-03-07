@@ -12,7 +12,6 @@ export interface SelectableTokenProps {
   maxValue?: ReactText
   balance?: ReactText
   text?: ReactText
-  onImageError?: () => void
   innerRef?: React.RefObject<HTMLInputElement>
   currencyValue?: ReactNode
   currencyUnit?: ReactNode
@@ -20,7 +19,7 @@ export interface SelectableTokenProps {
   inputProps?: Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'placeholder' | 'onChange'>
   decimals?: number
   image?: string
-  logoURI?: string
+  logoURI?: string | string[]
   unit?: string
   symbol?: string
   variant?: Variant
@@ -38,7 +37,7 @@ export interface Token {
   symbol?: string
   name?: string
   balance?: string
-  logoURI?: string
+  logoURI?: string | string[]
   projectLink?: string
 }
 

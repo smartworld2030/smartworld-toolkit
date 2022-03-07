@@ -65,6 +65,7 @@ export interface BaseButtonProps extends LayoutProps, SpaceProps {
   disabled?: boolean
   startIcon?: ReactNode
   endIcon?: ReactNode
+  active?: boolean
   zIndex?: number | string
 }
 
@@ -84,6 +85,7 @@ export interface IconButtonProps extends BaseButtonProps {
   blur?: boolean
   onClick?: () => void
   iconProps?: CSSProperties
+  animation?: boolean
 }
 export interface PayButtonProps extends BaseButtonProps {
   children?: (e: ChildrenProps) => JSX.Element
