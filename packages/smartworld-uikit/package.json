@@ -1,6 +1,6 @@
 {
   "name": "@smartworld-libs/uikit",
-  "version": "0.62.4",
+  "version": "0.62.5",
   "description": "Set of UI components for smartworld projects",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
