@@ -11,7 +11,11 @@ export default {
 export const Default: React.FC = () => {
   const [clickedItem, setClickedItem] = useState(-1)
   const tokenList = [
-    { symbol: 'STTS', balance: '13.0325', logoURI: 'https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png' },
+    {
+      symbol: 'STTS',
+      balance: '13.0325',
+      logoURI: ['https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png', 'https://i.ibb.co/Sch3zzp/unknown.png'],
+    },
     { symbol: 'BTCB', balance: '0.00000002', logoURI: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=018' },
     { symbol: 'USDT', balance: '30', logoURI: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=018' },
     { symbol: 'SHIB', balance: '6600', logoURI: 'https://cryptologos.cc/logos/shiba-inu-shib-logo.png?v=018' },
@@ -28,7 +32,6 @@ export const Default: React.FC = () => {
           key={`${item.symbol + i}`}
           inputProps={{ inputMode: 'numeric' }}
           mb="10px"
-          borderColor="orange"
           text={clickedItem === i ? 'SELECTED' : ''}
           {...item}
         />

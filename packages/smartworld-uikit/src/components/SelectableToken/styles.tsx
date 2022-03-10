@@ -32,10 +32,14 @@ export const StyledInput = styled(Input)`
   border: 1px solid ${({ theme, isWarning }) => theme.colors[isWarning ? 'warning' : 'textDisabled']};
   border-radius: ${({ theme }) => theme.radii.default};
 
-  ::placeholder {
-    color: ${({ theme }) => theme.colors.textDisabled};
+  &:placeholder {
+    color: ${({ theme }) => theme.colors.primary};
   }
-
+  &:disabled {
+    color: ${({ theme }) => theme.colors.contrast};
+    cursor: pointer;
+    font-weight: bold;
+  }
   &:focus:not(:disabled) {
     box-shadow: 0px 0px 0px 1px ${({ theme }) => theme.colors.primary};
   }

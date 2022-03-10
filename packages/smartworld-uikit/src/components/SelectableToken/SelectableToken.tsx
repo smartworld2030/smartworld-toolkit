@@ -5,31 +5,30 @@ import { ProgressRing } from '../ProgressRing'
 import { UnitContainer, StyledInput, ShadowedText, ShadowedButton } from './styles'
 import { SelectableTokenBoxProps } from './types'
 
-const SelectableToken: React.FC<SelectableTokenBoxProps> = (props) => {
-  const {
-    token,
-    address,
-    text = '',
-    value = '0',
-    maxValue,
-    balance,
-    variant,
-    stroked = true,
-    placeholder = '0.0',
-    onTextClick,
-    currencyValue,
-    currencyUnit,
-    inputProps,
-    innerRef,
-    unit,
-    symbol,
-    size = 150,
-    disabled = false,
-    image,
-    logoURI,
-    loading,
-    ...rest
-  } = props
+const SelectableToken: React.FC<SelectableTokenBoxProps> = ({
+  token,
+  text = '',
+  value = '0',
+  maxValue,
+  balance,
+  variant,
+  stroked = true,
+  placeholder = '0.0',
+  onTextClick,
+  currencyValue,
+  currencyUnit,
+  inputProps,
+  innerRef,
+  unit,
+  symbol,
+  size = 150,
+  disabled = false,
+  image,
+  logoURI,
+  loading,
+  blur = 2,
+  ...rest
+}) => {
   const sizeCalc = useCallback((divide = 1, minus = 0) => (size ? Number(size) : 150) / divide - minus, [size])
 
   const shadowSize = useMemo(() => sizeCalc(300), [sizeCalc])
@@ -62,7 +61,7 @@ const SelectableToken: React.FC<SelectableTokenBoxProps> = (props) => {
                 value={balance || maxValue || value}
                 placeholder={placeholder}
                 ref={innerRef}
-                disabled={disabled}
+                disabled
                 onChange={() => null}
                 {...inputProps}
               />
@@ -98,13 +97,12 @@ const SelectableToken: React.FC<SelectableTokenBoxProps> = (props) => {
         </RelativeFlex>
       </AbsoluteFlex>
       <ProgressRing
-        id={token?.address?.toLowerCase() || address?.toLowerCase() || symbol?.toLowerCase() || unit?.toLowerCase()}
         insideColor="white"
         variant={variant}
-        stroke={stroked ? sizeCalc(60) : undefined}
+        borderWidth={stroked ? sizeCalc(35) : undefined}
         size={sizeCalc()}
-        blur="5px"
-        image={token?.logoURI || logoURI || image}
+        blur={blur}
+        image={image || logoURI || token?.logoURI}
         loading={loading}
       />
     </PointerRelativeFlex>

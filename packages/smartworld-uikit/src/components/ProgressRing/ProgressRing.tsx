@@ -1,35 +1,42 @@
 import React, { FC, useMemo, useState } from 'react'
-import { variant } from 'styled-system'
 import { uniqueId } from 'lodash'
+import { variant } from 'styled-system'
 import { scaleVariants } from './theme'
 import { StyledRing } from './styles'
 import { ProgressRingProps } from './types'
-import { BAD_SRCS } from '../../util/constant'
+import { BAD_SRCS, UNKNOWN_IMAGE } from '../../util/constant'
 
 const ProgressRing: FC<ProgressRingProps> = ({
   id = uniqueId(),
   size,
   radius,
-  stroke,
+  borderWidth,
   loading = false,
   progress = 0,
   shadow = true,
   shadowColor,
+  circleColor,
   insideColor = 'transparent',
   image,
-  blur,
+  blur = 1,
   ...rest
 }) => {
   const [, refresh] = useState(0)
-  const { height, borderWidth } = variant({
+  const { height, borderWidth: bw } = variant({
     prop: 'scale',
     variants: scaleVariants,
   })(rest)
 
-  const imageList = useMemo(() => (typeof image === 'string' ? [image] : image), [image])
+  const imageList = useMemo(() => {
+    const list = [UNKNOWN_IMAGE]
+    if (!image) return undefined
+    if (typeof image === 'string') list.unshift(image)
+    else list.unshift(...image)
+    return list
+  }, [image])
 
   const r = (size || radius || height.replace('px', '')) / 2
-  const s = stroke || +borderWidth.replace('px', '')
+  const s = borderWidth || +bw.replace('px', '')
 
   const normalizedRadius = r - s * 2
   const circumference = normalizedRadius * 2 * Math.PI
@@ -52,32 +59,39 @@ const ProgressRing: FC<ProgressRingProps> = ({
       width={r * 2}
       $offset={strokeDashoffset}
       $animation={loading && !progress}
+      $circleColor={circleColor}
       {...rest}
     >
-      <defs>
-        {src && (
-          <pattern id={id} x="0%" y="0%" height="100%" width="100%" viewBox="0 0 512 512">
-            <image
-              filter={`blur(${blur})`}
-              x="0%"
-              y="0%"
-              width="512"
-              height="512"
-              xlinkHref={src}
-              onError={onImageError}
-            />
-          </pattern>
-        )}
-      </defs>
-      <circle fill={insideColor} r={normalizedRadius} cx={r} cy={r} />
-      <circle fill={src ? `url(#${id})` : insideColor} strokeWidth={+s + 4} r={normalizedRadius} cx={r} cy={r} />
+      {/* order matters */}
+      <circle strokeWidth={s * 1.5} fill={insideColor} r={normalizedRadius} cx={r} cy={r} />
+      {src && (
+        <>
+          <defs>
+            <filter id="svg-blur">
+              <feGaussianBlur in="SourceGraphic" stdDeviation={blur} />
+            </filter>
+            <clipPath id={id}>
+              <circle r={r - s * 2.75} cx={r} cy={r} />
+            </clipPath>
+          </defs>
+          <image
+            filter="url(#svg-blur)"
+            width="100%"
+            height="100%"
+            href={src}
+            clipPath={`url(#${id})`}
+            onError={onImageError}
+          />
+        </>
+      )}
       <circle
-        strokeWidth={s}
+        strokeWidth={s * 1.5}
         strokeDasharray={`${circumference} ${circumference}`}
         strokeDashoffset={strokeDashoffset}
         r={normalizedRadius}
         cx={r}
         cy={r}
+        fill="none"
       />
     </StyledRing>
   )

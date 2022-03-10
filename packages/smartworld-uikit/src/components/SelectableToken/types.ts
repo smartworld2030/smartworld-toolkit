@@ -7,7 +7,6 @@ export interface SelectableTokenProps {
   id?: string
   token?: Token
   chainId?: ChainId
-  address?: string
   value?: ReactText
   maxValue?: ReactText
   balance?: ReactText
@@ -18,6 +17,7 @@ export interface SelectableTokenProps {
   placeholder?: string
   inputProps?: Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'placeholder' | 'onChange'>
   decimals?: number
+  blur?: number
   image?: string
   logoURI?: string | string[]
   unit?: string

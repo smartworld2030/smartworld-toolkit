@@ -59,6 +59,7 @@ export const ExpandableButton: React.FC<Props> = ({
   borderWidth,
   size,
   scale,
+  width,
   children,
   animation,
   iconAnimation,
@@ -69,7 +70,7 @@ export const ExpandableButton: React.FC<Props> = ({
     variants: scaleVariants,
   })({ scale })
 
-  const sizeCalc = size || height.replace('px', '')
+  const sizeCalc = width || size || height.replace('px', '')
   const s = borderWidth || bw.replace('px', '')
 
   return (
@@ -100,13 +101,14 @@ ExpandableButton.defaultProps = {
   scale: 'md',
 }
 
-export const ExpandableLabel: React.FC<Props> = ({ onClick, expanded, children }) => {
+export const ExpandableLabel: React.FC<Props> = ({ onClick, expanded, children, ...rest }) => {
   return (
     <Button
       variant="text"
       aria-label="Hide or show expandable content"
       onClick={onClick}
       endIcon={expanded ? <ChevronUpIcon color="primary" /> : <ChevronDownIcon color="primary" />}
+      {...rest}
     >
       {children}
     </Button>

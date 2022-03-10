@@ -7,8 +7,9 @@ import { SelectableToken, SelectableTokenProps } from '../SelectableToken'
 import { SwapUnitListProps } from './types'
 
 const SwapUnitList: React.FC<SwapUnitListProps> = ({
-  width = 200,
-  height = 400,
+  size = 200,
+  listWidth,
+  listHeight,
   animationTime = 500,
   listBackground = 'background',
   unit,
@@ -48,36 +49,39 @@ const SwapUnitList: React.FC<SwapUnitListProps> = ({
     }
   }, [clickHandler])
 
-  const onClick = (item: string, t?: SelectableTokenProps, id = 'selectable-token-0') => {
-    if (!animation.current) {
-      selectUnitHandler(item)
-      selectTokenHandler(t)
-      tokenRef.current?.children[id].scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'center',
-      })
-      animation.current = window.setTimeout(() => {
-        setInSelection(false)
-        setTimeout(() => {
-          animation.current = 0
+  const onClick = useCallback(
+    (item: string, t?: SelectableTokenProps, id = 'selectable-token-0') => {
+      if (!animation.current) {
+        selectUnitHandler(item)
+        selectTokenHandler(t)
+        tokenRef.current?.children[id].scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center',
+        })
+        animation.current = window.setTimeout(() => {
+          setInSelection(false)
+          setTimeout(() => {
+            animation.current = 0
+          }, animationTime)
         }, animationTime)
-      }, animationTime)
-    }
-  }
+      }
+    },
+    [animationTime, selectTokenHandler, selectUnitHandler],
+  )
 
   return (
-    <Flex width={width} position="relative" alignItems="center" justifyContent="space-between">
+    <Flex width={size} position="relative" alignItems="center" justifyContent="space-between">
       <ListContainer
         id="list-item"
         ref={tokenRef}
         animationTime={animationTime}
         variant={listBackground}
-        width={width}
-        height={height}
+        width={listWidth || size}
+        height={listHeight || size * 2}
         out={!inSelection}
       >
-        <Box paddingTop={(Number(width) - 45) / 2} />
+        <Box paddingTop={(Number(size) - 45) / 2} />
         {topElement && topElement}
         {tokenList.map((item, i) => (
           <Box
@@ -88,7 +92,7 @@ const SwapUnitList: React.FC<SwapUnitListProps> = ({
             }
           >
             <SelectableToken
-              size={Number(width) - 40}
+              size={Number(size) - 40}
               inputProps={{ inputMode: 'numeric' }}
               mb="5px"
               borderColor="orange"
@@ -97,17 +101,18 @@ const SwapUnitList: React.FC<SwapUnitListProps> = ({
           </Box>
         ))}
         {bottomElement && bottomElement}
-        <Box paddingBottom={(Number(width) - 45) / 2} />
+        <Box paddingBottom={(Number(size) - 45) / 2} />
       </ListContainer>
       <BalanceInput
-        size={Number(width) - 30}
+        size={Number(size) - 30}
+        insideColor="white"
         onUnitClick={() => {
           setInSelection(true)
         }}
         unit={
           <Flex ref={selectRef} alignItems="center">
             {token?.symbol || unit || 'Select'}
-            <ExpandableButton size="13" borderWidth={2} scale="xs" ml={1} />
+            <ExpandableButton width={Number(size) / 15} borderWidth={2} ml={1} />
           </Flex>
         }
         token={token}

@@ -16,6 +16,7 @@ import {
 import { BalanceInputProps } from './types'
 
 const BalanceInput: React.FC<BalanceInputProps> = ({
+  id,
   token,
   value,
   maxValue = 0,
@@ -39,10 +40,10 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   knobSize,
   color,
   logo,
-  id,
   image,
   knobColor,
   borderColor,
+  insideColor,
   progressColor = 'red',
   disabled = false,
   disabledKnob = false,
@@ -50,6 +51,8 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   maxWait = 100,
   selectable,
   loading,
+  logoURI,
+  blur = 2,
   ...rest
 }) => {
   const { colors } = useTheme()
@@ -69,7 +72,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
     onUserInput(percentToValue(val, tokenBalance))
   }
 
-  const valueToPercent = () => +((+value / +tokenBalance) * 100)
+  const valueToPercent = useMemo(() => +((+value / +tokenBalance) * 100), [tokenBalance, value])
 
   const maxButtonHandler = () => {
     if (tokenBalance) onUserInput(tokenBalance.toString())
@@ -205,8 +208,10 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
         </RelativeFlex>
       </AbsoluteFlex>
       <StyledCircleSlider
-        value={valueToPercent()}
+        id={id}
+        value={valueToPercent}
         size={sizeCalc()}
+        blur={blur}
         progressWidth={progressSize || sizeCalc(25)}
         knobWidth={progressSize || sizeCalc(30)}
         circleWidth={borderSize || sizeCalc(25)}
@@ -214,11 +219,10 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
         onInputChange={debounce((val) => handleChangeRange(val), debounceTime, { maxWait })}
         knobColor={knobColor}
         progressColor={colorCompiler(progressColor, true)}
-        insideColor={color || colors.tertiary}
+        insideColor={insideColor || color || colors.tertiary}
         circleColor={colorCompiler(borderColor)}
         disabled={isDisabled}
-        image={token?.logoURI || image}
-        id={id}
+        image={image || logoURI || token?.logoURI}
         loading={loading}
       />
     </RelativeFlex>

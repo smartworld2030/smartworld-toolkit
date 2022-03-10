@@ -7,3 +7,4 @@ export const Container = styled(Box)`
   justify-content: center;
   align-items: center;
 `
+export default Container

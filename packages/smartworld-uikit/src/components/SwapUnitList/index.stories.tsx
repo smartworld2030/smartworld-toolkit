@@ -15,7 +15,7 @@ const tokenList: SelectableTokenProps['token'][] = [
     address: 'a1',
     symbol: 'STTS',
     balance: '13.0325',
-    logoURI: ['https://i.postimg.cc/rqpyX8K0/ggd.png', 'https://i.postimg.cc/rqpyX8K0/Smart-World-Stock.png'],
+    logoURI: ['https://i.s.cc/rqpyX8K0/ggd.png', 'https://i.assq.cc/rqpyX8K0/s.png', 'https://ibb.co/w79zff1'],
   },
   {
     chainId: 56,
@@ -140,7 +140,7 @@ export const Default: React.FC = () => {
 export const WithToken: React.FC = () => {
   const [token, setToken] = useState(tokenList[4])
   const [value, setValue] = useState('0')
-  console.log(token)
+
   return (
     <MainComponent overflow="visible" marginTop={100}>
       <SwapUnitList
@@ -151,12 +151,39 @@ export const WithToken: React.FC = () => {
         }}
         mb="32px"
         defaultSelected={4}
-        onUserInput={(v) => setValue(v)}
+        onUserInput={setValue}
         value={value}
         token={token}
         maxValue={200}
         tokenList={tokenList}
       />
+    </MainComponent>
+  )
+}
+
+export const Sizes: React.FC = () => {
+  const [token, setToken] = useState(tokenList[4])
+  const [value, setValue] = useState('0')
+
+  return (
+    <MainComponent overflow="visible" marginTop={100}>
+      {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+        <SwapUnitList
+          size={i * 60}
+          key={i}
+          selectUnitHandler={(unit) => console.log(unit)}
+          selectTokenHandler={(t) => {
+            setToken(t)
+            setValue('0')
+          }}
+          defaultSelected={4}
+          onUserInput={setValue}
+          value={value}
+          token={token}
+          maxValue={200}
+          tokenList={tokenList}
+        />
+      ))}
     </MainComponent>
   )
 }

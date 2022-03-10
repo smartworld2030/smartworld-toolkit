@@ -11,3 +11,8 @@ export interface ShadowSvgProps extends SvgProps {
   shadowColor?: string
   shadowSize?: number | false
 }
+export interface SvgEffectedProps extends ShadowSvgProps {
+  radius: number
+  center: number
+  blur: number
+}

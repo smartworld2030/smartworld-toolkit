@@ -17,10 +17,13 @@ export interface BalanceInputProps extends BoxProps {
   inputProps?: Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'placeholder' | 'onChange'>
   isWarning?: boolean
   decimals?: number
+  blur?: number
   logo?: ReactElement
   image?: string | string[]
+  logoURI?: string | string[]
   unit?: string | ReactElement
   knobColor?: string
+  insideColor?: string
   progressColor?: string
   borderColor?: string
   progressSize?: number

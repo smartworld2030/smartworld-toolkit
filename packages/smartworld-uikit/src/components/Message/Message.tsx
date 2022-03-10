@@ -1,15 +1,15 @@
-import React from "react";
-import styled from "styled-components";
-import { variant as systemVariant, space } from "styled-system";
-import { WarningIcon, ErrorIcon } from "../Svg";
-import { Box } from "../Box";
-import { MessageProps } from "./types";
-import variants from "./theme";
+import React from 'react'
+import styled from 'styled-components'
+import { variant as systemVariant, space } from 'styled-system'
+import { WarningIcon, ErrorIcon } from '../Svg'
+import { Box } from '../Box'
+import { MessageProps } from './types'
+import variants from './theme'
 
 const Icons = {
   warning: WarningIcon,
   danger: ErrorIcon,
-};
+}
 
 const MessageContainer = styled.div<MessageProps>`
   display: flex;
@@ -17,22 +17,22 @@ const MessageContainer = styled.div<MessageProps>`
   padding: 16px;
   border-radius: ${({ theme }) => theme.radii.default};
   border: solid 1px;
-  color: ${({ color, theme }) => (color ? color : theme.colors.text)};
+  color: ${({ color, theme }) => color || theme.colors.text};
 
   ${space}
   ${systemVariant({
     variants,
   })}
-`;
+`
 
 const Message: React.FC<MessageProps> = ({ children, variant, icon, ...props }) => {
-  const Icon = Icons[variant];
+  const Icon = Icons[variant]
   return (
     <MessageContainer variant={variant} {...props}>
       <Box mr="12px">{icon ?? <Icon color={variants[variant].borderColor} width="24px" />}</Box>
       {children}
     </MessageContainer>
-  );
-};
+  )
+}
 
-export default Message;
+export default Message
