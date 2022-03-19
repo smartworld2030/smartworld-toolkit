@@ -11,7 +11,7 @@ export interface ProgressRingProps {
   variant?: Variant
   size?: number
   radius?: number
-  borderWidth?: number
+  circleWidth?: number
   progress?: number
   loading?: boolean
   shadow?: boolean

@@ -1,6 +1,6 @@
-import { ReactText } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Flex } from '../Box'
+import { ListContainerProps } from './types'
 
 const fadeIn = keyframes`
   from {
@@ -22,22 +22,23 @@ const fadeOut = keyframes`
   }
 `
 
-const ListContainer = styled(Flex)<{ out: boolean; width: ReactText; height: ReactText; animationTime?: number }>`
-  position:absolute;
-  top:-64px;
-  left:0;
-  justify-content:space-between;
-  align-items:center;
-  flex-direction:column;
-  --scrollbar-width: 8px;
-  --mask-height: 32px;
-  overflow-y: auto;
-  margin:auto;
-  width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px;
-  padding-top: var(--mask-height);
-  padding-bottom: var(--mask-height);
-  padding-right: 20px;
+const ListContainer = styled(Flex)<ListContainerProps>`
+  position: absolute;
+  width: ${({ $width, listWidth }) => ($width * listWidth).toFixed()}px;
+  height: ${({ $height, listHeight }) => ($height * listHeight).toFixed()}px;
+
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+  overflow-y: scroll;
+
+  --scrollbar-width: ${({ scrollSize }) => scrollSize}px;
+  --padding-height: ${({ $height, listHeight }) => (($height / 2) * listHeight - $height / 2).toFixed()}px;
+  --mask-height: ${({ $height }) => ($height / 3).toFixed()}px;
+  --mask-size-content: calc(100% - var(--scrollbar-width)) 100%;
+  --mask-image-scrollbar: linear-gradient(black, black);
+  --mask-size-scrollbar: var(--scrollbar-width) 100%;
   --mask-image-content: linear-gradient(
     to bottom,
     transparent,
@@ -45,20 +46,32 @@ const ListContainer = styled(Flex)<{ out: boolean; width: ReactText; height: Rea
     black calc(100% - var(--mask-height)),
     transparent
   );
-  --mask-size-content: calc(100% - var(--scrollbar-width)) 100%;
 
-  --mask-image-scrollbar: linear-gradient(black, black);
-  --mask-size-scrollbar: var(--scrollbar-width) 100%;
-  mask-image: var(--mask-image-content), var(--mask-image-scrollbar);
-  mask-size: var(--mask-size-content), var(--mask-size-scrollbar);
+  top: calc(var(--padding-height) * -1);
+  left: 0;
+  padding-top: var(--padding-height);
+  padding-bottom: var(--padding-height);
 
-  mask-position: 0 0, 100% 0;
-  mask-repeat: no-repeat, no-repeat;
+  -webkit-mask-image: var(--mask-image-content), var(--mask-image-scrollbar);
+  -webkit-mask-size: var(--mask-size-content), var(--mask-size-scrollbar);
+  -webkit-mask-position: 0 0, 100% 0;
+  -webkit-mask-repeat: no-repeat, no-repeat;
 
   z-index: 20;
   visibility: ${({ out }) => (out ? 'hidden' : 'visible')};
   animation-name: ${({ out }) => (out ? fadeOut : fadeIn)};
   animation-duration:${({ animationTime }) => animationTime || 500}ms;
   transition: visibility ${({ animationTime }) => animationTime || 500}ms linear;
+
+  ::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+  }
+
+  & > ${Flex} {
+    position: sticky;
+    top: calc(var(--padding-height) * -0.95);
+    z-index: 21;
+  }
 }`
+
 export default ListContainer

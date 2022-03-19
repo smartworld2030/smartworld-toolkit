@@ -19,9 +19,7 @@ export interface WithdrawCircleProps {
   isWarning?: boolean
   size?: ReactText
   color?: string
-  progressColor?: string
   borderColor?: string
-  progressSize?: number
   borderSize?: number
   disabled?: boolean
   loading?: boolean

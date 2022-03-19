@@ -58,8 +58,8 @@ const Button = <E extends ElementType = 'button'>(props: ButtonProps<E>): JSX.El
       shape={shape}
       {...shapeProps}
       {...internalProps}
-      shadow={shadow}
-      shadowSize={shadowSize}
+      $shadow={shadow}
+      $shadowSize={shadowSize}
       {...rest}
     >
       <>

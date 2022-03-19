@@ -3,7 +3,9 @@ import { useTheme } from 'styled-components'
 import { Modal, useModal } from '.'
 import { ModalProps } from './types'
 import Button from '../../components/Button/Button'
+import SwapUnitList from '../../components/SwapUnitList/SwapUnitList'
 import Heading from '../../components/Heading/Heading'
+import tokenList from '../../components/SwapUnitList/TestList'
 
 export default {
   title: 'Widgets/Modal',
@@ -19,6 +21,9 @@ const CustomModal: React.FC<ModalProps> = ({ title, onDismiss, ...props }) => (
 )
 
 export const Default: React.FC = () => {
+  const [showList, setShowList] = useState(false)
+  const [token, setToken] = useState()
+
   const theme = useTheme()
   const [onPresent1] = useModal(<CustomModal title="Modal 1" />)
   const [onPresent2] = useModal(<CustomModal title="Modal 2" />)
@@ -28,6 +33,14 @@ export const Default: React.FC = () => {
       <Button onClick={onPresent1}>Open modal 1</Button>
       <Button onClick={onPresent2}>Open modal 2</Button>
       <Button onClick={onPresent3}>Open modal with background</Button>
+      <SwapUnitList
+        onTokenSelect={setToken}
+        token={token}
+        tokenList={tokenList}
+        showList={showList}
+        setShowList={setShowList}
+        value=""
+      />
     </div>
   )
 }

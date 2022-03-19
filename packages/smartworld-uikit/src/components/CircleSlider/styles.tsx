@@ -19,16 +19,4 @@ export const StyledShadowSvg = styled(ShadowSvg)<{ $zIndex: number; $cursor: str
   overflow: visible;
   z-index: ${({ $zIndex }) => $zIndex};
   cursor: ${({ $cursor }) => $cursor};
-  &:hover .knob {
-    opacity: 0.9;
-    filter: saturate(1.5);
-  }
-  &:focus .knob {
-    opacity: 0.9;
-    filter: saturate(1.5);
-  }
-  &:active .knob {
-    opacity: 0.9;
-    filter: saturate(1.5);
-  }
 `

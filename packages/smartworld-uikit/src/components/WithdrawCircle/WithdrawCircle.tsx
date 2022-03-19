@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTheme } from 'styled-components'
 import { Flex, RelativeFlex } from '../Box'
-import { CircleSlider } from '../CircleSlider'
+import { ProgressRing } from '../ProgressRing'
 import Text from '../Text/Text'
 import { StyledFlex, StyledButton } from './styles'
 import { WithdrawCircleProps } from './types'
@@ -17,12 +17,10 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
   bottomElement,
   isWarning = false,
   size = 150,
-  progressSize,
   borderSize,
   color,
   loading,
   borderColor,
-  progressColor,
   disabled = false,
 }) => {
   const { colors } = useTheme()
@@ -30,16 +28,12 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
   const sizeCalc = (divide = 1) => (size ? Number(size) : 150) / divide
 
   return (
-    <CircleSlider
-      value={percent}
+    <ProgressRing
+      progress={loading ? undefined : percent}
       size={sizeCalc()}
-      progressWidth={progressSize || sizeCalc(30)}
       circleWidth={borderSize || sizeCalc(30)}
-      knobRadius={0}
-      progressColor={isWarning ? colors.failure : progressColor || colors.primary}
       insideColor={color || colors.tertiary}
-      circleColor={isWarning ? colors.failure : borderColor}
-      noSlider
+      circleColor={isWarning ? colors.warning : borderColor}
       loading={loading}
       id="withdraw"
     >
@@ -55,7 +49,7 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
         <StyledFlex width={sizeCalc(1.3)} justifyContent="center">
           {topElement && topElement}
         </StyledFlex>
-        <StyledFlex width={sizeCalc(1.3)} justifyContent="end">
+        <StyledFlex width={sizeCalc(1.3)} mt={sizeCalc(18)} justifyContent="end">
           <Flex justifyContent="center">
             <StyledButton
               margin="2px"
@@ -82,7 +76,7 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
           {bottomElement && bottomElement}
         </StyledFlex>
       </RelativeFlex>
-    </CircleSlider>
+    </ProgressRing>
   )
 }
 

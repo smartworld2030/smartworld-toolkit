@@ -11,6 +11,7 @@ export interface BalanceInputProps extends BoxProps {
   onUnitClick?: React.MouseEventHandler<HTMLDivElement>
   onLogoClick?: React.MouseEventHandler<HTMLDivElement>
   innerRef?: React.RefObject<HTMLInputElement>
+  balanceRef?: React.Ref<HTMLDivElement>
   currencyValue?: ReactNode
   currencyUnit?: ReactNode
   placeholder?: string

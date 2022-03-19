@@ -83,6 +83,7 @@ export interface IconButtonProps extends BaseButtonProps {
   color?: string
   borderWidth?: number
   blur?: boolean
+  blurSize?: number
   onClick?: () => void
   iconProps?: CSSProperties
   animation?: boolean

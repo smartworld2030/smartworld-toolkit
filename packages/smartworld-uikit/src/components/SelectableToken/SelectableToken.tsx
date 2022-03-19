@@ -29,7 +29,10 @@ const SelectableToken: React.FC<SelectableTokenBoxProps> = ({
   blur = 2,
   ...rest
 }) => {
-  const sizeCalc = useCallback((divide = 1, minus = 0) => (size ? Number(size) : 150) / divide - minus, [size])
+  const sizeCalc = useCallback(
+    (divide = 1, minus = 0) => Number(((size ? Number(size) : 150) / divide - minus).toFixed()),
+    [size],
+  )
 
   const shadowSize = useMemo(() => sizeCalc(300), [sizeCalc])
   return (
@@ -99,7 +102,7 @@ const SelectableToken: React.FC<SelectableTokenBoxProps> = ({
       <ProgressRing
         insideColor="white"
         variant={variant}
-        borderWidth={stroked ? sizeCalc(35) : undefined}
+        circleWidth={stroked ? sizeCalc(25) : undefined}
         size={sizeCalc()}
         blur={blur}
         image={image || logoURI || token?.logoURI}

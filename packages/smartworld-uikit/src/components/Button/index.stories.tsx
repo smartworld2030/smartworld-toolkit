@@ -437,7 +437,7 @@ export const PolygonButtonExample: React.FC = () => {
           active={i === active}
           key={scale}
           scale={scale}
-          shadow={false}
+          shadow={i === active}
           mr="8px"
           icon={(size) => <LogoIcon width={size / 3} />}
           onClick={() => setActive(i)}

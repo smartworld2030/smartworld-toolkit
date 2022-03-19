@@ -9,8 +9,7 @@ import { BAD_SRCS, UNKNOWN_IMAGE } from '../../util/constant'
 const ProgressRing: FC<ProgressRingProps> = ({
   id = uniqueId(),
   size,
-  radius,
-  borderWidth,
+  circleWidth,
   loading = false,
   progress = 0,
   shadow = true,
@@ -19,10 +18,11 @@ const ProgressRing: FC<ProgressRingProps> = ({
   insideColor = 'transparent',
   image,
   blur = 1,
+  children,
   ...rest
 }) => {
   const [, refresh] = useState(0)
-  const { height, borderWidth: bw } = variant({
+  const { height, borderWidth } = variant({
     prop: 'scale',
     variants: scaleVariants,
   })(rest)
@@ -35,13 +35,16 @@ const ProgressRing: FC<ProgressRingProps> = ({
     return list
   }, [image])
 
-  const r = (size || radius || height.replace('px', '')) / 2
-  const s = borderWidth || +bw.replace('px', '')
+  const width = size || height.replace('px', '')
+  const cw = circleWidth || +borderWidth.replace('px', '')
 
-  const normalizedRadius = r - s * 2
-  const circumference = normalizedRadius * 2 * Math.PI
+  const center = useMemo(() => width / 2, [width])
 
-  const strokeDashoffset = circumference - (progress / 100) * circumference
+  const radius = useMemo(() => center - cw * 2, [cw, center])
+
+  const circumference = useMemo(() => radius * 2 * Math.PI, [radius])
+
+  const strokeDashoffset = useMemo(() => circumference - (progress / 100) * circumference, [circumference, progress])
 
   const src: string | undefined = imageList?.find((l) => !BAD_SRCS[l])
 
@@ -53,46 +56,51 @@ const ProgressRing: FC<ProgressRingProps> = ({
   return (
     <StyledRing
       shadow={shadow}
-      shadowSize={s}
+      shadowSize={width / 100}
       shadowColor={shadowColor}
-      height={r * 2}
-      width={r * 2}
+      height={width}
+      width={width}
       $offset={strokeDashoffset}
       $animation={loading && !progress}
       $circleColor={circleColor}
       {...rest}
     >
       {/* order matters */}
-      <circle strokeWidth={s * 1.5} fill={insideColor} r={normalizedRadius} cx={r} cy={r} />
-      {src && (
-        <>
-          <defs>
-            <filter id="svg-blur">
-              <feGaussianBlur in="SourceGraphic" stdDeviation={blur} />
-            </filter>
-            <clipPath id={id}>
-              <circle r={r - s * 2.75} cx={r} cy={r} />
-            </clipPath>
-          </defs>
-          <image
-            filter="url(#svg-blur)"
-            width="100%"
-            height="100%"
-            href={src}
-            clipPath={`url(#${id})`}
-            onError={onImageError}
-          />
-        </>
-      )}
+      <circle strokeWidth={cw} stroke={circleColor} fill={insideColor} r={radius} cx={center} cy={center} />
+      <g>
+        {src && (
+          <>
+            <defs>
+              <filter id="svg-blur">
+                <feGaussianBlur in="SourceGraphic" stdDeviation={blur} />
+              </filter>
+              <clipPath id={id}>
+                <circle r={radius - cw / 2} cx={center} cy={center} />
+              </clipPath>
+            </defs>
+            <image
+              filter="url(#svg-blur)"
+              width="100%"
+              height="100%"
+              href={src}
+              clipPath={`url(#${id})`}
+              onError={onImageError}
+            />
+          </>
+        )}
+      </g>
       <circle
-        strokeWidth={s * 1.5}
+        strokeWidth={cw}
         strokeDasharray={`${circumference} ${circumference}`}
         strokeDashoffset={strokeDashoffset}
-        r={normalizedRadius}
-        cx={r}
-        cy={r}
+        r={radius}
+        cx={center}
+        cy={center}
         fill="none"
       />
+      <foreignObject x="0" y="0" width={width} height={width}>
+        {children}
+      </foreignObject>
     </StyledRing>
   )
 }

@@ -9,9 +9,14 @@ const ShadowSvg = styled(SpaceSvg)<ShadowSvgProps>`
       shadow && getBoxShadows(shadowColor || theme.colors.primary, shadowSize || 2)}
   );
 
+  &:hover:not(:active):not(:disabled):not(.smartworld-svg--disabled):not(.smartworld-svg--no-slider):not(.smartworld-svg--loading) {
+    filter: saturate(1.5)
+      drop-shadow(${({ shadow, shadowSize, theme }) => shadow && getBoxShadows(theme.colors.primary, shadowSize || 2)});
+  }
+
   &:active:not(:disabled):not(.smartworld-svg--disabled):not(.smartworld-svg--no-slider):not(.smartworld-svg--loading) {
     transform: translateY(1px);
-    filter: none;
+    filter: saturate(1.5);
   }
 
   &.smartworld-svg--disabled {

@@ -31,9 +31,11 @@ const StyledShadowSvg = styled(ShadowSvg)<{ variant: Variant }>`
   left: 0;
   z-index: 1;
   fill: ${({ fill }) => fill || 'none'};
+
   ${v({
     variants: polygonVariants,
   })}
+
   ${({ stroke }) =>
     stroke &&
     css`
@@ -63,7 +65,7 @@ const StyledButton = styled(Button)<BaseButtonProps>`
 
 const PolygonButton: React.FC<PolygonButtonProps> = ({
   icon,
-  shadow = false,
+  shadow = true,
   className,
   borderWidth,
   fill,
@@ -97,7 +99,7 @@ const PolygonButton: React.FC<PolygonButtonProps> = ({
         stroke={stroke}
         variant={variant}
         width={sizeCalc}
-        shadowSize={shadow && borderCalc / 2}
+        shadowSize={borderCalc / 2}
         overflow="visible"
       >
         <path d="M1.74842 16L10 1.97231L18.2516 16H1.74842Z" strokeWidth={borderCalc / 7} />

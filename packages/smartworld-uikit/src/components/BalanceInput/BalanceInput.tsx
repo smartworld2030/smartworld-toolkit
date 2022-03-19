@@ -30,11 +30,12 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   currencyUnit,
   inputProps,
   innerRef,
+  balanceRef,
   isWarning = false,
   decimals = 8,
   unit,
   switchEditingUnits,
-  size = 150,
+  size,
   progressSize,
   borderSize,
   knobSize,
@@ -79,7 +80,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   }
 
   const sizeCalc = useCallback(
-    (divide = 1, minus = 0) => Number(((size ? Number(size) : 150) / divide - minus).toFixed(2)),
+    (divide = 1, minus = 0) => Number(((size ? Number(size) : 150) / divide - minus).toFixed()),
     [size],
   )
 
@@ -97,7 +98,7 @@ const BalanceInput: React.FC<BalanceInputProps> = ({
   )
 
   return (
-    <RelativeFlex overflow="visible" width={sizeCalc()} height={sizeCalc(0.95)} {...rest}>
+    <RelativeFlex overflow="visible" ref={balanceRef} width={sizeCalc()} height={sizeCalc(0.95)} {...rest}>
       <AbsoluteFlex overflow="visible" top={0} left={0} width={sizeCalc()} height={sizeCalc(0.95)}>
         <RelativeFlex
           flexDirection="column"

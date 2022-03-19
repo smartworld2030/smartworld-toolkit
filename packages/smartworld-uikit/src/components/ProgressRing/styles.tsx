@@ -25,7 +25,7 @@ export const loading = (offset: number): Keyframes => keyframes`
 
 export const StyledRing = styled(ShadowSvg)<{ $animation: boolean; $offset: number; $circleColor?: string }>`
   overflow: visible;
-  & > circle:first-child {
+  & > :first-child {
     ${variant({
       variants: colorVariant1,
     })}
@@ -36,7 +36,7 @@ export const StyledRing = styled(ShadowSvg)<{ $animation: boolean; $offset: numb
       `};
   }
 
-  & > circle:last-child {
+  & > :nth-child(3) {
     ${({ $animation, $offset }) =>
       $animation
         ? css`
@@ -46,7 +46,7 @@ export const StyledRing = styled(ShadowSvg)<{ $animation: boolean; $offset: numb
             transform: rotate(-90deg);
           `};
     stroke-linecap: round;
-    fill: transparent;
+    fill: none;
     transition: stroke-dashoffset 0.35s;
     transform-origin: 50% 50%;
     ${variant({

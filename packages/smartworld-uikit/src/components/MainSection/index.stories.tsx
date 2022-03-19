@@ -1,15 +1,9 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react'
-import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
+import React, { Suspense, useEffect, useState } from 'react'
+import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import { AnimatedTipFlex, AnimatedFlex, MainFlex } from '../Box/Flex'
 import MainSection from './MainSection'
 import { LogoIcon, SwapIcon, NoProfileAvatarIcon, CogIcon } from '../Svg'
 import { Toggle } from '../Toggle'
-import { MainRoute } from './Component'
-import InvestSkeleton from './TestComp'
-import { Spinner } from '../Spinner'
-
-const MainPool2 = lazy(() => import('./TestComp22'))
-const MainInvestment2 = lazy(() => import('./TestComp21'))
 
 export default {
   title: 'Components/MainSection',
@@ -82,9 +76,8 @@ export const Example: React.FC = () => {
                   <Toggle onChange={tipChanger} checked={showTip} />
                 </AnimatedTipFlex>
               )}
-              skeleton={<InvestSkeleton />}
             >
-              <MainInvestment2 path="/iframe.html" />
+              <MainInvestment path="/iframe.html" />
             </MainSection>
           </Switch>
         </Suspense>

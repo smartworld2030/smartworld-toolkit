@@ -33,41 +33,9 @@ export const Default: React.FC = () => {
       })}`
     : '0.00'
 
-  const handleDecimalChange = (input) => {
-    setDecimalValue(input)
-  }
-
-  const handleSTTSChange = (input: string) => {
-    const inputAsFloat = parseFloat(input)
-    if (editingUnit !== 'USD') {
-      setValues({
-        STTS: input,
-        USD: Number.isNaN(inputAsFloat) ? '' : `${inputAsFloat * STTS_PRICE}`,
-      })
-    } else {
-      setValues({
-        STTS: Number.isNaN(inputAsFloat) ? '' : `${inputAsFloat / STTS_PRICE}`,
-        USD: input,
-      })
-    }
-  }
-
-  const switchEditingUnits = () => {
-    const editingUnitAfterChange = editingUnit === 'STTS' ? 'USD' : 'STTS'
-    // This is needed to persist same value as shown for currencyValue after switching
-    // otherwise user will see lots of decimals
-    const valuesAfterChange = { ...values }
-    valuesAfterChange[editingUnitAfterChange] = !Number.isNaN(parseFloat(values[conversionUnit]))
-      ? parseFloat(values[conversionUnit]).toFixed(2)
-      : '0.00'
-    setValues(valuesAfterChange)
-    setEditingUnit(editingUnitAfterChange)
-  }
-
   return (
     <Box size="300px">
       <WithdrawCircle
-        name={values[editingUnit]}
         percent={1006.086957}
         onClick={() => console.log('Whithdraw')}
         onUnitClick={() => console.log('Unit Clicked!')}
@@ -75,7 +43,6 @@ export const Default: React.FC = () => {
         totalValueUnit={conversionUnit}
         size={200}
         borderSize={5}
-        progressSize={5}
         topElement={
           <div>
             <TooltipText small>Reward</TooltipText>
@@ -96,7 +63,6 @@ export const Default: React.FC = () => {
       <WithdrawCircle
         topElement="STTS"
         onClick={() => console.log('Whithdraw')}
-        name={decimalValue}
         percent={0}
         totalValue={currencyValue(decimalValue)}
         size={100}
@@ -128,17 +94,13 @@ export const UnitDisplay: React.FC = () => {
     })} USD`
   }
 
-  const handleCakeChange = (input: string) => {
-    setCakeValue(input)
-  }
-
   return (
     <>
       <Box size="300px" mb="24px">
         <WithdrawCircle
           onClick={() => console.log('Whithdraw')}
           name={cakeValue}
-          percent={98}
+          percent={100}
           totalValue={cakeToUSD(cakeValue)}
           totalValueUnit="USD"
           topElement="CAKE"
@@ -174,32 +136,6 @@ export const SwitchUnits: React.FC = () => {
       })
     : '0.00'
 
-  const switchEditingUnits = () => {
-    const editingUnitAfterChange = editingUnit === 'CAKE' ? 'USD' : 'CAKE'
-    // This is needed to persist same value as shown for currencyValue after switching
-    // otherwise user will see lots of decimals
-    const valuesAfterChange = { ...values }
-    valuesAfterChange[editingUnitAfterChange] = !Number.isNaN(parseFloat(values[conversionUnit]))
-      ? parseFloat(values[conversionUnit]).toFixed(2)
-      : '0.00'
-    setValues(valuesAfterChange)
-    setEditingUnit(editingUnitAfterChange)
-  }
-
-  const handleCakeChange = (input: string) => {
-    const inputAsFloat = parseFloat(input)
-    if (editingUnit === 'CAKE') {
-      setValues({
-        CAKE: input,
-        USD: Number.isNaN(inputAsFloat) ? '' : `${inputAsFloat * CAKE_PRICE}`,
-      })
-    } else {
-      setValues({
-        CAKE: Number.isNaN(inputAsFloat) ? '' : `${inputAsFloat / CAKE_PRICE}`,
-        USD: input,
-      })
-    }
-  }
   return (
     <Box size="300px">
       <WithdrawCircle

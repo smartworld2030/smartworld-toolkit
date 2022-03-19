@@ -4,9 +4,9 @@ import { variant as v } from 'styled-system'
 import { getTextShadows } from '../../theme/base'
 import Button from './Button'
 import { scaleVariants } from './theme'
-import { IconButtonProps, BaseButtonProps } from './types'
+import { IconButtonProps } from './types'
 
-const ResizableIcon = styled.div<{ size: number; blur?: boolean }>`
+const ResizableIcon = styled.div<{ size: number; blurSize: number; blur?: boolean }>`
   position: absolute;
   left: auto;
   top: auto;
@@ -14,7 +14,7 @@ const ResizableIcon = styled.div<{ size: number; blur?: boolean }>`
   padding-top: ${({ size }) => size}px;
   font-size: ${({ size }) => size}px;
   color: ${({ theme }) => theme.colors.text};
-  filter: ${({ blur }) => (blur ? 'blur(1px)' : 'none')};
+  filter: ${({ blur, blurSize }) => (blur ? `blur(${blurSize}px)` : 'none')};
 `
 const StyledChild = styled.div<{ size: number; padding?: number; shadowSize: number }>`
   z-index: 3;
@@ -24,15 +24,12 @@ const StyledChild = styled.div<{ size: number; padding?: number; shadowSize: num
   text-shadow: ${({ theme, shadowSize }) => getTextShadows(theme.colors.background, shadowSize)};
 `
 
-const StyledButton = styled(Button)<BaseButtonProps>`
-  position: relative;
-`
-
 const IconButton: React.FC<IconButtonProps> = ({
   icon,
   iconProps,
   bottomIcon,
   blur,
+  blurSize,
   shadow,
   shadowSize,
   fontSize,
@@ -53,7 +50,7 @@ const IconButton: React.FC<IconButtonProps> = ({
   const borderCalc = borderWidth || +bw.replace('px', '')
 
   return (
-    <StyledButton
+    <Button
       borderWidth={borderCalc}
       shape="circle"
       shadow={shadow}
@@ -64,7 +61,7 @@ const IconButton: React.FC<IconButtonProps> = ({
       {...rest}
     >
       {icon && (
-        <ResizableIcon blur={blur} size={borderCalc / 10} style={iconProps}>
+        <ResizableIcon blur={blur} blurSize={blurSize || borderCalc / 8} size={borderCalc / 10} style={iconProps}>
           {icon(sizeCalc - borderCalc * 2)}
         </ResizableIcon>
       )}
@@ -76,7 +73,7 @@ const IconButton: React.FC<IconButtonProps> = ({
           {bottomIcon(sizeCalc / 8)}
         </StyledChild>
       )}
-    </StyledButton>
+    </Button>
   )
 }
 IconButton.defaultProps = {

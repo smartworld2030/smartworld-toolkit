@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import SwapUnitList from './SwapUnitList'
 import { MainComponent } from '../MainSection'
-import { SelectableTokenProps } from '../SelectableToken'
+import tokenList from './TestList'
 
 export default {
   title: 'Components/SwapUnitList',
@@ -9,57 +9,11 @@ export default {
   argTypes: {},
 }
 
-const tokenList: SelectableTokenProps['token'][] = [
-  {
-    chainId: 56,
-    address: 'a1',
-    symbol: 'STTS',
-    balance: '13.0325',
-    logoURI: ['https://i.s.cc/rqpyX8K0/ggd.png', 'https://i.assq.cc/rqpyX8K0/s.png', 'https://ibb.co/w79zff1'],
-  },
-  {
-    chainId: 56,
-    address: 'a2',
-    decimals: 18,
-    symbol: 'BTCB',
-    balance: '0.00000002',
-    logoURI: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=018',
-  },
-  {
-    chainId: 56,
-    address: 'a3',
-    symbol: 'USDT',
-    balance: '30',
-    logoURI: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=018',
-  },
-  {
-    chainId: 56,
-    address: 'a4',
-    symbol: 'SHIB',
-    decimals: 18,
-    balance: '6600',
-    logoURI: 'https://cryptologos.cc/logos/shiba-inu-shib-logo.png?v=018',
-  },
-  {
-    chainId: 56,
-    address: 'a5',
-    symbol: 'DOGE',
-    balance: '900',
-    logoURI: 'https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=018',
-  },
-  {
-    chainId: 56,
-    address: 'a6',
-    symbol: 'BNB',
-    balance: '138',
-    logoURI: 'https://cryptologos.cc/logos/binance-coin-bnb-logo.svg?v=018',
-  },
-]
-
 export const Default: React.FC = () => {
   const STTS_PRICE = 1.26
+  const [showList, setShowList] = useState(false)
   const [decimalValue, setDecimalValue] = useState(1.43333)
-  const [numericValue, setNumericValue] = useState(5)
+  const [token, setToken] = useState()
   const [selectedUnit, setSelectedUnit] = useState<string>('STTS')
   const [editingUnit, setEditingUnit] = useState<string>('STTS')
   const [values, setValues] = useState({
@@ -114,10 +68,12 @@ export const Default: React.FC = () => {
   }
 
   return (
-    <MainComponent overflow="visible" marginTop={100}>
+    <MainComponent overflow="visible" marginTop={200}>
       <SwapUnitList
+        topElement={<input type="text" />}
         tokenList={tokenList}
-        selectUnitHandler={(unit) => {
+        onTokenSelect={setToken}
+        onUnitSelect={(unit) => {
           setSelectedUnit(unit)
           setEditingUnit(unit)
           setValues({
@@ -125,62 +81,92 @@ export const Default: React.FC = () => {
             USD: '',
           })
         }}
+        token={token}
         value={values[editingUnit]}
         onUserInput={handleSTTSChange}
         unit={editingUnit}
         currencyValue={currencyValues}
         currencyUnit={conversionUnit}
-        mb="32px"
         switchEditingUnits={switchEditingUnits}
+        showList={showList}
+        setShowList={setShowList}
+        onMissClick={() => console.log(false)}
       />
+      <button onClick={() => setShowList(false)}>dismiss</button>
     </MainComponent>
   )
 }
 
 export const WithToken: React.FC = () => {
-  const [token, setToken] = useState(tokenList[4])
+  const [token1, setToken1] = useState(tokenList[4])
+  const [token2, setToken2] = useState(tokenList[2])
   const [value, setValue] = useState('0')
+  const [showList1, setShowList1] = useState(false)
+  const [showList2, setShowList2] = useState(false)
 
   return (
-    <MainComponent overflow="visible" marginTop={100}>
+    <MainComponent overflow="visible" mt={200}>
       <SwapUnitList
-        selectUnitHandler={(unit) => console.log(unit)}
-        selectTokenHandler={(t) => {
-          setToken(t)
+        topElement={<input type="text" />}
+        onUnitSelect={(unit) => console.log(unit)}
+        onTokenSelect={(t) => {
+          setToken1(t)
           setValue('0')
         }}
-        mb="32px"
-        defaultSelected={4}
+        size={200}
         onUserInput={setValue}
         value={value}
-        token={token}
+        token={token1}
         maxValue={200}
         tokenList={tokenList}
+        setShowList={setShowList1}
+        showList={showList1}
+      />
+      <SwapUnitList
+        topElement={<input type="text" />}
+        onUnitSelect={(unit) => console.log(unit)}
+        onTokenSelect={(t) => {
+          setToken2(t)
+          setValue('0')
+        }}
+        size={200}
+        listHeight={5}
+        defaultSelected={2}
+        onUserInput={setValue}
+        value={value}
+        token={token2}
+        maxValue={200}
+        tokenList={tokenList}
+        setShowList={setShowList2}
+        showList={showList2}
       />
     </MainComponent>
   )
 }
 
 export const Sizes: React.FC = () => {
-  const [token, setToken] = useState(tokenList[4])
+  const [showList, setShowList] = useState({})
+  const [token, setToken] = useState()
   const [value, setValue] = useState('0')
 
   return (
-    <MainComponent overflow="visible" marginTop={100}>
+    <MainComponent overflow="visible" mt={200}>
       {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
         <SwapUnitList
+          topElement={<input type="text" />}
           size={i * 60}
           key={i}
-          selectUnitHandler={(unit) => console.log(unit)}
-          selectTokenHandler={(t) => {
+          onUnitSelect={(unit) => console.log(unit)}
+          onTokenSelect={(t) => {
             setToken(t)
             setValue('0')
           }}
-          defaultSelected={4}
           onUserInput={setValue}
           value={value}
           token={token}
           maxValue={200}
+          setShowList={() => setShowList((prev) => ({ ...prev, [i]: !prev[i] }))}
+          showList={showList[i]}
           tokenList={tokenList}
         />
       ))}

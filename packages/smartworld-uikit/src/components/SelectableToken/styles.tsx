@@ -38,7 +38,6 @@ export const StyledInput = styled(Input)`
   &:disabled {
     color: ${({ theme }) => theme.colors.contrast};
     cursor: pointer;
-    font-weight: bold;
   }
   &:focus:not(:disabled) {
     box-shadow: 0px 0px 0px 1px ${({ theme }) => theme.colors.primary};

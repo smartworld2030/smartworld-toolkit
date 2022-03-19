@@ -34,17 +34,8 @@ export const Default: React.FC = () => {
 
   return (
     <div className="outer">
-      <CircleSlider
-        value={value}
-        size={120}
-        knobRadius={15}
-        progressWidth={20}
-        circleWidth={3}
-        onInputChange={handleChange}
-        progressColor="#6656B6"
-        tooltipColor="#6ab6e1"
-        tooltipSize={26}
-      />
+      default
+      <CircleSlider value={value} onInputChange={handleChange} />
       <div className="title">{value}</div>
       <input min={0} max={100} id="control" type="range" value={value} onChange={handleChangeRange} />
       <h3>Shadow</h3>
@@ -64,15 +55,7 @@ export const Default: React.FC = () => {
         <h3>Sizes</h3>
         <div className="wrapper">
           <div className="slider">
-            <CircleSlider
-              value={value}
-              size={140}
-              knobRadius={20}
-              progressWidth={20}
-              circleWidth={10}
-              onInputChange={handleChange}
-              progressColor="#5DC9A3"
-            />
+            <CircleSlider value={value} size={140} onInputChange={handleChange} progressColor="#5DC9A3" />
             <div className="title">{value}</div>
             <div className="range">
               <input min={0} max={100} id="control" type="range" value={value} onChange={handleChangeRange} />
@@ -85,7 +68,6 @@ export const Default: React.FC = () => {
             <CircleSlider
               value={value}
               size={140}
-              knobRadius={15}
               progressWidth={10}
               circleWidth={25}
               onInputChange={handleChange}

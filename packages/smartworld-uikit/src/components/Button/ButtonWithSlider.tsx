@@ -20,9 +20,6 @@ const ResizableIcon = styled.div<{ size: number; blur?: boolean }>`
 const StyledButton = styled(Button)`
   position: relative;
   border-width: 0;
-  &:hover:not(:disabled):not(.smartworld-button--disabled):not(:active) > svg {
-    transform: scale(1.1, 1.1);
-  }
 `
 const StyledChild = styled.div<{ size: ReactText; padding?: number; shadow?: boolean; shadowSize?: number }>`
   position: absolute;
@@ -40,7 +37,6 @@ interface BWSProps extends Omit<CircleSliderProps, 'onInput'> {
   onInput: (e: number) => void
   icon?: (size: number) => ReactNode
   iconStyle?: CSSProperties
-  iconColor?: string
   isWarning?: boolean
   shadow?: boolean
 }
@@ -48,16 +44,16 @@ interface BWSProps extends Omit<CircleSliderProps, 'onInput'> {
 export const ButtonWithSlider: React.FC<BWSProps> = ({
   onClick,
   onInput,
-  fontSize,
-  progressColor,
-  iconColor,
-  children,
-  disabled,
   icon,
-  iconStyle,
-  isWarning,
+  scale,
   loading,
-  shadow,
+  fontSize,
+  disabled,
+  children,
+  progressColor,
+  shadow = true,
+  iconStyle = {},
+  isWarning = false,
   ...rest
 }): JSX.Element => {
   const [input, setInput] = useState(100)
@@ -67,7 +63,7 @@ export const ButtonWithSlider: React.FC<BWSProps> = ({
   const { height, borderWidth, iconSize } = variant({
     prop: 'scale',
     variants: scaleVariants,
-  })(rest)
+  })({ scale })
 
   const sizeCalc = height.replace('px', '')
   const borderCalc = borderWidth.replace('px', '')
@@ -76,12 +72,6 @@ export const ButtonWithSlider: React.FC<BWSProps> = ({
     if (lastInput.current === input) onClick(e)
     else lastInput.current = input
   }
-
-  const strokeIcon = useMemo(() => {
-    if (disabled) return colors.disabled
-    if (isWarning) return colors.failure
-    return iconColor || colors.secondary
-  }, [colors, disabled, iconColor, isWarning])
 
   const strokeSlider = useMemo(() => {
     if (disabled) return colors.disabled
@@ -92,24 +82,17 @@ export const ButtonWithSlider: React.FC<BWSProps> = ({
   const isDisabled = loading || disabled
 
   return (
-    <StyledButton shape="circle" shadow={shadow} shadowSize={borderCalc} disabled={isDisabled} {...rest}>
+    <StyledButton shape="circle" shadow={shadow} shadowSize={borderCalc} disabled={isDisabled} scale={scale}>
       <ResizableIcon size={borderCalc / 10} style={iconStyle}>
-        {icon ? (
-          icon(iconSize)
-        ) : (
-          <svg width={iconSize} viewBox="0 0 20 22">
-            <path d="M 2 15 L 10 2 L 18 15 H 2 Z" stroke={strokeIcon} strokeWidth="1.5" fill="none" />
-          </svg>
-        )}
+        {icon && icon(iconSize)}
       </ResizableIcon>
       <StyledChild size={fontSize || sizeCalc / 6}>{children || input}</StyledChild>
       <CircleSlider
         loading={loading}
         shadow={shadow}
-        id="circleButton"
         value={input}
         zIndex={10}
-        width={height}
+        size={sizeCalc}
         onMouseUp={!isDisabled ? clickHandler : undefined}
         onInputChange={(i) => {
           onInput(i)
@@ -121,16 +104,6 @@ export const ButtonWithSlider: React.FC<BWSProps> = ({
       />
     </StyledButton>
   )
-}
-
-ButtonWithSlider.defaultProps = {
-  progressWidth: 12,
-  knobWidth: 12,
-  icon: () => <></>,
-  iconStyle: {},
-  iconColor: '',
-  isWarning: false,
-  shadow: true,
 }
 
 export default ButtonWithSlider

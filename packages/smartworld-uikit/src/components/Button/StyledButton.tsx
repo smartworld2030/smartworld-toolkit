@@ -1,4 +1,4 @@
-import styled, { css, DefaultTheme } from 'styled-components'
+import styled, { DefaultTheme } from 'styled-components'
 import { space, layout, variant } from 'styled-system'
 import { getBoxShadows } from '../../theme/base'
 import { scaleVariants, styleShape, styleVariants } from './theme'
@@ -52,7 +52,7 @@ const getFontWeight = ({ fontWeight }: { fontWeight?: string | number }) => {
   return fontWeight || 600
 }
 
-const StyledButton = styled.button<BaseButtonProps>`
+const StyledButton = styled.button<BaseButtonProps & { $shadow: number; $shadowSize: number }>`
   align-items: center;
   border: 0;
   z-index: ${({ zIndex }) => zIndex};
@@ -66,17 +66,18 @@ const StyledButton = styled.button<BaseButtonProps>`
   line-height: 1.5;
   opacity: ${getOpacity};
   outline: 0;
+  transform: translateZ(-1000px);
   transition: background-color 0.2s, opacity 0.2s;
-  box-shadow: ${({ shadow, shadowSize, theme }) => shadow && getBoxShadows(theme.colors.primary, shadowSize || 2)};
+  box-shadow: ${({ $shadow, $shadowSize, theme }) => $shadow && getBoxShadows(theme.colors.primary, $shadowSize || 2)};
 
   &:hover:not(:disabled):not(.smartworld-button--disabled):not(.smartworld-text):not(:active) {
-    opacity: 0.65;
     filter: saturate(1.5);
   }
 
   &.smartworld-text:hover {
-    filter: saturate(1.5)
-      drop-shadow(${({ shadow, shadowSize, theme }) => shadow && getBoxShadows(theme.colors.primary, shadowSize || 2)});
+    text-shadow: ${({ $shadow, $shadowSize, theme }) =>
+      $shadow && getBoxShadows(theme.colors.primary, $shadowSize || 2)};
+    filter: saturate(1.5);
   }
 
   &:active:not(:disabled):not(.smartworld-button--disabled) {
@@ -100,11 +101,7 @@ const StyledButton = styled.button<BaseButtonProps>`
   ${layout}
   ${space}
 
-  ${({ active, shadow, shadowSize, theme }) =>
-    active &&
-    css`
-      filter: saturate(1.5) drop-shadow(${shadow && getBoxShadows(theme.colors.primary, shadowSize || 2)});
-    `}
+  ${({ active }) => active && 'filter: saturate(1.5);'}
 
   border-width: ${({ borderWidth }) => borderWidth}px;
   padding: ${({ variant: v }) => (v === 'text' ? 0 : undefined)};
