@@ -1,5 +1,5 @@
 export { default as MainSection } from './MainSection'
-export { default as MainComponent } from './MainComponent'
-export { MainContext } from './MainSection'
-export * from './Component'
+export { default as MainComponent, FlexWithTip } from './components'
+export { default as MainSectionContext } from './context'
+export * from './styles'
 export * from './types'

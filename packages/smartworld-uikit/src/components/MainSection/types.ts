@@ -1,8 +1,8 @@
 import { SpringConfig, TransitionFrom, TransitionTo } from '@react-spring/core'
-import { CSSProperties, ReactElement, ReactNode, Ref } from 'react'
+import { ReactElement, ReactNode, Ref } from 'react'
 import { FlexboxProps } from 'styled-system'
-import { ListItems } from '../../widgets/Menu'
-import { ScreenBreakPoint, WindowSizes } from '../../hooks/useWindowSize/useWindowSize'
+import { MainSectionSizes, ScreenBreakPoint } from '../../hooks/useWindowSize/useWindowSize'
+import { BoxProps } from '../Box/types'
 
 export interface ExpandableColProps {
   ret?: any
@@ -34,11 +34,10 @@ export type MainContainerTransition<Item = any> = {
 }
 
 export interface MainSectionProps {
-  initialValue?: WindowSizes
+  initialValue?: MainSectionSizes
+  width?: number
+  height?: number
   config?: SpringConfig
-  list?: ListItems
-  height?: string
-  width?: string
   refFunc?: Ref<HTMLDivElement>
   background?: string
   menuBackground?: string
@@ -48,20 +47,15 @@ export interface MainSectionProps {
   rightIcon?: (props: { checked: boolean; onChange: () => void }) => ReactNode
   leftIcon?: (props: { checked: boolean; onChange: () => void }) => ReactNode
   left?: (props: AdditionalCompProps) => ReactNode
-  right?: (props: Omit<AdditionalCompProps, 'showTip' | 'tipChanger'>) => ReactNode
+  right?: (props: AdditionalCompProps) => ReactNode
   header?: ReactElement | ReactElement[]
   children: ReactElement | ReactElement[]
   skeleton?: ReactElement | ReactElement[]
-  style?: CSSProperties
   computedMatch?: unknown
   location?: Location
-  pathname?: string
 }
 
 interface AdditionalCompProps {
-  flexSize: number
-  isMobile?: boolean
-  isTablet?: boolean
   toggle: DefaltToggle
   showTip: boolean
   tipChanger: () => void
@@ -103,4 +97,21 @@ export interface ChildItems {
   item: ReactNode
   demo?: ReactNode
   tip?: { item: ReactNode; flex?: number }
+}
+
+export interface FlexWithTipProps extends BoxProps {
+  flex: number
+  tip?: ReactNode
+  tipSize?: number
+  showTip?: boolean
+  isMobile?: boolean
+}
+
+export interface MainSectionMenuProps {
+  width?: number
+  height?: number
+  selected?: string
+  background?: string
+  leftSide?: ReactNode
+  rightSide?: ReactNode
 }

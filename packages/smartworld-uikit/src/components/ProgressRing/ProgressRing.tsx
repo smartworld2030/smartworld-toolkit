@@ -59,9 +59,8 @@ const ProgressRing: FC<ProgressRingProps> = ({
     const cls = className ? [className] : []
     if (disabled) cls.push('smartworld-svg--disabled')
     if (noSlider) cls.push('smartworld-svg--no-slider')
-    if (loading) cls.push('smartworld-svg--loading')
     return cls
-  }, [className, disabled, loading, noSlider])
+  }, [className, disabled, noSlider])
 
   return (
     <StyledRing
