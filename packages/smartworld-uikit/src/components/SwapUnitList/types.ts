@@ -12,7 +12,7 @@ export interface SwapUnitListProps extends Omit<BalanceInputProps, 'size' | 'uni
   listBackground?: keyof Colors
   topElement?: JSX.Element
   bottomElement?: JSX.Element
-  defaultSelected?: number
+  defaultSelected?: number | string
   showList?: boolean
   setShowList?: (arg?: boolean) => void
   onUnitSelect?: (arg?: string) => void

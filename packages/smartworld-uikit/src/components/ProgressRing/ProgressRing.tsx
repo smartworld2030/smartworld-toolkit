@@ -1,5 +1,4 @@
 import React, { FC, useMemo, useState } from 'react'
-import { uniqueId } from 'lodash'
 import { variant } from 'styled-system'
 import { scaleVariants } from './theme'
 import { StyledRing } from './styles'
@@ -7,7 +6,8 @@ import { ProgressRingProps } from './types'
 import { BAD_SRCS, UNKNOWN_IMAGE } from '../../util/constant'
 
 const ProgressRing: FC<ProgressRingProps> = ({
-  id = uniqueId(),
+  id,
+  className,
   size,
   circleWidth,
   loading = false,
@@ -17,7 +17,9 @@ const ProgressRing: FC<ProgressRingProps> = ({
   circleColor,
   insideColor = 'transparent',
   image,
+  noSlider,
   blur = 1,
+  disabled,
   children,
   ...rest
 }) => {
@@ -53,8 +55,17 @@ const ProgressRing: FC<ProgressRingProps> = ({
     refresh((i) => i + 1)
   }
 
+  const classNames = useMemo(() => {
+    const cls = className ? [className] : []
+    if (disabled) cls.push('smartworld-svg--disabled')
+    if (noSlider) cls.push('smartworld-svg--no-slider')
+    if (loading) cls.push('smartworld-svg--loading')
+    return cls
+  }, [className, disabled, loading, noSlider])
+
   return (
     <StyledRing
+      className={classNames.join(' ')}
       shadow={shadow}
       shadowSize={width / 100}
       shadowColor={shadowColor}
@@ -74,7 +85,7 @@ const ProgressRing: FC<ProgressRingProps> = ({
               <filter id="svg-blur">
                 <feGaussianBlur in="SourceGraphic" stdDeviation={blur} />
               </filter>
-              <clipPath id={id}>
+              <clipPath id={(id || src).toLocaleLowerCase()}>
                 <circle r={radius - cw / 2} cx={center} cy={center} />
               </clipPath>
             </defs>
@@ -83,8 +94,8 @@ const ProgressRing: FC<ProgressRingProps> = ({
               width="100%"
               height="100%"
               href={src}
-              clipPath={`url(#${id})`}
               onError={onImageError}
+              clipPath={`url(#${(id || src).toLocaleLowerCase()})`}
             />
           </>
         )}

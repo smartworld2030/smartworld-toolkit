@@ -66,7 +66,6 @@ const StyledButton = styled.button<BaseButtonProps & { $shadow: number; $shadowS
   line-height: 1.5;
   opacity: ${getOpacity};
   outline: 0;
-  transform: translateZ(-1000px);
   transition: background-color 0.2s, opacity 0.2s;
   box-shadow: ${({ $shadow, $shadowSize, theme }) => $shadow && getBoxShadows(theme.colors.primary, $shadowSize || 2)};
 
@@ -75,8 +74,6 @@ const StyledButton = styled.button<BaseButtonProps & { $shadow: number; $shadowS
   }
 
   &.smartworld-text:hover {
-    text-shadow: ${({ $shadow, $shadowSize, theme }) =>
-      $shadow && getBoxShadows(theme.colors.primary, $shadowSize || 2)};
     filter: saturate(1.5);
   }
 

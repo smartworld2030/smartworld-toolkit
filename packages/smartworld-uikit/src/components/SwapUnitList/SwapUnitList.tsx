@@ -7,6 +7,7 @@ import { SelectableToken, SelectableTokenProps } from '../SelectableToken'
 import { SwapUnitListProps } from './types'
 
 const SwapUnitList: React.FC<SwapUnitListProps> = ({
+  id,
   size,
   listWidth = 1,
   listHeight = 2.5,
@@ -44,9 +45,9 @@ const SwapUnitList: React.FC<SwapUnitListProps> = ({
   )
 
   useEffect(() => {
-    const id = `selectable-token-${defaultSelected}`
+    const i = `selectable-token-${defaultSelected}`
     const timer = window.setTimeout(() => {
-      listRef.current?.children[id]?.scrollIntoView({
+      listRef.current?.children[i]?.scrollIntoView({
         block: 'center',
         inline: 'center',
       })
@@ -62,11 +63,11 @@ const SwapUnitList: React.FC<SwapUnitListProps> = ({
   }, [clickHandler])
 
   const onClick = useCallback(
-    (item: string, t?: SelectableTokenProps, id = 'selectable-token-0') => {
+    (item: string, t?: SelectableTokenProps, i = 'selectable-token-0') => {
       if (onTokenSelect && !animation.current) {
         onUnitSelect(item)
         onTokenSelect(t)
-        listRef.current?.children[id]?.scrollIntoView({
+        listRef.current?.children[i]?.scrollIntoView({
           block: 'center',
           inline: 'center',
           behavior: 'smooth',
@@ -111,24 +112,25 @@ const SwapUnitList: React.FC<SwapUnitListProps> = ({
         {tokenList.map((item, i) => (
           <div
             aria-hidden="true"
-            key={item.id || `selectable-token-${i}`}
-            id={item.id || `selectable-token-${i}`}
+            key={item.id || `selectable-token-${item.symbol || i}`}
+            id={item.id || `selectable-token-${item.symbol || i}`}
             onClick={() =>
               item.onTextClick
                 ? undefined
                 : onClick(
                     item.token?.address || item.symbol || item.unit || '',
                     item,
-                    item.id || `selectable-token-${i}`,
+                    item.id || `selectable-token-${item.symbol || i}`,
                   )
             }
           >
-            <SelectableToken size={sizeCalc()} {...item} />
+            <SelectableToken id={item.id || `selectable-token-${item.symbol || i}`} size={sizeCalc()} {...item} />
           </div>
         ))}
         {bottomElement && bottomElement}
       </ListContainer>
       <BalanceInput
+        id={`balance-input-token-${token?.symbol || unit || id}`}
         size={sizeCalc()}
         insideColor="white"
         onUnitClick={() => {

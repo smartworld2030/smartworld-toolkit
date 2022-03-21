@@ -1,4 +1,4 @@
-export default (center: number, radius: number, direction: number, x: number, y: number): string => {
+export default (center: number, radius: number, direction: number, x: string | number, y: string | number): string => {
   const points = []
   points.push(`M${center}`)
   points.push(center + radius)

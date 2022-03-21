@@ -37,6 +37,7 @@ interface BWSProps extends Omit<CircleSliderProps, 'onInput'> {
   onInput: (e: number) => void
   icon?: (size: number) => ReactNode
   iconStyle?: CSSProperties
+  initialPercent?: number
   isWarning?: boolean
   shadow?: boolean
 }
@@ -54,10 +55,11 @@ export const ButtonWithSlider: React.FC<BWSProps> = ({
   shadow = true,
   iconStyle = {},
   isWarning = false,
+  initialPercent = 100,
   ...rest
 }): JSX.Element => {
-  const [input, setInput] = useState(100)
-  const lastInput = useRef(100)
+  const [input, setInput] = useState(initialPercent)
+  const lastInput = useRef(initialPercent)
   const { colors } = useTheme()
 
   const { height, borderWidth, iconSize } = variant({
@@ -91,6 +93,7 @@ export const ButtonWithSlider: React.FC<BWSProps> = ({
         loading={loading}
         shadow={shadow}
         value={input}
+        initialValue={initialPercent}
         zIndex={10}
         size={sizeCalc}
         onMouseUp={!isDisabled ? clickHandler : undefined}

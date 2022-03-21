@@ -113,7 +113,7 @@ export const WithToken: React.FC = () => {
           setToken1(t)
           setValue('0')
         }}
-        size={200}
+        size={219}
         onUserInput={setValue}
         value={value}
         token={token1}
@@ -129,7 +129,7 @@ export const WithToken: React.FC = () => {
           setToken2(t)
           setValue('0')
         }}
-        size={200}
+        size={219}
         listHeight={5}
         defaultSelected={2}
         onUserInput={setValue}

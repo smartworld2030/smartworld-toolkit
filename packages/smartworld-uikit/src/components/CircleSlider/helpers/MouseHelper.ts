@@ -1,11 +1,11 @@
 export default class MouseHelper {
   private container: SVGSVGElement | undefined
 
-  private center!: number
+  private center = 0
 
-  private relativeX!: number
+  private relativeX = 0
 
-  private relativeY!: number
+  private relativeY = 0
 
   constructor(container: SVGSVGElement | null) {
     if (!container) return

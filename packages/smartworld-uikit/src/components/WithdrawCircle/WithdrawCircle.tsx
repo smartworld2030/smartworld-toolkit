@@ -35,6 +35,8 @@ const WithdrawCircle: React.FC<WithdrawCircleProps> = ({
       insideColor={color || colors.tertiary}
       circleColor={isWarning ? colors.warning : borderColor}
       loading={loading}
+      disabled={disabled}
+      noSlider
       id="withdraw"
     >
       <RelativeFlex

@@ -6,6 +6,7 @@ export type Variant = typeof variants[keyof typeof variants]
 
 export interface ProgressRingProps {
   id?: string
+  className?: string
   scale?: Scale
   blur?: number
   variant?: Variant
@@ -15,6 +16,8 @@ export interface ProgressRingProps {
   progress?: number
   loading?: boolean
   shadow?: boolean
+  disabled?: boolean
+  noSlider?: boolean
   image?: string | string[]
   circleColor?: string
   insideColor?: string

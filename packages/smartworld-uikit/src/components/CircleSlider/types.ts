@@ -8,6 +8,7 @@ export interface CircleSliderProps extends SvgProps {
   knobRadius?: number
   knobWidth?: number
   value?: number
+  initialValue?: number
   stepSize?: number
   min?: number
   max?: number

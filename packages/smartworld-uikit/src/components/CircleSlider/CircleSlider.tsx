@@ -19,6 +19,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   progressColor = 'purple',
   className,
   size,
+  initialValue = 0,
   value = 0,
   zIndex = 0,
   knobColor,
@@ -50,9 +51,11 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   })
 
   const sizeCalc = useCallback(
-    (divide = 1, minus = 0) => Number(((size ? Number(size) : 150) / divide - minus).toFixed()),
+    (divide = 1, minus = 0) => Number(((size ? Number(size) : 150) / divide - minus).toFixed(2)),
     [size],
   )
+
+  const mouseHelper = useRef<MouseHelper | null>(null)
 
   const cw = useMemo(() => circleWidth || sizeCalc(15), [circleWidth, sizeCalc])
 
@@ -63,9 +66,23 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   const kw = useMemo(() => knobWidth || pw, [knobWidth, pw])
   const kr = useMemo(() => knobRadius || radius / 5, [knobRadius, radius])
 
-  const countSteps = useRef(0)
-  const mouseHelper = useRef<MouseHelper | null>(null)
-  const circleSliderHelper = useRef<CircleSliderHelper>(new CircleSliderHelper([], 0))
+  const sliderHelper = useMemo(() => {
+    const countSteps = 1 + (max - min) / stepSize
+    const stepsArray: number[] = []
+
+    for (let i = 0; i < countSteps; i++) {
+      stepsArray.push(min + i * stepSize)
+    }
+
+    const newHelper = new CircleSliderHelper(stepsArray, initialValue)
+    setState({
+      isMouseMove: false,
+      angle: newHelper.getAngle(),
+      currentStepValue: newHelper.getCurrentStep(),
+    })
+
+    return newHelper
+  }, [max, min, stepSize, initialValue])
 
   const imageList = useMemo(() => {
     const list = [UNKNOWN_IMAGE]
@@ -76,38 +93,22 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   }, [image])
 
   useEffect(() => {
-    countSteps.current = 1 + (max - min) / stepSize
-    const stepsArray: number[] = []
-
-    for (let i = 0; i < countSteps.current; i++) {
-      stepsArray.push(min + i * stepSize)
-    }
-
-    circleSliderHelper.current = new CircleSliderHelper(stepsArray, value)
-    setState((prev) => ({
-      ...prev,
-      angle: circleSliderHelper.current.getAngle(),
-      currentStepValue: circleSliderHelper.current.getCurrentStep(),
-    }))
-  }, [cw, knobRadius, max, min, pw, size, stepSize, value])
-
-  useEffect(() => {
     if (!state.isMouseMove) {
       const newValue = Math.round(value / stepSize) * stepSize
-      circleSliderHelper.current.updateStepIndexFromValue(newValue)
-      setState((prev) => ({ ...prev, angle: circleSliderHelper.current.getAngle(), currentStepValue: newValue }))
+      sliderHelper.updateStepIndexFromValue(newValue)
+      setState((prev) => ({ ...prev, angle: sliderHelper.getAngle(), currentStepValue: newValue }))
     }
-  }, [state.isMouseMove, stepSize, value])
+  }, [sliderHelper, state.isMouseMove, stepSize, value])
 
   const updateAngle = useCallback(
     (angle?: number) => {
       if (!angle) return
-      circleSliderHelper.current.updateStepIndexFromAngle(angle)
-      const currentStep = circleSliderHelper.current.getCurrentStep()
+      sliderHelper.updateStepIndexFromAngle(angle)
+      const currentStep = sliderHelper.getCurrentStep()
       setState((prev) => ({ ...prev, angle, currentStepValue: currentStep }))
       onInputChange(currentStep)
     },
-    [onInputChange],
+    [sliderHelper, onInputChange],
   )
 
   const updateSlider = useCallback(() => {
@@ -122,8 +123,8 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
   const getPointPosition = useCallback(() => {
     const angle = getAngle()
     return {
-      x: center + radius * Math.cos(angle),
-      y: center + radius * Math.sin(angle),
+      x: (center + radius * Math.cos(angle)).toFixed(3),
+      y: (center + radius * Math.sin(angle)).toFixed(3),
     }
   }, [getAngle, center, radius])
 
@@ -138,12 +139,15 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
     mouseHelper.current = new MouseHelper(svg)
   }, [])
 
-  const handleMouseMove = (event: MouseEvent) => {
-    event.preventDefault()
-    setState((prev) => ({ ...prev, isMouseMove: true }))
-    mouseHelper.current?.setPosition(event)
-    updateSlider()
-  }
+  const handleMouseMove = useCallback(
+    (event: MouseEvent) => {
+      event.preventDefault()
+      setState((prev) => ({ ...prev, isMouseMove: true }))
+      mouseHelper.current?.setPosition(event)
+      updateSlider()
+    },
+    [updateSlider],
+  )
 
   const handleMouseUp = (event: Event) => {
     event.preventDefault()
@@ -160,25 +164,29 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
     }
   }
 
-  const handleTouchMove = (event: globalThis.TouchEvent) => {
-    const { targetTouches } = event
-    const countTouches = targetTouches.length
-    const currentTouch = targetTouches?.item(countTouches - 1)
-    mouseHelper.current?.setPosition(currentTouch)
-    updateSlider()
-  }
+  const handleTouchMove = useCallback(
+    (event: globalThis.TouchEvent) => {
+      const { targetTouches } = event
+      const countTouches = targetTouches.length
+      const currentTouch = targetTouches?.item(countTouches - 1)
+      mouseHelper.current?.setPosition(currentTouch)
+      updateSlider()
+    },
+    [updateSlider],
+  )
 
-  const handleTouchUp = () => {
-    window.removeEventListener('touchmove', handleTouchMove)
-    window.removeEventListener('touchend', handleTouchUp)
-  }
-
-  const handleTouchStart = () => {
+  const handleTouchStart = useCallback(() => {
     if (!disabled) {
       window.addEventListener('touchmove', handleTouchMove)
-      window.addEventListener('touchend', handleTouchUp)
+      window.addEventListener(
+        'touchend',
+        () => {
+          window.removeEventListener('touchmove', handleTouchMove)
+        },
+        { once: true },
+      )
     }
-  }
+  }, [disabled, handleTouchMove])
 
   const { x, y } = getPointPosition()
   const isAllGradientColorsAvailable = gradientColorFrom && gradientColorTo
@@ -230,7 +238,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
             <filter id="svg-blur-2">
               <feGaussianBlur in="SourceGraphic" stdDeviation={blur} />
             </filter>
-            <clipPath id={id || src.toString()}>
+            <clipPath id={(id || src).toLocaleLowerCase()}>
               <circle r={radius - cw / 2} cx={center} cy={center} />
             </clipPath>
           </defs>
@@ -240,7 +248,7 @@ const CircleSlider: React.FC<CircleSliderProps> = ({
             height="100%"
             href={src}
             onError={onImageError}
-            clipPath={`url(#${id || src.toString()})`}
+            clipPath={`url(#${(id || src).toLocaleLowerCase()})`}
           />
         </>
       )}
